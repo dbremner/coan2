@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="coan" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/coan" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="clang" />
+				<Option parameters="source -DFOO --verbose /home/imk/develop/coan-5.2.1/test_coan/test_cases/test0004.c" />
+				<Compiler>
+					<Add option="-pedantic" />
+					<Add option="-std=c++11" />
+					<Add option="-g" />
+					<Add option="-DHAVE_CONFIG_H" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/coan" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-pedantic" />
+					<Add option="-std=c++11" />
+					<Add option="-fdata-sections -ffunction-sections" />
+					<Add option="-DHAVE_CONFIG_H" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-Wl,--gc-sections" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="../../../../src/argument_list.cpp" />
+		<Unit filename="../../../../src/argument_list.h" />
+		<Unit filename="../../../../src/canonical.cpp" />
+		<Unit filename="../../../../src/canonical.h" />
+		<Unit filename="../../../../src/chew.cpp" />
+		<Unit filename="../../../../src/chew.h" />
+		<Unit filename="../../../../src/citable.cpp" />
+		<Unit filename="../../../../src/citable.h" />
+		<Unit filename="../../../../src/configure.h" />
+		<Unit filename="../../../../src/contradiction.cpp" />
+		<Unit filename="../../../../src/contradiction.h" />
+		<Unit filename="../../../../src/cursor.h" />
+		<Unit filename="../../../../src/dataset.cpp" />
+		<Unit filename="../../../../src/dataset.h" />
+		<Unit filename="../../../../src/diagnostic.cpp" />
+		<Unit filename="../../../../src/diagnostic.h" />
+		<Unit filename="../../../../src/directive.cpp" />
+		<Unit filename="../../../../src/directive.h" />
+		<Unit filename="../../../../src/directive_type.h" />
+		<Unit filename="../../../../src/directory.h" />
+		<Unit filename="../../../../src/directory_common.h" />
+		<Unit filename="../../../../src/directory_nix.h" />
+		<Unit filename="../../../../src/directory_win.h" />
+		<Unit filename="../../../../src/eol.h" />
+		<Unit filename="../../../../src/evaluation.h" />
+		<Unit filename="../../../../src/expansion.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../../../src/expansion.h" />
+		<Unit filename="../../../../src/expansion_base.cpp" />
+		<Unit filename="../../../../src/expansion_base.h" />
+		<Unit filename="../../../../src/explained_expansion.cpp" />
+		<Unit filename="../../../../src/explained_expansion.h" />
+		<Unit filename="../../../../src/expression_parser.cpp" />
+		<Unit filename="../../../../src/expression_parser.h" />
+		<Unit filename="../../../../src/file_tree.cpp" />
+		<Unit filename="../../../../src/file_tree.h" />
+		<Unit filename="../../../../src/filesys.cpp" />
+		<Unit filename="../../../../src/filesys.h" />
+		<Unit filename="../../../../src/formal_parameter_list.cpp" />
+		<Unit filename="../../../../src/formal_parameter_list.h" />
+		<Unit filename="../../../../src/fs_nix.cpp" />
+		<Unit filename="../../../../src/fs_win.cpp" />
+		<Unit filename="../../../../src/get_options.cpp" />
+		<Unit filename="../../../../src/get_options.h" />
+		<Unit filename="../../../../src/hash_include.cpp" />
+		<Unit filename="../../../../src/hash_include.h" />
+		<Unit filename="../../../../src/help.cpp" />
+		<Unit filename="../../../../src/help.h" />
+		<Unit filename="../../../../src/if_control.cpp" />
+		<Unit filename="../../../../src/if_control.h" />
+		<Unit filename="../../../../src/integer.cpp" />
+		<Unit filename="../../../../src/integer.h" />
+		<Unit filename="../../../../src/integer_constant.cpp" />
+		<Unit filename="../../../../src/integer_constant.h" />
+		<Unit filename="../../../../src/io.cpp" />
+		<Unit filename="../../../../src/io.h" />
+		<Unit filename="../../../../src/lexicon.h" />
+		<Unit filename="../../../../src/line_despatch.cpp" />
+		<Unit filename="../../../../src/line_despatch.h" />
+		<Unit filename="../../../../src/main.cpp" />
+		<Unit filename="../../../../src/options.cpp" />
+		<Unit filename="../../../../src/options.h" />
+		<Unit filename="../../../../src/parameter_list_base.cpp" />
+		<Unit filename="../../../../src/parameter_list_base.h" />
+		<Unit filename="../../../../src/parameter_substitution.cpp" />
+		<Unit filename="../../../../src/parameter_substitution.h" />
+		<Unit filename="../../../../src/parse_buffer.h" />
+		<Unit filename="../../../../src/parsed_line.cpp" />
+		<Unit filename="../../../../src/parsed_line.h" />
+		<Unit filename="../../../../src/path.h" />
+		<Unit filename="../../../../src/platform.h" />
+		<Unit filename="../../../../src/prohibit.h" />
+		<Unit filename="../../../../src/reference.cpp" />
+		<Unit filename="../../../../src/reference.h" />
+		<Unit filename="../../../../src/reference_cache.h" />
+		<Unit filename="../../../../src/symbol.cpp" />
+		<Unit filename="../../../../src/symbol.h" />
+		<Unit filename="../../../../src/syserr.cpp" />
+		<Unit filename="../../../../src/syserr.h" />
+		<Unit filename="../../../../src/todo.h" />
+		<Unit filename="../../../../src/traits.h" />
+		<Unit filename="../../../../src/unexplained_expansion.cpp" />
+		<Unit filename="../../../../src/unexplained_expansion.h" />
+		<Unit filename="../../../../src/version.cpp" />
+		<Unit filename="../../../../src/version.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

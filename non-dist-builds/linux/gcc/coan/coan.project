@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Project Name="coan" InternalType="Console">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
+    </Plugin>
+  </Plugins>
+  <Description/>
+  <Dependencies/>
+  <VirtualDirectory Name="src">
+    <File Name="../../../../src/canonical_string.cpp"/>
+    <File Name="../../../../src/contradiction.cpp"/>
+    <File Name="../../../../src/dataset.cpp"/>
+    <File Name="../../../../src/diagnostic.cpp"/>
+    <File Name="../../../../src/filesys.cpp"/>
+    <File Name="../../../../src/file_tree.cpp"/>
+    <File Name="../../../../src/fs_nix.cpp"/>
+    <File Name="../../../../src/fs_win.cpp"/>
+    <File Name="../../../../src/get_options.cpp"/>
+    <File Name="../../../../src/hash_include.cpp"/>
+    <File Name="../../../../src/if_control.cpp"/>
+    <File Name="../../../../src/integer_constant.cpp"/>
+    <File Name="../../../../src/io.cpp"/>
+    <File Name="../../../../src/line_despatch.cpp"/>
+    <File Name="../../../../src/line_edit.cpp"/>
+    <File Name="../../../../src/line_select.cpp"/>
+    <File Name="../../../../src/main.cpp"/>
+    <File Name="../../../../src/symbol.cpp"/>
+    <File Name="../../../../src/canonical_string.h"/>
+    <File Name="../../../../src/chew.h"/>
+    <File Name="../../../../src/contradiction.h"/>
+    <File Name="../../../../src/dataset.h"/>
+    <File Name="../../../../src/diagnostic.h"/>
+    <File Name="../../../../src/evaluation.h"/>
+    <File Name="../../../../src/filesys.h"/>
+    <File Name="../../../../src/file_tree.h"/>
+    <File Name="../../../../src/get_options.h"/>
+    <File Name="../../../../src/hash_include.h"/>
+    <File Name="../../../../src/if_control.h"/>
+    <File Name="../../../../src/integer_constant.h"/>
+    <File Name="../../../../src/io.h"/>
+    <File Name="../../../../src/lexicon.h"/>
+    <File Name="../../../../src/line_despatch.h"/>
+    <File Name="../../../../src/line_edit.h"/>
+    <File Name="../../../../src/line_select.h"/>
+    <File Name="../../../../src/platform.h"/>
+    <File Name="../../../../src/symbol.h"/>
+    <File Name="../../../../src/options.cpp"/>
+    <File Name="../../../../src/options.h"/>
+    <File Name="../../../../src/path.h"/>
+    <File Name="../../../../src/directive.cpp"/>
+    <File Name="../../../../src/directive.h"/>
+    <File Name="../../../../src/integer.cpp"/>
+    <File Name="../../../../src/integer.h"/>
+    <File Name="../../../../src/cursor.h"/>
+    <File Name="../../../../src/directory.h"/>
+    <File Name="../../../../src/directory_nix.h"/>
+    <File Name="../../../../src/directory_win.h"/>
+    <File Name="../../../../src/directory_common.h"/>
+    <File Name="../../../../src/configure.h"/>
+    <File Name="../../../../src/parameter_list.cpp"/>
+    <File Name="../../../../src/parameter_list.h"/>
+    <File Name="../../../../src/expression_parser.cpp"/>
+    <File Name="../../../../src/expression_parser.h"/>
+    <File Name="../../../../src/chew.cpp"/>
+  </VirtualDirectory>
+  <Settings Type="Executable">
+    <GlobalSettings>
+      <Compiler Options="" C_Options="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+    <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g --include /home/imk/develop/coan-5.0/config.h -std=c++0x -fmax-errors=100" C_Options="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="." Command="./$(ProjectName)" CommandArguments="source -DFOO /home/imk/develop/coan-5.0/test_coan/test_cases/test0361.c" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+    <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g;-O2;--include /home/imk/develop/coan/config.h -std=c++0x" C_Options="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="source -DNUM=1 -DBAR(x,y)=x-y  -DFOO(x,y)=x*y --verbose /home/imk/develop/coan/test_coan/test_cases/test0324.c" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      ]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+  </Settings>
+</CodeLite_Project>

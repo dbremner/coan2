@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Session Name="/home/imk/develop/coan-5.2.1/non-dist-builds/linux/codelite/coan/coan.workspace">
+  <int Value="14" Name="m_selectedTab"/>
+  <wxString Value="/home/imk/develop/coan-5.2.1/non-dist-builds/linux/codelite/coan/coan.workspace" Name="m_workspaceName"/>
+  <TabInfoArray Name="TabInfoArray">
+    <TabInfo>
+      <wxString Value="/home/imk/develop/coan-5.2.1/src/symbol_state.cpp" Name="FileName"/>
+      <int Value="381" Name="FirstVisibleLine"/>
+      <int Value="398" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/imk/develop/coan-5.2.1/src/symbol_state.h" Name="FileName"/>
+      <int Value="117" Name="FirstVisibleLine"/>
+      <int Value="115" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/imk/develop/coan-5.2.1/src/directive.cpp" Name="FileName"/>
+      <int Value="257" Name="FirstVisibleLine"/>
+      <int Value="255" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/imk/develop/coan-5.2.1/src/symbol.cpp" Name="FileName"/>
+      <int Value="69" Name="FirstVisibleLine"/>
+      <int Value="70" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/imk/develop/coan-5.2.1/non-dist-builds/linux/codelite/coan/tester/main.cpp" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="4" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/imk/develop/coan-5.2.1/src/expression_parser.cpp" Name="FileName"/>
+      <int Value="669" Name="FirstVisibleLine"/>
+      <int Value="699" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/imk/develop/coan-5.2.1/src/hash_include.cpp" Name="FileName"/>
+      <int Value="56" Name="FirstVisibleLine"/>
+      <int Value="54" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/imk/develop/coan-5.2.1/src/hash_include.h" Name="FileName"/>
+      <int Value="100" Name="FirstVisibleLine"/>
+      <int Value="98" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/imk/develop/coan-5.2.1/src/options.cpp" Name="FileName"/>
+      <int Value="460" Name="FirstVisibleLine"/>
+      <int Value="458" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/usr/include/c++/4.7/ext/atomicity.h" Name="FileName"/>
+      <int Value="68" Name="FirstVisibleLine"/>
+      <int Value="66" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/usr/include/c++/4.7/bits/shared_ptr_base.h" Name="FileName"/>
+      <int Value="964" Name="FirstVisibleLine"/>
+      <int Value="962" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/imk/develop/coan-5.2.1/src/symbol.h" Name="FileName"/>
+      <int Value="201" Name="FirstVisibleLine"/>
+      <int Value="199" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/imk/develop/coan-5.2.1/src/directive.h" Name="FileName"/>
+      <int Value="186" Name="FirstVisibleLine"/>
+      <int Value="184" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/imk/develop/coan-5.2.1/src/evaluation.h" Name="FileName"/>
+      <int Value="99" Name="FirstVisibleLine"/>
+      <int Value="97" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/imk/develop/coan-5.2.1/src/todo.h" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="7" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+    </TabInfo>
+  </TabInfoArray>
+  <SerializedObject Name="m_breakpoints">
+    <long Value="1" Name="Count"/>
+    <SerializedObject Name="Breakpoint0">
+      <wxString Value="/home/imk/develop/coan-5.2.1/src/symbol_state.cpp" Name="file"/>
+      <int Value="104" Name="lineno"/>
+      <wxString Value="" Name="function_name"/>
+      <wxString Value="" Name="memory_address"/>
+      <int Value="1" Name="bp_type"/>
+      <int Value="0" Name="watchpoint_type"/>
+      <wxString Value="" Name="watchpt_data"/>
+      <CData Name="commandlist"/>
+      <bool Value="0" Name="regex"/>
+      <bool Value="0" Name="is_temp"/>
+      <bool Value="1" Name="is_enabled"/>
+      <int Value="0" Name="ignore_number"/>
+      <wxString Value="" Name="conditions"/>
+      <int Value="0" Name="origin"/>
+    </SerializedObject>
+  </SerializedObject>
+</Session>

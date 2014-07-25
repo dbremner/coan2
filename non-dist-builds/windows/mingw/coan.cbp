@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="coan" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin\Debug\coan" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin\Release\coan" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="..\src\args.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\args.h" />
+		<Unit filename="..\src\bool.h" />
+		<Unit filename="..\src\canonical_string.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\canonical_string.h" />
+		<Unit filename="..\src\chew.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\chew.h" />
+		<Unit filename="..\src\configured_symbols.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\configured_symbols.h" />
+		<Unit filename="..\src\contradiction.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\contradiction.h" />
+		<Unit filename="..\src\dataset.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\dataset.h" />
+		<Unit filename="..\src\directives_tally.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\directives_tally.h" />
+		<Unit filename="..\src\doxygen.h" />
+		<Unit filename="..\src\eval_result.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\eval_result.h" />
+		<Unit filename="..\src\evaluator.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\evaluator.h" />
+		<Unit filename="..\src\exception.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\exception.h" />
+		<Unit filename="..\src\file_tree.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\file_tree.h" />
+		<Unit filename="..\src\filesys.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\filesys.h" />
+		<Unit filename="..\src\fs_nix.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\fs_win.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\get_options.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\get_options.h" />
+		<Unit filename="..\src\hash_include.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\hash_include.h" />
+		<Unit filename="..\src\if_control.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\if_control.h" />
+		<Unit filename="..\src\includes_tally.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\includes_tally.h" />
+		<Unit filename="..\src\integer_constant.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\integer_constant.h" />
+		<Unit filename="..\src\integer_ops.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\integer_ops.h" />
+		<Unit filename="..\src\io.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\io.h" />
+		<Unit filename="..\src\lexicon.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\lexicon.h" />
+		<Unit filename="..\src\line_despatch.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\line_despatch.h" />
+		<Unit filename="..\src\line_edit.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\line_edit.h" />
+		<Unit filename="..\src\line_select.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\line_select.h" />
+		<Unit filename="..\src\main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\memory.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\memory.h" />
+		<Unit filename="..\src\opts.h" />
+		<Unit filename="..\src\platform.h" />
+		<Unit filename="..\src\ptr_set.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\ptr_set.h" />
+		<Unit filename="..\src\ptr_vector.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\ptr_vector.h" />
+		<Unit filename="..\src\report.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\report.h" />
+		<Unit filename="..\src\state_utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\state_utils.h" />
+		<Unit filename="..\src\swiss_army.h" />
+		<Unit filename="..\src\symbol.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\symbol.h" />
+		<Unit filename="..\src\unconfigured_symbols.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\src\unconfigured_symbols.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

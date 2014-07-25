@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Workspace Name="coan" Database="./coan.tags">
+  <Project Name="coan" Path="coan.project" Active="Yes"/>
+  <Project Name="tester" Path="tester/tester.project" Active="No"/>
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
+      <Project Name="tester" ConfigName="Debug"/>
+      <Project Name="coan" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Release" Selected="no">
+      <Project Name="tester" ConfigName="Release"/>
+      <Project Name="coan" ConfigName="Release"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CodeLite_Workspace>
