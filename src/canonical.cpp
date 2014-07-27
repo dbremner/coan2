@@ -110,8 +110,8 @@ template<class CharSeq>
 void canonical<macro_argument>::canonicalize(chewer<CharSeq> & chew)
 {
 	int paren_balance = 0;
-	for (chew(c_comment,literal_space); chew;
-			++chew,chew(c_comment,literal_space)) {
+	for (chew(c_comment,whitespace); chew;
+			++chew,chew(c_comment,whitespace)) {
 		if (*chew == '(') {
 			++paren_balance;
 		} else if (*chew == ')') {

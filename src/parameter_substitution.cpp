@@ -151,7 +151,7 @@ void format::build_format(symbol & sym)
 			if (!chew) {
 				break;
 			}
-			mark = size_t(chew);
+			continue;
 		}
 		chew(whitespace);
 		if (size_t(chew) > mark) {
@@ -161,7 +161,7 @@ void format::build_format(symbol & sym)
 			if (!chew) {
 				break;
 			}
-			mark = size_t(chew);
+			continue;
 		}
 		if (*chew == '#') {
 			_fmt += '#';
@@ -176,8 +176,8 @@ void format::build_format(symbol & sym)
 		}
 		symbol::scan_name(chew);
 		if (size_t(chew) == mark) {
-			_fmt += *chew;
-			++chew;
+            _fmt += *chew;
+            ++chew;
 			continue;
 		}
 		string id = s.substr(mark,size_t(chew) - mark);
@@ -187,6 +187,7 @@ void format::build_format(symbol & sym)
 			spec.append_to(_fmt);
 		} else {
 			_fmt += id;
+
 		}
 	}
 	do_stringify_adjustments(params.size());

@@ -39,6 +39,19 @@ Makefile.in
  
 .hg*
 
+# Test outputs
+
+*.output
+*.stderr
+
+# Dependency files
+
+*.o.d
+
+# Non-dist builds
+
+/non-dist-builds
+
 /autom4te.cache
 /aclocal.m4
 /compile
