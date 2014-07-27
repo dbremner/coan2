@@ -726,7 +726,6 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 	} while(false);
 	return result;
 }
-
 template<class CharSeq>
 void expression_parser<CharSeq>::parse(chewer<CharSeq> & chew)
 {
@@ -735,10 +734,10 @@ void expression_parser<CharSeq>::parse(chewer<CharSeq> & chew)
 	bool orphan_if = false;
 	if (_ternary_cond_stack.size()) {
 		orphan_if = true;
-		_eval.set_insoluble();
 	}
 	chew(greyspace);
 	if ((chew || orphan_if)) {
+		_eval.set_insoluble();
 		std::shared_ptr<diagnostic_base> gripe;
 		if (orphan_if) {
 			gripe.reset(new error_ternary_cond_incomplete);
