@@ -1,4 +1,4 @@
-#!/usr/bin/pthon
+#!/usr/bin/python
 
 copyright = 'Copyright (c) 2012-2013 Michael Kinghan'
 
