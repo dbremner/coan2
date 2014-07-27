@@ -69,9 +69,9 @@ struct expansion_base : reference
         with the current expansions of its arguments
 	*/
 	std::string const & invocation() const override {
-        static std::string s = id();
+        static std::string s;
+        s = id();
         if (args()) {
-            s.resize(id().size());
             s += args().str();
         }
 		return s;

@@ -105,6 +105,7 @@ void canonical<std::string>::canonicalize(chewer<std::string> & chew);
 template
 void canonical<std::string>::canonicalize(chewer<parse_buffer> & chew);
 
+#if 0
 template<>
 template<class CharSeq>
 void canonical<macro_argument>::canonicalize(chewer<CharSeq> & chew)
@@ -124,6 +125,47 @@ void canonical<macro_argument>::canonicalize(chewer<CharSeq> & chew)
 			}
 		}
 		_canonical += *chew;
+
+	}
+}
+#endif
+
+template<>
+template<class CharSeq>
+void canonical<macro_argument>::canonicalize(chewer<CharSeq> & chew)
+{
+	int paren_balance = 0;
+	for (chew(c_comment); chew;
+			++chew,chew(c_comment)) {
+		if (*chew == '(') {
+			++paren_balance;
+			_canonical += '(';
+			continue;
+        }
+		if (*chew == ')') {
+			if (--paren_balance < 0) {
+				break;
+			}
+			_canonical += ')';
+			continue;
+		}
+		if (*chew == ',') {
+			if (paren_balance <= 0) {
+				break;
+			}
+			_canonical += ',';
+			continue;
+		}
+		if (!isspace(*chew)) {
+            _canonical += *chew;
+            continue;
+		}
+		if (_canonical.size()) {
+            auto last = _canonical.back();
+            if (!isspace(last) && (last == '#' || !ispunct(last))) {
+                _canonical += ' ';
+            }
+		}
 	}
 }
 
