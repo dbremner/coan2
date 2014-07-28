@@ -35,83 +35,76 @@
  **************************************************************************/
 #include "parameter_list_base.h"
 
-/*! \file argument_list.h
-    This file class `argument_list`.
-*/
+/** \file argument_list.h
+ * This file defines class `argument_list`
+ */
 
-/*! \brief Class `argument_list` encapsulates a list of macro arguments, i.e.
-    arguments to a macro reference.
-
-    Associated with each argument is a boolean flag indicating whether
-    that argument is eligible for macro expansion. By default this flag
-    is false.
-*/
+/** \brief Class `argument_list` encapsulates a list of macro arguments, i.e.
+ * the arguments to a macro reference.
+ *
+ *  Associated with each argument is a boolean flag indicating whether
+ *  that argument is eligible for macro expansion. By default this flag
+ *  is false.
+ */
 struct argument_list : innards::parameter_list_base {
 
     using base = innards::parameter_list_base;
 
-	//! Explicitly construct from a `parameter_list_base`
+	/// Explicitly construct from an `innards::parameter_list_base`
 	explicit argument_list(parameter_list_base const & parms)
 	: base(parms){}
 
-	/*! \brief Construct for `n` arguments
-
-		If `n` > 0, the list of placeholder arguments `$1,...,$n` is
-		constructed.
-	*/
-	explicit argument_list(size_t n = 0)
+    /** \brief Construct for `n` arguments
+     *
+     * If `n` > 0, the list of placeholder arguments `$1,...,$n` is
+     * constructed.
+     */
+ 	explicit argument_list(size_t n = 0)
 	: base(n){}
 
-	/*! \brief Explicitly construct given a text pointer.
-	    \param chew On entry, a `chewer` referencing the text offset from which
-			to scan. On return receives a `chewer` referencing the first
-			offset not consumed.
-	*/
+    /** \brief Explicitly construct from a `chewer<CharSeq>`
+     *
+     * \tparam CharSeq A character-sequence type
+     * \param chew  On entry, a `chewer<CharSeq>` positioned at the offset in the
+     *      associated `CharSeq` from which to scan. On return is positioned
+     *      at the first offset not consumed.
+     */
 	template<class CharSeq>
 	explicit argument_list(chewer<CharSeq> & chew) {
 		read(chew);
 	}
 
-	//! Equality
+    /// Equality
 	bool operator==(argument_list const & other) const {
 		return parameter_list_base::operator==(other) &&
             (_expand_flags == other._expand_flags ||
                 *_expand_flags == *other._expand_flags);
 	}
 
-	//! Inequality
+    /// Inequality
 	bool operator!=(argument_list const & other) const {
 		return !(*this == other);
 	}
 
-	/*! \brief Read the `argument_list` from a text pointer.
-
-	    \param chew On entry, a `chewer` referencing the text offset from which
-			to scan. On return receives a `chewer` referencing the first
-			offset not consumed.
-
-	    The `argument_list` is emptied and replaced by parsing the text
-	    from `chew`
-	 */
+    /** \brief Read the `argument_list` from a `chewer<CharSeq>`
+     *
+     * \tparam CharSeq A character-sequence type
+     * \param chew On entry, a `chewer<CharSeq>` positioned at the offset in the
+     *      associated `CharSeq` from which to scan. On return is positioned
+     *      at the first offset not consumed.
+     */
     template<class CharSeq>
 	void read(chewer<CharSeq> & chew);
 
-	/*! \brief Say whether a character can validly appear in a member of
-	    an argument list.
 
-	    \param  ch  The character to be tested.
-	    \return True iff `ch` can validly appear in a member of an
-	        argument list.
-	*/
-	static bool is_valid_char(char ch) {
-		return ch && ch != ',' && ch != '(' && ch != ')';
-	}
-
-	/*! Set the nth expand-flag to indicate whether the nth argument,
-        if any, is eligible for macro expansion.
-
-        \return True iff the nth argument exists.
-    */
+    /** \brief Set the `n`th expand-flag to indicate whether the `n`th argument,
+     *  if any, is eligible for macro expansion.
+     *
+     * \param n Index of the argument to be flagged
+     * \param expandable A boolean denoting that that the `n`th argument
+     *      is to be flagged as expandable or as not expandable.
+     * \return True iff the `n`th member of the `argument_list` exists.
+     */
 	bool set_expandable(size_t n, bool expandable = false)  {
         if (_expand_flags && n < _expand_flags->size()) {
             (*_expand_flags)[n] = expandable;
@@ -120,10 +113,13 @@ struct argument_list : innards::parameter_list_base {
         return false;
 	}
 
-	/*! Say whether the nth argument, if any, is eligible for macro expansion.
-
-        \return True iff the nth argument exists and is expandable
-    */
+    /** \brief Say whether the `n`th argument,
+     *  if any, is eligible for macro expansion.
+     *
+     * \param n Index of the argument to be queried
+     * \return True iff the `n`th member of the `argument_list` exists and
+     *  is eligible for expansion.
+     */
 	bool is_expandable(size_t n) const {
         return _expand_flags && n < _expand_flags->size() ?
             (*_expand_flags)[n] : false;
@@ -135,16 +131,28 @@ private:
     using parameter_list_base::empty_param;
     using parameter_list_base::unclosed;
 
-    /*! The nth flag indicates whether the nth argument is eligible
+	/** \brief Say whether a character can validly appear in a member of
+     * an `argument list`.
+     *
+     * \param  ch  The character to be tested.
+     * \return True iff `ch` can validly appear in a member of an
+     * `argument list`.
+	 */
+	static bool is_valid_char(char ch) {
+		return ch && ch != ',' && ch != '(' && ch != ')';
+	}
+
+    /** The `n`th flag indicates whether the nth argument is eligible
         for macro expansion.
     */
     std::shared_ptr<std::vector<bool>> _expand_flags;
 
-	/*! \brief Append an argument to the argument list.
-	    \param  arg    The putative argument to be appended.
-	    \return True if `arg` has a non-0-length, else false,
-	        in which case the `argument_list` is unmodified.
-	*/
+	/** \brief Append an argument to the argument list.
+     *
+     *  \param  arg  The putative argument to be appended.
+     * \return True if `arg` has a non-0-length, else false,
+	 *       in which case the `argument_list` is unmodified.
+     */
 	bool append(std::string const & arg);
 };
 

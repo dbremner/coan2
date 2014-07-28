@@ -548,15 +548,6 @@ private:
 	*/
 	void diagnose_retrospective_redefinition() const;
 
-	/*! \brief Make all `#`-operator replacements post-argument-substitution
-		in the symbol's macro expansion.
-
-		\param subst A `parse_buffer` containing the symbol's
-		definition with the arguments of the reference substituted for
-		parameters.
-	*/
-	void do_stringification(parse_buffer & subst) const;
-
 	/*! \brief Get the maximum sequential snapshot number in the set of this
 		symbol and the recursive closure of its contributors
 

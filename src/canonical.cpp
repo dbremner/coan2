@@ -105,31 +105,6 @@ void canonical<std::string>::canonicalize(chewer<std::string> & chew);
 template
 void canonical<std::string>::canonicalize(chewer<parse_buffer> & chew);
 
-#if 0
-template<>
-template<class CharSeq>
-void canonical<macro_argument>::canonicalize(chewer<CharSeq> & chew)
-{
-	int paren_balance = 0;
-	for (chew(c_comment,whitespace); chew;
-			++chew,chew(c_comment,whitespace)) {
-		if (*chew == '(') {
-			++paren_balance;
-		} else if (*chew == ')') {
-			if (--paren_balance < 0) {
-				break;
-			}
-		} else if (*chew == ',') {
-			if (paren_balance <= 0) {
-				break;
-			}
-		}
-		_canonical += *chew;
-
-	}
-}
-#endif
-
 template<>
 template<class CharSeq>
 void canonical<macro_argument>::canonicalize(chewer<CharSeq> & chew)
