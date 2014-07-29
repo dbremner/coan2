@@ -34,7 +34,7 @@
 #include "argument_list.h"
 #include "canonical.h"
 
-/*! \file argument_list.cpp
+/** \file argument_list.cpp
     This file implements class `argument_list`.
 */
 
@@ -91,4 +91,5 @@ template
 void argument_list::read(chewer<string> & chew);
 template
 void argument_list::read(chewer<parse_buffer> & chew);
+
 // EOF

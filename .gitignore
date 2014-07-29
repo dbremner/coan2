@@ -48,6 +48,9 @@ Makefile.in
 
 *.o.d
 
+# Todo files
+todo.*
+
 # Non-dist builds
 
 /non-dist-builds

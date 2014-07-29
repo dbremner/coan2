@@ -40,11 +40,12 @@
 
 using namespace std;
 
-/*! \file canonical_string.cpp
-	This file implements the specializations of template class `canonical`
-*/
+/** \file canonical_string.cpp
+ *	This file implements specializations of
+ *	`template struct canonical<What>`
+ */
 
-bool canonical_base::cxx() const {
+bool innards::canonical_base::cxx() const {
 	return !options::plaintext();
 }
 
@@ -64,89 +65,8 @@ void canonical<symbol>::canonicalize(chewer<CharSeq> & chew)
 }
 
 template
-void canonical<symbol>::canonicalize(chewer<std::string> & chew);
+void canonical<symbol>::canonicalize(chewer<string> & chew);
 template
 void canonical<symbol>::canonicalize(chewer<parse_buffer> & chew);
-
-template<>
-template<class CharSeq>
-void canonical<string>::canonicalize(chewer<CharSeq> & chew)
-{
-	chew(greyspace);
-	if (!chew) {
-		return;
-	}
-	for (	;; ) {
-		_canonical += *chew;
-		if (!++chew) {
-			break;
-		}
-		chew(continuation);
-		if (!chew) {
-			break;
-		}
-		size_t mark = size_t(chew);
-		chew(greyspace);
-		if (mark != size_t(chew)) {
-			_canonical += ' ';
-		}
-		if (!chew) {
-			break;
-		}
-	}
-	size_t len = _canonical.length();
-	if (_canonical[len - 1] == ' ') {
-		_canonical.resize(len - 1);
-	}
-}
-
-template
-void canonical<std::string>::canonicalize(chewer<std::string> & chew);
-template
-void canonical<std::string>::canonicalize(chewer<parse_buffer> & chew);
-
-template<>
-template<class CharSeq>
-void canonical<macro_argument>::canonicalize(chewer<CharSeq> & chew)
-{
-	int paren_balance = 0;
-	for (chew(c_comment); chew;
-			++chew,chew(c_comment)) {
-		if (*chew == '(') {
-			++paren_balance;
-			_canonical += '(';
-			continue;
-        }
-		if (*chew == ')') {
-			if (--paren_balance < 0) {
-				break;
-			}
-			_canonical += ')';
-			continue;
-		}
-		if (*chew == ',') {
-			if (paren_balance <= 0) {
-				break;
-			}
-			_canonical += ',';
-			continue;
-		}
-		if (!isspace(*chew)) {
-            _canonical += *chew;
-            continue;
-		}
-		if (_canonical.size()) {
-            auto last = _canonical.back();
-            if (!isspace(last) && (last == '#' || !ispunct(last))) {
-                _canonical += ' ';
-            }
-		}
-	}
-}
-
-template
-void canonical<macro_argument>::canonicalize(chewer<std::string> & chew);
-template
-void canonical<macro_argument>::canonicalize(chewer<parse_buffer> & chew);
 
 /* EOF */

@@ -44,79 +44,59 @@
 
 struct symbol;
 
-/*! \file canonical_string.h
-	This file defines:
-	- class `canonical_base`
-	- class template class `canonical`
-*/
+/** \file canonical.h
+ *	This file defines:
+ *	- `struct innards::canonical_base`
+ *	- `tempplate struct canonical<What>`
+ */
 
-//! A tag class for parameterizing template class `canonical<What>`
+/// A tag class for parameterizing template class `canonical<What>`
 struct macro_argument {};
 
+namespace innards {
 
-//! A base for classes representing canonical forms of types.
+/// A base for classes representing canonical forms of various types.
 struct canonical_base {
-	//! Cast the canonical representation to string.
+	/// Implicitly cast the canonical representation to string.
 	operator std::string () const {
 		return _canonical;
 	}
 
-#if CXX11_HAVE_DECL_DEFAULT && !CXX11_HAVE_NON_PUBLIC_DEFAULT_DECL
-	//! Default constructor
-	canonical_base() = default;
-	//! Copy constructor
-	canonical_base(canonical_base const &) = default;
-	//! Assignment
-	canonical_base & operator=(canonical_base const &) = default;
-#endif
-
 protected:
 
-#if CXX11_HAVE_DECL_DEFAULT && CXX11_HAVE_NON_PUBLIC_DEFAULT_DECL
-	//! Default constructor
-	canonical_base() = default;
-	//! Copy constructor
-	canonical_base(canonical_base const &) = default;
-	//! Assignment
-	canonical_base & operator=(canonical_base const &) = default;
-#endif
-	//! Destructor
-	~canonical_base() {};
-
-	//! Canonicalizing C/C++ source?
+	/// Canonicalizing C/C++ source?
 	bool cxx() const;
 
-	//! String storing the canonical representation of a value.
+	/// String storing the canonical representation of a value.
 	std::string _canonical;
 };
 
-/*! \brief Template class `canonical<What>` encapsulates the canonical
-    representation of values of type `What`.
+} // namespace innards
 
-    \tparam What    The type that is canonically represented.
-*/
+/** \brief `template class canonical<What>` encapsulates the canonical
+ *    representation of values of type `What`.
+ *
+ *   \tparam What The type that is canonically represented.
+ */
 template<class What>
-struct canonical : canonical_base {
-#if CXX11_HAVE_DECL_DEFAULT
-	//! Default constructor
-	canonical() = default;
-#else
-	canonical() {};
-#endif
+struct canonical : innards::canonical_base {
 
-	/*! \brief Constructor
-
-	    Explicitly construct a canonical representation given an
-			object that controls a textual sequence.
-
-		\tparam Seq A type controlling a textual sequence.
-	    \param  seq A `seq`
-	*/
-	template<class Seq>
-	explicit canonical(Seq & seq) {
+    /** \brief Explicitly construct from a character-sequence
+     * \tparam CharSeq A character-sequence type
+     * \param seq A `CharSeq`
+     */
+	template<class CharSeq> //IMK const chewer
+	explicit canonical(CharSeq & seq) {
 		canonicalize(seq);
 	}
-	template<class CharSeq>
+
+    /** \brief Explicitly construct from a `chewer<CharSeq>`
+     * \tparam CharSeq A character-sequence type
+     * \param chew A `chewer<CharSeq>` positioned at the offset in the
+     *  associated `CharSeq` at which canonicalization is to start. The
+     *  canonical form of the remainder of the `CharSeq` is constructed.
+     */
+	template<class CharSeq> //IMK const chewer
 	explicit canonical(chewer<CharSeq> & chew) {
         static_assert(traits::is_random_access_char_sequence<CharSeq>::value,
             ">:[");
@@ -125,17 +105,91 @@ struct canonical : canonical_base {
 
 private:
 
+    /** \brief Canonicalize from a `chewer<CharSeq>`
+     * \tparam CharSeq A character-sequence type
+     * \param chew A `chewer<CharSeq>` positioned at the offset in the
+     *  associated `CharSeq` at which canonicalization is to start. The
+     *  canonical form of the remainder of the `CharSeq` is canonicalized.
+     */
     template<class CharSeq>
 	void canonicalize(chewer<CharSeq> & chew);
-	void canonicalize(parse_buffer & pb) {
-		chewer<parse_buffer> chew(cxx(),pb);
-		canonicalize(chew);
-	}
-	void canonicalize(std::string & str) {
-		chewer<std::string> chew(cxx(),str);
-		canonicalize(chew);
-	}
 
+	template<class CharSeq>
+	void canonicalize(CharSeq & seq) {
+	    chewer<CharSeq> chew(cxx(),seq);
+	    canonicalize(chew);
+	}
 };
+
+template<>
+template<class CharSeq>
+void canonical<std::string>::canonicalize(chewer<CharSeq> & chew)
+{
+	chew(greyspace);
+	if (!chew) {
+		return;
+	}
+	for (	;; ) {
+		_canonical += *chew;
+		if (!++chew) {
+			break;
+		}
+		chew(continuation);
+		if (!chew) {
+			break;
+		}
+		size_t mark = size_t(chew);
+		chew(greyspace);
+		if (mark != size_t(chew)) {
+			_canonical += ' ';
+		}
+		if (!chew) {
+			break;
+		}
+	}
+	size_t len = _canonical.length();
+	if (_canonical[len - 1] == ' ') {
+		_canonical.resize(len - 1);
+	}
+}
+
+template<>
+template<class CharSeq>
+void canonical<macro_argument>::canonicalize(chewer<CharSeq> & chew)
+{
+	int paren_balance = 0;
+	for (chew(c_comment); chew;
+			++chew,chew(c_comment)) {
+		if (*chew == '(') {
+			++paren_balance;
+			_canonical += '(';
+			continue;
+        }
+		if (*chew == ')') {
+			if (--paren_balance < 0) {
+				break;
+			}
+			_canonical += ')';
+			continue;
+		}
+		if (*chew == ',') {
+			if (paren_balance <= 0) {
+				break;
+			}
+			_canonical += ',';
+			continue;
+		}
+		if (!isspace(*chew)) {
+            _canonical += *chew;
+            continue;
+		}
+		if (_canonical.size()) {
+            auto last = _canonical.back();
+            if (!isspace(last) && (last == '#' || !ispunct(last))) {
+                _canonical += ' ';
+            }
+		}
+	}
+}
 
 #endif /* EOF */
