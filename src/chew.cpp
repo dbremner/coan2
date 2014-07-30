@@ -54,17 +54,17 @@ void chewer<parse_buffer>::missing_terminator(size_t mark, char missing)
 		<< buf().substr(mark) << '\"' << emit();
 }
 
-//IMK Template member functions requiring should only exist for parse_buffer
-template<>
-void chewer<string>::missing_terminator(size_t mark, char missing){}
-
-//IMK Template member functions requiring should only exist for parse_buffer
 template<>
 void chewer<parse_buffer>::eof_in_comment()
 {
 	error_eof_too_soon()
 		<< "Unexpected end of file, within C-comment" << defer();
 }
+
+// No-ops
+
+template<>
+void chewer<string>::missing_terminator(size_t mark, char missing){}
 
 template<>
 void chewer<string>::eof_in_comment(){}

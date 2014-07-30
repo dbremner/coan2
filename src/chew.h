@@ -43,20 +43,22 @@
 #include <cstddef>
 #include <cctype>
 
-/*! \file chew.h
-    This defines class `chewer` and several tag classes.
-*/
+/**
+ * \file chew.h
+ *   This defines `template struct chewer<CharSeq>` and associated tag classes.
+ */
 
 
 namespace chew_mode
 {
 
-//! Do not recognize C/C++ comments
+/// Do not recognize C/C++ comments
 static bool const plaintext = false;
-//! Recognize C/C++ comments
+/// Recognize C/C++ comments
 static bool const cxxtext = true;
 
-enum class token_type
+/// Types of text
+enum class text_type
 {
 	none,
 	whitespace,
@@ -76,205 +78,230 @@ enum class token_type
 	stringify,
 	token_paste
 };
-//! A tag class for selecting a chew mode
+/// A tag class for selecting a chew mode
 struct whitespace
 {
-	static token_type const id = token_type::whitespace;
+	static text_type const id = text_type::whitespace;
 	whitespace() {}
 };
-//! A tag class for selecting a chew mode
+/// A tag class for selecting a chew mode
 struct greyspace
 {
-	static token_type const id = token_type::greyspace;
+	static text_type const id = text_type::greyspace;
 	greyspace() {}
 };
-//! A tag class for selecting a chew mode
+/// A tag class for selecting a chew mode
 struct continuation
 {
-	static token_type const id = token_type::continuation;
+	static text_type const id = text_type::continuation;
 	continuation() {}
 };
-//! A tag class for selecting a chew mode
+/// A tag class for selecting a chew mode
 struct cxx_comment
 {
-	static token_type const id = token_type::cxx_comment;
+	static text_type const id = text_type::cxx_comment;
 	cxx_comment() {}
 };
 
-//! A tag class for selecting a chew mode
+/// A tag class for selecting a chew mode
 struct c_comment
 {
-	static token_type const id = token_type::c_comment;
+	static text_type const id = text_type::c_comment;
 	c_comment() {}
 };
 
-//! A tag class for selecting a chew mode
+/// A tag class for selecting a chew mode
 struct string_literal
 {
-	static token_type const id = token_type::string_literal;
+	static text_type const id = text_type::string_literal;
 	string_literal() {}
 };
 
-//! A tag class for selecting a chew mode
+/// A tag class for selecting a chew mode
 struct character_literal
 {
-	static token_type const id = token_type::character_literal;
+	static text_type const id = text_type::character_literal;
 	character_literal() {}
 };
 
-//! A tag class for selecting a chew mode
+/// A tag class for selecting a chew mode
 struct raw_string_literal
 {
-	static token_type const id = token_type::raw_string_literal;
+	static text_type const id = text_type::raw_string_literal;
 	raw_string_literal() {}
 };
 
-//! A tag class for selecting a chew mode
+/// A tag class for selecting a chew mode
 struct header_name
 {
-	static token_type const id = token_type::header_name;
+	static text_type const id = text_type::header_name;
 	header_name() {}
 };
 
-//! A tag class for selecting a chew mode
+/// A tag class for selecting a chew mode
 struct code
 {
-	static token_type const id = token_type::code;
+	static text_type const id = text_type::code;
 	code() {}
 };
 
-//! A tag class for selecting a chew mode
+/// A tag class for selecting a chew mode
 struct identifier
 {
-	static token_type const id = token_type::identifier;
+	static text_type const id = text_type::identifier;
 	identifier() {}
 };
 
-//! A tag class for selecting a chew mode
+/// A tag class for selecting a chew mode
 struct literal_space
 {
-	static token_type const id = token_type::literal_space;
+	static text_type const id = text_type::literal_space;
 	literal_space() {}
 };
 
-//! A tag class for selecting a chew mode
+/// A tag class for selecting a chew mode
 struct punctuation
 {
-	static token_type const id = token_type::punctuation;
+	static text_type const id = text_type::punctuation;
 	punctuation() {}
 };
 
-//! A tag class for selecting a chew mode
+/// A tag class for selecting a chew mode
 struct number_space
 {
-	static token_type const id = token_type::number_space;
+	static text_type const id = text_type::number_space;
 	number_space() {}
 };
 
-//! A tag class for selecting a chew mode
+/// A tag class for selecting a chew mode
 struct stringify
 {
-	static token_type const id = token_type::stringify;
+	static text_type const id = text_type::stringify;
 	stringify() {}
 };
 
-//! A tag class for selecting a chew mode
+/// A tag class for selecting a chew mode
 struct token_paste
 {
-	static token_type const id = token_type::token_paste;
+	static text_type const id = text_type::token_paste;
 	token_paste() {}
 };
 
 
 } // namespace chew_mode
 
-//! An exemplar `chew_mode::whitespace`
+/// An exemplar `chew_mode::whitespace`
 chew_mode::whitespace const whitespace;
-//! An exemplar `chew_mode::greyspace`
+/// An exemplar `chew_mode::greyspace`
 chew_mode::greyspace const greyspace;
-//! An exemplar `chew_mode::continuation`
+/// An exemplar `chew_mode::continuation`
 chew_mode::continuation const continuation;
-//! An exemplar `chew_mode::cxx_comment`
+/// An exemplar `chew_mode::cxx_comment`
 chew_mode::cxx_comment const cxx_comment;
-//! An exemplar `chew_mode::c_comment`
+/// An exemplar `chew_mode::c_comment`
 chew_mode::c_comment const c_comment;
-//! An exemplar `chew_mode::string_literal`
+/// An exemplar `chew_mode::string_literal`
 chew_mode::string_literal const string_literal;
-//! An exemplar `chew_mode::character_literal`
+/// An exemplar `chew_mode::character_literal`
 chew_mode::character_literal const character_literal;
-//! An exemplar `chew_mode::raw_string_literal`
+/// An exemplar `chew_mode::raw_string_literal`
 chew_mode::raw_string_literal const raw_string_literal;
-//! An exemplar `chew_mode::header_name`
+/// An exemplar `chew_mode::header_name`
 chew_mode::header_name const header_name;
-//! An exemplar `chew_mode::code`
+/// An exemplar `chew_mode::code`
 chew_mode::code const code;
-//! An exemplar `chew_mode::identifier`
+/// An exemplar `chew_mode::identifier`
 chew_mode::identifier const identifier;
-//! An exemplar `chew_mode::literal_space`
+/// An exemplar `chew_mode::literal_space`
 chew_mode::literal_space const literal_space;
-//! An exemplar `chew_mode::punctuation`
+/// An exemplar `chew_mode::punctuation`
 chew_mode::punctuation const punctuation;
-//! An exemplar `chew_mode::number_space`
+/// An exemplar `chew_mode::number_space`
 chew_mode::number_space const number_space;
-//! An exemplar `chew_mode::stringify`
+/// An exemplar `chew_mode::stringify`
 chew_mode::stringify const stringify;
-//! An exemplar `chew_mode::token_paste`
+/// An exemplar `chew_mode::token_paste`
 chew_mode::token_paste const token_paste;
 
-/*! \brief class `chewer` is a cursor-like type that is associated
-	with a `sequence_type` upon which it can performs some routine forms
-	of lexical scanning.
-*/
+/** \brief `template struct chewer<CharSeq> is a cursor-like type that is
+ *  associated with a character-sequence type upon which it can performs some
+ *  routine forms of lexical scanning.
+ *
+ *  \tparam CharSeq A character-sequence type
+ */
 template<class CharSeq>
 struct chewer
 {
+    static_assert(traits::is_random_access_char_sequence<CharSeq>::value,">:[");
+
     using sequence_type = CharSeq;
     using char_type = typename sequence_type::value_type;
     template<class Mode1, class Mode2>
     using void_if  =
     typename std::enable_if<std::is_same<Mode1,Mode2>::value>::type;
 
-	//! Construct from a `sequence_type` and initial offset
+	/** \brief Construct from a `sequence_type` and initial offset
+	 *  \param cxx Is C/C++ code to be scanned?
+	 *  \param seq A `sequence_type` to be scanned
+	 *  \param off Offset in `seq` at which to start scanning
+	 *
+	 *  The constructor performs no scanning of `seq`
+	 */
 	explicit chewer(bool cxx, sequence_type & seq, size_t off = 0)
 		: _cxx(cxx),_seq(seq),_buf(nullptr),_cur(off),_len(0) {
 		sync();
 	}
 
-	/*! \brief Construct, scanning a given `sequence_type` from a given offset.
-
-		\tparam Mode Type of the mode in which to scan
-		\param mode A `Mode`
-		\param seq The `sequence_type` to scan
-		\param off The offset from which to scan.
-	*/
+	/** \brief Construct, scanning a given a `sequence_type` from a given offset
+	 *  \tparam Mode The type of mode in which to scan
+	 *  \param cxx Is C/C++ code to be scanned?
+	 *  \param mode A `Mode`
+	 *  \param seq A `sequence_type` to be scanned
+	 *  \param off Offset in `seq` at which to start scanning
+	 *
+	 *  The constructor performs scanning of `seq` according to `Mode`
+	 */
 	template<class Mode>
 	explicit chewer(bool cxx, Mode mode, sequence_type & seq, size_t off = 0)
 		: _cxx(cxx), _seq(seq),_buf(nullptr),_cur(off),_len(0) {
 		scan<Mode>();
 	}
 
-	//! Say whether scanning as C/C++ source
+	/// Say whether scanning as C/C++ source
 	bool cxx() const {
 		return _cxx;
 	}
 
+    /** \brief Synchronise the object with the associated `sequence_type`
+     *
+     * Must be called after any operation on the associated `sequence_type`
+     * that would invalidate an iterator on `sequence_type`. before further
+     * operations on the object.
+     */
 	void sync() {
 		_buf = const_cast<char_type *>(_seq.data());
 		_len = _seq.size();
 	}
 
-	//! Scan in a given mode from a given offset.
+	/// Scan the associated `sequence_type` in a given mode from a given offset.
 	template<class Mode>
 	void scan(Mode mode, size_t off) {
 		cursor(off);
 		scan<Mode>();
 	}
 
-	/*! \brief Move the cursor a given amount
-		then scan in a given mode from the new cursor position.
-
-		The new cursor position is not range checked.
-	*/
+	/** \brief Adjust position and then scan in a sequence of modes
+	 *
+	 *  \tparam FirstMode Type of the first sccanning mode
+	 *  \tparam OtherModes Types of successive subsequent scanning modes
+	 *  \param adjust A signed amount by which the object's scanning
+     *  position in the assoiciated `sequence_type` shall be moved
+     *  before scanning starts.
+     *  \param first_mode A `FirstMode`
+     *  \param other_modes A sequence of modes of types per `OtherModes`
+     *
+     *  The adjusted scanning position is not range checked.
+	 */
 	template<class FirstMode, class ...OtherModes>
 	void scan(	ptrdiff_t adjust,
 				FirstMode first_mode, OtherModes... other_modes) {
@@ -282,77 +309,91 @@ struct chewer
 		scan<FirstMode,OtherModes...>();
 	}
 
-	//! Scan in a given mode from the cursor
+	/** \brief Scan in a sequence of modes
+	 *
+	 *  \tparam FirstMode Type of the first sccanning mode
+	 *  \tparam OtherModes Types of successive subsequent scanning modes
+     *  \param first_mode A `FirstMode`
+     *  \param other_modes A sequence of modes of types per `OtherModes`
+     *
+	 */
 	template<class FirstMode, class ...OtherModes>
 	void scan() {
 		sync();
 		consume<FirstMode,OtherModes...>();
 	}
 
-	//! Say whether a cursor offset is out of range.
+	/// Say whether the scanning position is past the end of the
+	/// associated `sequence_type`.
 	bool overshoot(size_t off = 0) const {
 		return _cur + off >= _len;
 	}
 
-	//! Get the character at an offset from the cursor.
+	/// Get the character at an offset from the scanning position.
 	char_type atoff(ptrdiff_t off) const {
 		return _buf[_cur + off];
 	}
 
-	//! Get a reference to the character at an offset from the cursor.
+	/// Get a reference to the character at an offset from the
+	/// scanning position.
 	char_type & atoff(size_t off) {
 		return _buf[_cur + off];
 	}
 
-	//! `operator[]() const` is an alias for `atoff() const`
+	/// `operator[]() const` is an alias for `atoff() const`
 	char_type operator[](size_t off) const {
 		return atoff(off);
 	}
 
-	//! `operator[]()` is an alias for `atoff()`
+	/// `operator[]()` is an alias for `atoff()`
 	char_type & operator[](size_t off) {
 		return atoff(off);
 	}
 
-	//! Get the cursor position
+	/// Get the scanning position
 	size_t cursor() const {
 		return _cur;
 	}
 
-	//! Get the length of text starting at the cursor.
+	/// Get the remaining length of the associated `sequence_type` from the
+	/// scanning position.
 	size_t remaining() const {
 		return _len - _cur;
 	}
 
-	//! Set the cursor without scanning.
+	/** \brief Set the scanning position.
+     *  \param off An offset in the associated `sequence_type`
+     *
+     *  The scanning position is set = `off` without range-checking
+     */
 	void cursor(size_t off) {
 		sync();
 		_cur = off;
 	}
 
-	//! Get the character indexed by the cursor
+	/// Get the character at the scanning position
 	char_type curch() const {
 		return _buf[_cur];
 	}
 
-	//! Get a reference to the character indexed by the cursor
+	/// Get a reference to the character at the scanning position
 	char_type & curch() {
 		return _buf[_cur];
 	}
 
-	//! Assign the cursor position
+	/// Assign the scanning position, returning `*this`
 	chewer & operator=(size_t off) {
 		cursor(off);
 		return *this;
 	}
 
-	//! Explicitly cast to `size_t`, returning the cursor position
+	/// Explicitly cast to `size_t`, returning the scanning positition
 	explicit operator size_t () const {
 		return cursor();
 	}
 
 	///@{
-	//! Get a [const] reference to the associated `sequence_type`
+	/// Get a [const] reference to the associated `sequence_type`
 	sequence_type & buf() {
 		return _seq;
 	}
@@ -361,66 +402,68 @@ struct chewer
 	}
 	///@}
 
-	//! `operator*() const ` is an alias for `curch() const`.
+	/// `operator*() const ` is an alias for `curch() const`.
 	char_type operator *() const {
 		return curch();
 	}
-	//! `operator*()` is an alias for `curch()`.
+	/// `operator*()` is an alias for `curch()`.
 	char_type & operator *() {
 		return curch();
 	}
 
-	//! Cast to bool, returning `!overshoot()`
+	/// Explicitly cast to bool, returning `!overshoot()`
 	explicit operator bool () const {
 		return !overshoot();
 	}
 
-	/*! \brief Advance the cursor an amount.
-		The new position is not range-chacked.
-	*/
+	/** \brief Advance the scanning position an amount.
+	 *
+     * The new position is not range-chacked.
+     */
 	void on(size_t n) {
 		_cur += n;
 	}
 
-	/*! \brief Retreat the cursor an amount.
-		The new position is not range-chacked.
-	*/
+	/** \brief Retreat the cursor an amount.
+	 *
+	 *	The new position is not range-chacked.
+	 */
 	void back(size_t n) {
 		_cur -= n;
 	}
 
-	//! Increment the cursor, returning `*this`
+	/// Increment the scanning position, returning `*this`
 	chewer & operator++() {
 		++_cur;
 		return *this;
 	}
 
-	//! Decrement the cursor, returning `*this`
-	chewer & operator--() {
+	/// Decrement the scanning position, returning `*this`
+    chewer & operator--() {
 		--_cur;
 		return *this;
 	}
 
-	//! Advance the cursor an amount, returning `*this`
+	/// Advance the scanning position an amount, returning `*this`
 	chewer & operator+=(size_t n) {
 		on(n);
 		return *this;
 	}
 
-	//! Retreat the cursor an amount, returning `*this`
+	/// Retreat the scanning position an amount, returning `*this`
 	chewer & operator-=(size_t n) {
 		back(n);
 		return *this;
 	}
 
-	//! `operator()(move,mode)` calls `scan(move,mode)` returning `*this`
+	/// `operator()(move,mode)` calls `scan(move,mode)` returning `*this`
 	template<class Mode>
 	chewer & operator()(ptrdiff_t move, Mode mode) {
 		scan(move,mode);
 		return *this;
 	}
 
-	//! `operator()(mode)` calls `scan(mode)` returning `*this`
+	/// `operator()(mode)` calls `scan(mode)` returning `*this`
 	template<class FirstMode, class ...OtherModes>
 	typename
 	std::enable_if<!std::is_arithmetic<FirstMode>::value,chewer &>::type
@@ -445,7 +488,7 @@ private:
         std::enable_if<!traits::has_extend_method<U>::value>::type;
 
     ///@{
-	//! Extend the associated `sequence_type` by reading more input.
+	/// Extend the associated `sequence_type` by reading more input.
 	template<typename U = sequence_type>
 	void extend(if_sequence_is_extensible<U> * = nullptr) {
 		_seq.extend();
@@ -471,31 +514,26 @@ private:
         if_sequence_is_not_extensible<U> * = nullptr) {}
     ///@}
 
-	/*! \brief Test for end of line;
-
-	     Test for a newline sequence of either Unix type or Windows type at a
-		 an offset from the cursor.
-
-	     \param	off	The cursor offset
-
-	     \return 0 if cursor offset `off` does not address a newline sequence,
-	     otherwise the length of the newline sequence, i,e,
-	     1 for Unix '\n', 2 for Windows "\r\n"
+    /** \brief Test for a newline-sequence at an offset from the
+     * scanning position.
+     * \param off Offset in the associated `sequence_type` at which to
+     * test for new-line.
+     * \return The length of the newline-sequence detected, if any
+     * (1 for Unix '\n', 2 for Windows "\r\n"), else 0
 	 */
 	unsigned eol(size_t off = 0) {
 		return ::eol(_seq,_cur + off);
 	}
 
-	/*! \brief Say whether a cursor offset addresses a line-continuation.
-	    \param  off The cursor offset.
-	    \return True iff cursor offset `off` addresses a line-continuation.
-	*/
+	/// \brief Say whether there is a line-continuation at an offset
+    /// from the scanning position.
 	bool line_continues(size_t off = 0) {
 		return atoff(off) == '\\' && eol(off + 1);
 	}
 
     //@{
-	//! Scan from the cursor position in a given mode.
+	/// Consume characters satisfying a given mode, without
+	/// preliminary `snyc()`
 	template<class Mode>
     void_if<Mode,chew_mode::continuation> consume() {
         size_t nl_len;
@@ -738,6 +776,9 @@ private:
     }
     ///@}
 
+    ///@
+    /// Consume characters satisfying a sequence of modes,
+    /// without preliminary `sync()`
 	template<class First, class Next, class ...Rest>
 	typename std::enable_if<sizeof ...(Rest) == 0>::type
 	consume();
@@ -745,26 +786,27 @@ private:
 	template<class First, class Next, class ...Rest>
 	typename std::enable_if<sizeof ...(Rest) != 0>::type
 	consume();
+	///@}
 
 
-	//! Consume text between delimiting characters
+	/// Consume characters between delimiting characters
 	template<char_type Opener, char_type Closer>
 	void consume_enclosed_string();
 
-	//! Diagnose a missing terminator character
+	/// Diagnose a missing terminator character
 	void missing_terminator(size_t off, char_type missing);
-	//! Diagnose end of file in C-comment.
+	/// Diagnose end of file in C-comment.
 	void eof_in_comment();
 
-	//! Scanning C/C++ source?
+	/// Scanning C/C++ source?
 	bool _cxx;
-	//! The sequence that the chewer consumes.
+	/// The sequence that is consumed.
 	sequence_type & _seq;
-	//! Pointer to the buffer of `_seq`
+	/// Pointer to the data controlled by `_seq`
 	char_type *_buf;
-	//! Cursor offset into the the buffer.
+	/// The scanning position in `_buf`.
 	size_t _cur;
-	//! The length of the buffer
+	/// The length of the data at `_buf'
 	size_t _len;
 
 };

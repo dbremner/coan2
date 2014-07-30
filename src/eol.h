@@ -39,12 +39,12 @@
 
 #include "traits.h"
 
-/*! Test for a newline-sequence at an offset in a character sequence.
-    \tparam CharSeq A random access character sequence type
-    \param seq A `CharSeq`
-    \param off Offset in `seq` at which to test for a newline-sequence
-    \return The length of the newline-sequence detected, if any, else 0
-*/
+/** \brief Test for a newline-sequence at an offset in a character sequence.
+ * \tparam CharSeq A random access character sequence type
+ * \param seq A `CharSeq`
+ * \param off Offset in `seq` at which to test for a newline-sequence
+ * \return The length of the newline-sequence detected, if any, else 0
+ */
 template<class CharSeq>
 unsigned eol(CharSeq const & seq, size_t off)
 {
