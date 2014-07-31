@@ -106,7 +106,7 @@ line_type line_despatch::next()
 }
 
 string line_despatch::pretty() {
-	return citable(_cur_line_->str());
+	return citable(!options::plaintext(),_cur_line_->str());
 }
 
 /* EOF*/

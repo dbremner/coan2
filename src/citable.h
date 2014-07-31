@@ -41,66 +41,70 @@
 #include "chew.h"
 #include <string>
 
-/*! \file citable.h
-	This file defines overloads of free function `citable`
-*/
+/** \file citable.h
+ *	This file defines overloads of free function `citable`
+ */
 
-/*! \brief Make a citable version of length-delimited text.
+///@{
+/** \brief Make a citable version of length-delimited text.
+ *
+ *	Make a citable version of text - suitable for
+ *	quoting in a diagnostic - by stripping out linefeeds and
+ *	replacing tabs with spaces.
+ *
+ *	\param chew On entry, a `chewer<CharSeq>` positioned at the offset
+ *  in its associated `CharSeq` from which to scan. On return `chew` is
+ *  positioned at the first offset not consumed.
+ *	\param len The length of the `CharSeq` to be scanned. `std::string::npos`
+ *		denotes all the remainder.
+ *	\return A citable version of the delimited text.
+ */
+std::string citable(chewer<std::string> & chew, size_t len = std::string::npos);
+std::string citable(chewer<parse_buffer> chew, size_t len = std::string::npos);
+///@}
 
-	Make a citable version of text - i.e. suitable for
-	quoting in a diagnostic - by stripping out linefeeds and
-	replacing tabs with spaces.
-	\param chew On entry, a `chewer` referencing the text offset from which
-		to scan. On return receives a `chewer` referencing the first
-		offset not consumed.
-	\param len The length `chew` to be included. `std::string::npos`
-		denotes the remainder of the text.
-		`
-	\return A citable version of the delimited text.
-*/
-template<class CharSeq>
-std::string citable(chewer<CharSeq> & chew, size_t len = std::string::npos);
 
-/*! \brief Make a citable version of length-delimited text.
-
-	Make a citable version of text - i.e. suitable for
-	quoting in a diagnostic - by stripping out linefeeds and
-	replacing tabs with spaces.
-	\param pb The `parse_buffer` to scan.
-	\param start the offset from which to scan.
-	\param len The length to be scanned.`std::string::npos` denotes the
-		remainder of the buffer.
-		`
-	\return A citable version of the delimited text.
-*/
-std::string citable(parse_buffer & pb,
-		size_t start = 0, size_t len = std::string::npos);
-
-/*! \brief Make a citable version of length-delimited text.
-
-	Make a citable version of text - i.e. suitable for
-	quoting in a diagnostic - by stripping out linefeeds and
-	replacing tabs with spaces.
-	\param str An `std::string` to be scanned.
-	\param start Offset at which to start scanning.
-	\param len The length to be included from `start`.
-		`std::string::npos` denotes the remainder of the text.
-		`
-	\return A citable version of the delimited text.
-*/
-inline std::string citable(	std::string const & str,
-				size_t start = 0,
-				size_t len = std::string::npos) {
-	parse_buffer pb(str);
-	return citable(pb,start,len);
+///@{
+/*! \brief Make a citable version of part of a character-sequence
+ *
+ *	Make a citable version of a part of a character-sequence - suitable for
+ *	quoting in a diagnostic - by stripping out linefeeds and
+ *	replacing tabs with spaces.
+ *	\tparam CharSeq A character-sequence type
+ *	\param cxx Scanning c/c++ code?
+ *	\param seq The character-sequence to scan.
+ *	\param start The offset in `seq` from which to scan.
+ *	\param len The length to be scanned.`std::string::npos` denotes the
+ *		remainder of the buffer.
+ *	\return A citable version of the delimited text.
+ */
+inline std::string citable(
+    bool cxx,
+    std::string const & seq,
+    size_t start = 0,
+    size_t len = std::string::npos)
+{
+	chewer<std::string> chew(cxx,const_cast<std::string &>(seq),start);
+	return citable(chew,len);
 }
 
-/*! \brief Make a citable version of an integral object.
-	Make a citable version of an integral object - i.e. suitable for
-	quoting in a diagnostic.
-	\param  n   The integer to be converted to a citable string.
-	\return A citable string representation of `n`.
-*/
+inline std::string citable(
+    bool cxx,
+    parse_buffer const & seq,
+    size_t start = 0,
+    size_t len = std::string::npos)
+{
+	chewer<parse_buffer> chew(cxx,const_cast<parse_buffer &>(seq),start);
+	return citable(chew,len);
+}
+///@}
+
+/** \brief Make a citable version of an integral object.
+ *	Make a citable version of an integral object - i.e. suitable for
+ *	quoting in a diagnostic.
+ *	\param  n   The integer to be converted to a citable string.
+ *	\return A citable string representation of `n`.
+ */
 std::string citable(integer const & n);
 
 

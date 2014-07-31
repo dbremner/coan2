@@ -115,7 +115,7 @@ evaluation expression_parser<CharSeq>::op_ternary_either_or(
 	if (!_ternary_cond_stack.size()) {
 		error_ternary_cond_incomplete() <<
 			"':' of ternary conditional without preceding '?' "
-			"in \"" << citable(_seq)
+			"in \"" << citable(!options::plaintext(),_seq)
 			<< "\"" << defer();
 		return evaluation();
 	}
@@ -548,8 +548,9 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 			if (*chew != ')') {
 				/* Missing ')'*/
 				error_unbalanced_paren() << "Expected \")\" after \""
-				<< citable(_seq.substr(0,size_t(chew))) << "\" in \""
-				<< citable(_seq) << '\"' << defer();
+				<< citable(!options::plaintext(),_seq.substr(0,size_t(chew)))
+                    << "\" in \""
+				<< citable(!options::plaintext(),_seq) << '\"' << defer();
 				result.set_insoluble();
 			} else {
 				result.set_parens_off(start,size_t(chew));
@@ -608,8 +609,9 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 				} else {
 				/* Missing ')'*/
 					error_unbalanced_paren() << "Expected \")\" after \""
-					<< citable(_seq.substr(0,size_t(chew))) << "\" in \""
-					<< citable(_seq) << '\"' << defer();
+					<< citable(!options::plaintext(),_seq.substr(0,size_t(chew)))
+                        << "\" in \""
+					<< citable(!options::plaintext(),_seq) << '\"' << defer();
 					result.set_insoluble();
 				}
 			}
@@ -714,8 +716,10 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 		}
 		else {
 			error_ill_formed_expression gripe;
-			string good = citable(_seq.substr(0,size_t(chew)));
-			string bad = citable(_seq.substr(size_t(chew)));
+			string good =
+                citable(!options::plaintext(),_seq.substr(0,size_t(chew)));
+			string bad =
+                citable(!options::plaintext(),_seq.substr(size_t(chew)));
 			gripe << "Ill-formed \"" << bad;
 			if (!good.empty()) {
 				gripe << "\" after \"" << good << '\"';
@@ -743,10 +747,12 @@ void expression_parser<CharSeq>::parse(chewer<CharSeq> & chew)
 			gripe.reset(new error_ternary_cond_incomplete);
 			*gripe
 				<< "'?' of ternary conditional without following ':' "
-				"in \"" << citable(_seq) << '\"';
+				"in \"" << citable(!options::plaintext(),_seq) << '\"';
 		} else  {
-			string good = citable(_seq.substr(0,size_t(chew)));
-			string bad = citable(_seq.substr(size_t(chew)));
+			string good =
+                citable(!options::plaintext(),_seq.substr(0,size_t(chew)));
+			string bad =
+                citable(!options::plaintext(),_seq.substr(size_t(chew)));
 			gripe.reset(new error_ill_formed_expression);
 			*gripe << "Ill-formed \"" << bad << "\" after \""
 			 << good << '\"';

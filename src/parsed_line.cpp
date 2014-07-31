@@ -81,7 +81,7 @@ size_t parsed_line::extend()
 		line += '\n';
 		++bytes;
 	} else if (bytes > 0) {
-		warning_missing_eof_newline() << 
+		warning_missing_eof_newline() <<
 			"Missing newline at end of file" << emit();
 	}
 	_text += line;
@@ -232,7 +232,7 @@ void parsed_line::write_slow()
 	for (	;i < _indent; ++i) {
 		*_out << _text[i];
 	}
-	string output = citable(*this,i);
+	string output = citable(!options::plaintext(),*this,i);
 	line_despatch::lines_changed() += _extensions + 1;
 	*_out << output << '\n';
 	if (options::get_discard_policy() == DISCARD_BLANK) {

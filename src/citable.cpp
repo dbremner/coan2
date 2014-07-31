@@ -35,8 +35,6 @@
  **************************************************************************/
 
 #include "citable.h"
-#include "options.h"
-#include <sstream>
 #include <cassert>
 
 /*! \file citable.h
@@ -45,16 +43,18 @@
 
 using namespace std;
 
+namespace innards {
+
 template<class CharSeq>
-string citable(chewer<CharSeq> & chew, size_t len)
+std::string citable(chewer<CharSeq> & chew, size_t len)
 {
     static_assert(traits::is_random_access_char_sequence<CharSeq>::value,">:[");
-	string citable;
+	std::string citable;
 	bool escaped = false;
 	size_t ndx = 0;
 	char const space = ' ';
 	char last_ch = 0;
-	if (len == string::npos) {
+	if (len == std::string::npos) {
 		len = chew.remaining();
 	}
 	chew(greyspace);
@@ -113,44 +113,42 @@ string citable(chewer<CharSeq> & chew, size_t len)
 	}
 	ndx = citable.length();
 	if (ndx) {
-		// Trim trailing space
 		while (ndx-- > 0 && isspace(citable[ndx])) {}
 		citable.resize(ndx + 1);
 	}
 	return citable;
 }
 
+} // namespace innards
+
+string citable(chewer<std::string> & chew, size_t len)
+{
+    return innards::citable(chew,len);
+}
+std::string citable(chewer<parse_buffer> chew, size_t len)
+{
+    return innards::citable(chew,len);
+}
+
 string citable(integer const & integ)
 {
-	stringstream numeral;
 	switch(integ.type()) {
 	case INT_INT:
-		numeral << (int)integ.raw();
-		break;
+		return to_string((int)integ.raw());
 	case INT_UINT:
-		numeral << (unsigned)integ.raw();
-		break;
+		return to_string((unsigned)integ.raw());
 	case INT_LONG:
-		numeral << (long)integ.raw();
-		break;
+		return to_string((long)integ.raw());
 	case INT_ULONG:
-		numeral << (unsigned long)integ.raw();
-		break;
+		return to_string((unsigned long)integ.raw());
 	case INT_LLONG:
-		numeral << (long long)integ.raw();
-		break;
+		return to_string((long long)integ.raw());
 	case INT_ULLONG:
-		numeral << (unsigned long long)integ.raw();
-		break;
+		return to_string((unsigned long long)integ.raw());
 	default:
 		assert(false);
 	}
-	return numeral.str();
-}
-
-string citable(parse_buffer & pb, size_t start, size_t len) {
-	chewer<parse_buffer> chew(!options::plaintext(),pb,start);
-	return citable(chew,len);
+	return string();
 }
 
 // EOF
