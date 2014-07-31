@@ -38,8 +38,8 @@
  **************************************************************************/
 
 /*! \file configure.h
-    This file imports the autotools macro options for building coan.
-*/
+ *   This file imports the autotools macro options for building coan.
+ */
 #if HAVE_CONFIG_H
 #include "../config.h"
 #endif
