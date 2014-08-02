@@ -72,7 +72,7 @@ file_tree dataset::_ftree_;
 dataset::selector dataset::_selector_;
 dataset::driver dataset::_driver_;
 
-dataset::selector::selector(string extensions)
+dataset::selector::selector(string const & extensions)
 	: _files(0)
 {
 	if (extensions.length()) {

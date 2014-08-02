@@ -273,7 +273,7 @@ void options::make_opts_list()
 
 void options::config_diagnostics(string const & arg)
 {
-	severity::level mask = severity::none;
+	severity mask = severity::none;
 	if (_diagnostic_filter_ < 0 && arg != "verbose") {
 		warning_verbose_only warn;
 		warn << "Can't mix --verbose with --gag.'--gag " << arg << " ignored";
@@ -307,10 +307,10 @@ void options::config_diagnostics(string const & arg)
 		error_usage() << "Invalid argument for --gag: \""
 		              << arg << '\"' << emit();
 	}
-	if (mask & _diagnostic_filter_) {
+	if (int(mask) & _diagnostic_filter_) {
 		info_duplicate_mask() << "'--gag " << arg << "' already seen" << emit();
 	}
-	_diagnostic_filter_ |=  mask;
+	_diagnostic_filter_ |=  int(mask);
 	if (mask == severity::info) {
 		config_diagnostics("progress");
 	} else if (mask == severity::warning) {
@@ -789,7 +789,7 @@ void options::finish()
 
 bool options::progress_gagged()
 {
-	return (_diagnostic_filter_ & severity::progress) != 0;
+	return (_diagnostic_filter_ & int(severity::progress)) != 0;
 }
 
 bool options::diagnostic_gagged(unsigned reason)

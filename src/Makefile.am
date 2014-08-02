@@ -50,7 +50,6 @@ noinst_HEADERS = \
 	citable.h \
 	configure.h \
 	contradiction.h \
-	cursor.h \
 	dataset.h \
 	diagnostic.h \
 	directive.h \

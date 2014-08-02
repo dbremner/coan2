@@ -39,127 +39,124 @@
 #include "prohibit.h"
 #include "file_tree.h"
 
-/*! \file dataset.h
-    This defines class `dataset`.
-*/
+/** \file dataset.h
+ *   This defines class `dataset`.
+ */
 
-/*! \brief Class `dataset` encapsulates the tree of input files to be processed
-    by coan.
-*/
+/** \brief `struct dataset` encapsulates the tree of input files to be processed
+ *   by coan.
+ */
 struct dataset {
 
-	/*! \brief Encapsulates the selection of files for processing
-
-	    Class `selector` encapsulates the selection of files for
-	    processing that satisfy the `--filter` option.
+	/** \brief Encapsulates the selection of files for processing
+     *
+	 *   `struct selector` encapsulates the selection of files for
+	 *   processing that satisfy the `--filter` option.
 	*/
 	struct selector {
-		/*! \brief Construct from a filter string.
+		/** \brief Construct from a filter string.
+         *
+		 *  Explicitly construct given a filter string.
+		 *
+		 *  \param extensions An empty string or else a comma-punctuated
+		 *  list of the extensions of files that are to be selected.
+		 */
+		explicit selector(std::string const & extensions = std::string());
 
-		    Explicitly construct given a filter string.
-			
-		    \param extensions An empty string or else a comma-punctuated
-		    list of the extensions of files that are to be selected.
-		*/
-		explicit selector(std::string extensions = std::string());
-
-		/*! \brief Say whether a file is selected for processing.
-		    \param  filename    The name of the file to be tested.
-		    \return True iff the file is selected.
-		*/
+		/** \brief Say whether a file is selected for processing.
+		 *   \param  filename    The name of the file to be tested.
+		 *   \return True iff the file is selected.
+		 */
 		bool operator()(std::string const & filename);
 
-		//! Get the number of files so far selected.
+		/// Get the number of files so far selected.
 		unsigned files() const {
 			return _files;
 		}
 	private:
-		//! A vector of the file extensions that are to be selected.
+		/// A vector of the file extensions that are to be selected.
 		std::vector<std::string> _filter_extensions;
-		//! The number of files so far selected.
+		/// The number of files so far selected.
 		unsigned _files;
 	};
 
-	/*! \brief Class `driver` encapsulates traversal of an input dataset to
-	    select and process files.
-	*/
+	/** \brief `struct driver` encapsulates traversal of an input dataset to
+	 *   select and process files.
+	 */
 	struct driver : file_tree::traverser {
-		//! Default constructor
-		driver()
-			: _done_files(0),_error_files(0) {}
 
-		//! Get the number of files reached in the dataset.
+		/// Get the number of files reached in the dataset.
 		unsigned done_files() const {
 			return _done_files;
 		}
 
-		//! Get the number of files abandoned due to errors.
+		/// Get the number of files abandoned due to errors.
 		unsigned error_files() const {
 			return _error_files;
 		}
 
-		//! Process a file in the dataset.
+		/// Process a file in the dataset.
 		void at_file(std::string const & filename);
-		
-		//! No copying
+
+		/// No copying
 		no_copy _no_copy;
 
 	private:
-		//! The number of files reached.
-		unsigned _done_files;
-		//! The number of files abandoned due to errors.
-		unsigned _error_files;
+		/// The number of files reached.
+		unsigned _done_files = 0;
+		/// The number of files abandoned due to errors.
+		unsigned _error_files = 0;
 	};
 
-	/*! \brief Specify the filtering of files in the `dataset`.
-	    \param extensions An empty string or else a comma-punctuated
-	        list of the extensions of files that are to be selected.
-	*/
+	/** \brief Specify the filtering of files in the `dataset`.
+	 *  \param extensions An empty string or else a comma-punctuated
+	 *      list of the extensions of files that are to be selected.
+	 */
 	static void set_filter(std::string extensions) {
 		_selector_ = selector(extensions);
 	}
-	/*! \brief Add files to the `dataset`.
-
-	    \param	path	Name of file or directory to be included in the
-	        `dataset`.
-
-	    If `path` is a file that satisfies any `--filter` option
-	    it is added to the `dataset`.
-
-	    If `path` is a directory then files recursively beneath it
-	    that satisfy any `--filter` option are added to the `dataset`.
-	*/
+	/** \brief Add files to the `dataset`.
+     *
+	 *  \param	path	Name of file or directory to be included in the
+	 *       `dataset`.
+     *
+	 *  If `path` is a file that satisfies any `--filter` option
+	 *  it is added to the `dataset`.
+     *
+	 *  If `path` is a directory then files recursively beneath it
+	 *  that satisfy any `--filter` option are added to the `dataset`.
+    */
 	static void add(std::string const & path);
 
-	//! Traverse the dataset processing the selected files.
+	/// Traverse the dataset processing the selected files.
 	static void traverse() {
 		_ftree_.traverse(_driver_);
 	}
 
-	//! Get the number of files in the `dataset`.
+	/// Get the number of files in the `dataset`.
 	static unsigned files() {
 		return _selector_.files();
 	}
 
-	//! Get the number of files reached by traversal of the `dataset`
+	/// Get the number of files reached by traversal of the `dataset`
 	static unsigned done_files() {
 		return _driver_.done_files();
 	}
 
-	/*! \brief Get the number of files abandoned due to errors in traversal of
-		the `dataset`.
-	*/
+	/** \brief Get the number of files abandoned due to errors in traversal of
+	 *	the `dataset`.
+	 */
 	static unsigned error_files() {
 		return _driver_.error_files();
 	}
 
 private:
 
-	//! The `selector` for including files in the `dataset`
+	/// The `selector` for including files in the `dataset`
 	static selector _selector_;
-	//! The `driver` for traversing `dataset`
+	/// The `driver` for traversing `dataset`
 	static driver _driver_;
-	//! The tree of input files
+	/// The tree of input files
 	static file_tree _ftree_;
 };
 

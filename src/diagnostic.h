@@ -43,39 +43,32 @@
 #include <list>
 #include <memory>
 
-/*! \file diagnostic.h
-    This file defines:-
-	- class `severity`
-	- class `diagnostic_base`
-	- template class `diagnostic`
-	- some tag classes.
+/** \file diagnostic.h
+ *   This file defines types supporting the production of diagnostics.
 */
 
-//! Class `severity` is a namespace for its enumerated member constants
-struct severity {
-	//! Enumerated constants representing the severities of diagnostics
-	enum level {
-	    //! No severity
-	    none = 0,
-	    //! A progress diagnostic
-	    progress = 1,
-	    //! An informational diagnostic
-	    info = 2,
-	    //! A warning diagnostic
-	    warning = 4,
-	    //! An error diagnostic
-	    error = 8,
-	    //! A fatal error disgnostic
-	    abend = 16,
-	    //! A summary diagnostic
-	    summary = 32,
-	    //! A progress summary
-	    summary_progress = summary | progress,
-	    //! An informational summary
-	    summary_info = summary | info,
-	    //! A warning summary
-	    summary_warning = summary | warning
-	};
+/// Enumerated constants representing the severities of diagnostics
+enum struct severity {
+    //! No severity
+    none = 0,
+    //! A progress diagnostic
+    progress = 1,
+    //! An informational diagnostic
+    info = 2,
+    //! A warning diagnostic
+    warning = 4,
+    //! An error diagnostic
+    error = 8,
+    //! A fatal error disgnostic
+    abend = 16,
+    //! A summary diagnostic
+    summary = 32,
+    //! A progress summary
+    summary_progress = summary | progress,
+    //! An informational summary
+    summary_info = summary | info,
+    //! A warning summary
+    summary_warning = summary | warning
 };
 
 /*! \brief The tag class is inserted in a `diagnostic_base` to tell it to
@@ -90,7 +83,7 @@ struct defer {};
 
 //! A base class for diagnostic classes
 struct diagnostic_base {
-	
+
 	typedef std::shared_ptr<diagnostic_base> ptr;
 
 	//! Destructor
@@ -102,7 +95,7 @@ struct diagnostic_base {
 	}
 
 	//! Get the severity level of the runtime type.
-	virtual severity::level level() const {
+	virtual severity level() const {
 		return severity::none;
 	}
 
@@ -147,7 +140,7 @@ struct diagnostic_base {
 	operator std::string const () {
 		return text();
 	}
-	
+
 	/*! \brief Insert an arbitrary object into this \c diagnostic.
 	    \tparam T Type of the object to be inserted.
 	    \param  obj The object to be inserted.
@@ -177,7 +170,7 @@ struct diagnostic_base {
 		}
 		return *this;
 	}
-	
+
 	/*! \brief Emit the diagnostic.
 
 	    Inserting a token object of type `emit` to the `diagnostic`
@@ -199,7 +192,7 @@ struct diagnostic_base {
 
 	/*! \brief Discard any queued diagnostics that match a
 	    reason-code, returning the number discarded.
-	    \param  reason The reason-code for selecting 
+	    \param  reason The reason-code for selecting
 				the queued diagnostics to
 				discard.
 	    \return The number of discarded diagnostics.
@@ -207,17 +200,17 @@ struct diagnostic_base {
 	static size_t discard(unsigned reason) {
 		return volley(reason,&diagnostic_base::encode);
 	}
-	
+
 	/*! \brief Discard any queued diagnostics that match a
 	    severity level, returning the number discarded.
-	    \param  level The severity level for selecting 
+	    \param  level The severity level for selecting
 				the queued diagnostics to discard.
 	    \return The number of discarded diagnostics.
 	*/
-	static size_t discard(severity::level level) {
+	static size_t discard(severity level) {
 		return volley(level,&diagnostic_base::level);
 	}
-	
+
 	//! Discard all queued diagnostics.
 	static void discard_all() {
 		_queue_.resize(0);
@@ -230,15 +223,15 @@ struct diagnostic_base {
 					&diagnostic_base::encode,
 					&diagnostic_base::despatch);
 	}
-	
+
 	//! Emit all queued diagnostics that match a severity
-	static size_t flush(severity::level level) {
+	static size_t flush(severity level) {
 		return volley(
 					level,
 					&diagnostic_base::level,
 					&diagnostic_base::despatch);
 	}
-	
+
 	/*! Emit any queued diagnostics */
 	static void flush_all();
 
@@ -277,7 +270,7 @@ struct diagnostic_base {
 	                    hash-errors were  output.
 	*/
 	static int exitcode();
-	
+
 protected:
 
 	/*! \brief Constructor.
@@ -290,7 +283,7 @@ protected:
 
 	*/
 	diagnostic_base(std::string severity_name,
-	                severity::level level, unsigned id,
+	                severity level, unsigned id,
 	                bool in_code_only = false);
 
 	//! Copy constructor.
@@ -321,8 +314,8 @@ protected:
 	    \return The reason-code that encodes a causal identifier and severity
 	    level.
 	*/
-	static unsigned code(severity::level level, unsigned id) {
-		return (level << 8) | id;
+	static unsigned code(severity level, unsigned id) {
+		return (int(level) << 8) | id;
 	}
 	/*! \brief Queue of deferred diagnostics.
 
@@ -365,7 +358,7 @@ private:
 		T (diagnostic_base::*selector)() const,
 		void (diagnostic_base::*action)() const = nullptr)
 	{
-		if (match == 0) {
+		if (match == T(0)) {
 			return 0;
 		}
 		size_t shots = 0;
@@ -392,10 +385,10 @@ private:
     \tparam  Level   The severity level of the diagnostic type.
     \tparam Id The causal identifier of diagnostic type.
 */
-template<severity::level Level, unsigned Id>
+template<severity Level, unsigned Id>
 struct diagnostic : diagnostic_base {
 	//! The severity level of this diagnostic type.
-	static const severity::level _severity_ = Level;
+	static const severity _severity_ = Level;
 	//! The causal identifier of this diagnostic type.
 	static const unsigned _id_ = Id;
 
@@ -412,7 +405,7 @@ struct diagnostic : diagnostic_base {
 	virtual ~diagnostic() {};
 
 	//! Get the severity level of this \c diagnostic.
-	severity::level level() const {
+	severity level() const {
 		return Level;
 	}
 
