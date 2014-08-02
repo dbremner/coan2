@@ -125,7 +125,7 @@ string citable(chewer<std::string> & chew, size_t len)
 {
     return innards::citable(chew,len);
 }
-std::string citable(chewer<parse_buffer> chew, size_t len)
+std::string citable(chewer<parse_buffer> & chew, size_t len)
 {
     return innards::citable(chew,len);
 }

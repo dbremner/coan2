@@ -36,7 +36,6 @@
  *                                                                         *
  **************************************************************************/
 #include "platform.h"
-#include "cursor.h"
 #include <vector>
 #include <stdexcept>
 #include <algorithm>
@@ -57,6 +56,7 @@
 */
 template<char Delim>
 struct path {
+
 	path()
 		: _first(0),_last(0) {}
 
@@ -338,10 +338,10 @@ struct path {
 	    cursor, even if the operation leaves the cursor out of
 	    range.
 	*/
-	cursor & posn() {
+	int & posn() {
 		return _cursor;
 	}
-	cursor const & posn() const {
+	int const & posn() const {
 		return _cursor;
 	}
 	///@}
@@ -419,11 +419,11 @@ private:
 	//! The structure of the path as a sequence of `element_pos`.
 	std::vector<element_pos> _elements;
 	//! The cursor of the path.
-	cursor _cursor;
+	int _cursor = 0;
 	//! The first character of the `path`.
-	char _first;
+	char _first = 0;
 	//! The last character of the `path`.
-	char _last;
+	char _last = 0;
 };
 
 

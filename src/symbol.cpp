@@ -433,7 +433,8 @@ symbol::digest_transient_define(formal_parameter_list const & params,
 				} else {
 					/* Differing #define contradicts -D option */
 					contradiction::flush();
-					contradiction::insert(DIFFERENTLY_REDEFING_D,id());
+					contradiction::insert(
+                            contradiction::cause::DIFFERENTLY_REDEFING_D,id());
 					return LT_DIRECTIVE_DROP;
 				}
 			}
@@ -451,7 +452,7 @@ symbol::digest_transient_define(formal_parameter_list const & params,
 		/* symbol is already undefined. */
 		else if (is_global) {
 			/* #define contradicts -U option */
-			contradiction::insert(DEFINING_U,id());
+			contradiction::insert(contradiction::cause::DEFINING_U,id());
 			return LT_DIRECTIVE_DROP;
 		}
 		//* Else #define countervails #undef */
@@ -517,7 +518,7 @@ symbol::digest_transient_undef()
 			} else  { /* #undef contradicting -D option */
 				if (contradiction::last_conflicted_symbol_id() != id()) {
 					contradiction::flush();
-					contradiction::save(UNDEFING_D,id());
+					contradiction::save(contradiction::cause::UNDEFING_D,id());
 				}
 				return LT_DIRECTIVE_DROP;
 			}

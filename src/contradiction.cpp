@@ -42,10 +42,9 @@
 #include "if_control.h"
 #include "canonical.h"
 
-/*!
-    \file contradiction.cpp
-    This file implements class `contradiction`
-*/
+/** \file contradiction.cpp
+ *   This file implements class `contradiction`
+ */
 using namespace std;
 
 string contradiction::_subst_text_;
@@ -71,7 +70,7 @@ void contradiction::insert_pending()
 	}
 }
 
-void contradiction::insert(contradiction_cause why,string const & symname)
+void contradiction::insert(cause why,string const & symname)
 {
 	contradiction::save(why,symname);
 	insert_pending();
@@ -90,19 +89,19 @@ void contradiction::forget()
 	_policy_code_ = 0;
 }
 
-void contradiction::save(contradiction_cause why, string const & symname)
+void contradiction::save(cause why, string const & symname)
 {
 	_last_conflicted_symbol_ = symname;
 	string line = canonical<string>(line_despatch::cur_line().str());
 	string gripe("\"");
 	switch(why) {
-	case DIFFERENTLY_REDEFING_D:
+	case cause::DIFFERENTLY_REDEFING_D:
 		gripe += line + "\" differently redefines -D symbol";
 		break;
-	case DEFINING_U:
+	case cause::DEFINING_U:
 		gripe += line + "\" contradicts -U or --implicit";
 		break;
-	case UNDEFING_D:
+	case cause::UNDEFING_D:
 		gripe += line + "\" contradicts -D symbol";
 		break;
 	default:

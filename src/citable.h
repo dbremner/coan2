@@ -60,7 +60,7 @@
  *	\return A citable version of the delimited text.
  */
 std::string citable(chewer<std::string> & chew, size_t len = std::string::npos);
-std::string citable(chewer<parse_buffer> chew, size_t len = std::string::npos);
+std::string citable(chewer<parse_buffer> & chew, size_t len = std::string::npos);
 ///@}
 
 
