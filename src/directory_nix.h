@@ -41,56 +41,56 @@
 #include <dirent.h>
 #include <cerrno>
 
-/*! \file directory_nix.h
-    This file defines class `nix::directory`
-*/
+/** \file directory_nix.h
+ *   This file defines `struct nix::directory`
+ */
 
-//! Namespace containing linux/unix-specific directory functionality
+/// Namespace containing linux/unix-specific directory functionality
 namespace nix
 {
 
-/*! \brief Class `nix::directory` encapsulates linux/unix-specific directory
-    functionality.
-*/
+/** \brief Class `nix::directory` encapsulates linux/unix-specific directory
+ *   functionality.
+ */
 struct directory : common::directory {
-	/*! \brief Explicitly construct a `directory` given a path.
-	    \param path The pathname of the `directory`.
-	*/
+	/** \brief Explicitly construct a directory given a path.
+	 *   \param path The pathname of the directory.
+	 */
 	explicit directory(std::string const & path)
 		: common::directory(path),_dir(nullptr) {
 		open();
 	}
 
-	//! Destructor
+	/// Destructor
 	~directory() {
 		close();
 	}
 
-	//! Get the leafname of the current member of the \c directory.
-	std::string cur_memb() const {
+	/// Get the leafname of the current member of the directory.
+	std::string const cur_memb() const {
 		return _entry.d_name;
 	}
 
-	/*! \brief Open the `directory`.
-	    \return True if the `directory` is opened.
-	*/
+	/** \brief Open the directory.
+	 *   \return True if the directory is opened.
+	 */
 	bool open() {
 		_dir = opendir(_abs_path.c_str());
 		return !_dir ? !(_last_error = errno) : true;
 	}
 
-	/*! \brief Close the `directory`.
-	    \return True if the `directory` is closed.
-	*/
+	/** \brief Close the directory.
+	 *   \return True if the directory is closed.
+	 */
 	bool close() {
 		return (_dir && closedir(_dir) != 0) ? !(_last_error = errno) : true;
 	}
 
-	/*! \brief Move to the next entry in the `directory`.
-
-	    \return The leafname of the next entry, if any, else an empty string.
-	*/
-	std::string next() {
+	/** \brief Move to the next entry in the directory.
+     *
+	 *   \return The leafname of the next entry, if any, else an empty string.
+	 */
+	std::string  next() {
 		struct dirent * entry = nullptr;
 		_entry.d_name[0] = '\0';
 		int error = readdir_r(_dir,&_entry,&entry);
@@ -104,17 +104,17 @@ struct directory : common::directory {
 		return _entry.d_name;
 	}
 
-	//! No copying
+	/// No copying
 	no_copy _no_copy;
 
 private:
 
-	//! The directory handle of this `directory` handle
+	/// The directory handle of this `directory` handle
 	DIR * _dir;
 	//! The current entry in this `directory`.
 	struct dirent _entry;
 };
 
-} //namespace
+} //namespace nix
 
 #endif
