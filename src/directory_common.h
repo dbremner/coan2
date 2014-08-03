@@ -38,85 +38,70 @@
  **************************************************************************/
 #include "filesys.h"
 
-/*! \file directory_common.h
-    This file defines class \c common::directory
-*/
+/** \file directory_common.h
+ *   This file defines `struct common::directory`
+ */
 
-//! Namespace containing OS-neutral directory functionality
+/// Namespace containing OS-neutral directory functionality
 namespace common
 {
 
-//! Class `win::directory` encapsulates OS-neutral directory functionality.
+/// `struct common::directory` encapsulates OS-neutral directory functionality.
 struct directory {
-	//! Get the absolute path of the `directory`
+	/// Get the absolute path of the `directory`
 	std::string const & path() const {
 		return _abs_path;
 	}
-	/*! \brief Get the last system error code resulting from an operation on
-		this `directory`.
-	*/
+	/** \brief Get the last system error code resulting from an operation on
+	 *	this directory.
+	 */
 	unsigned last_error() const {
 		return _last_error;
 	}
 
-	/*! \brief Clear any system error code resulting from an operation on this
-	    `directory`.
-	*/
+	/** \brief Clear any system error code resulting from an operation on this
+	 *   directory.
+	 */
 	void clear_error() {
 		_last_error = 0;
 	}
 
-	//! Say whether the `directory` is in a valid state.
+	//. Say whether the directory is in a valid state.
 	bool good() const {
 		return !_last_error;
 	}
-	//! Cast the directory to bool.
-	operator bool () const {
+	/// Explicitly Cast the directory to bool.
+	explicit operator bool () const {
 		return good();
 	}
 
-#if CXX11_HAVE_DECL_DEFAULT && !CXX11_HAVE_NON_PUBLIC_DEFAULT_DECL
-	//! Default constructor
-	directory(directory const &) = default;
-	//! Copy constructor
-	directory & operator=(directory const &) = default;
-#endif
-
-
 protected:
 
-	/*! \brief Explicitly construct a directory given a path.
-	    \param path The pathname of the \c directory
-	*/
+	/** \brief Explicitly construct a directory given a path.
+	 *   \param path The pathname of the \c directory
+	 */
 	explicit directory(std::string const & path)
 		: _abs_path(fs::real_path(path)),_last_error(0) {}
 
-#if CXX11_HAVE_DECL_DEFAULT && CXX11_HAVE_NON_PUBLIC_DEFAULT_DECL
-	//! Default constructor
-	directory(directory const &) = default;
-	//! Copy constructor
-	directory & operator=(directory const &) = default;
-#endif
-
-	/*! \brief Say whether a file leafname consists of 1 or 2 dots
-	    \param  leafname    The leafname to test.
-	    \return True iff `leafname` consists of 1 or 2 dots
-
-	    The house-keeping directory entries "." and ".." are ignored
-	    in file selection.
-	*/
+	/** \brief Say whether a file leafname consists of 1 or 2 dots
+	 *   \param  leafname    The leafname to test.
+	 *   \return True iff `leafname` consists of 1 or 2 dots
+     *
+	 *   The house-keeping directory entries "." and ".." are ignored
+	 *   in file selection.
+	 */
 	static bool is_dot_name(char const *leafname) {
 		return leafname[0] == '.' &&
 		       (leafname[1] == 0 || (leafname[1] == '.' && leafname[2] == 0));
 	}
 
-	//! The absolute pathname of the directory
+	/// The absolute pathname of the directory
 	std::string _abs_path;
-	//! The last error system code returned by a directory operation.
+	/// The last error system code returned by a directory operation.
 	unsigned _last_error;
 };
 
 
-} // namespace
+} // namespace common
 
 #endif
