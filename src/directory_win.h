@@ -42,53 +42,53 @@
 #include <windows.h>
 
 
-/*! \file directory_win.h
-    This file defines class `win::directory`
-*/
+/** \file directory_win.h
+ *   This file defines `struct win::directory`
+ */
 
-//! Namespace containing linux/unix-specific directory functionality
+/// Namespace containing windows-specific directory functionality
 namespace win
 {
 
-/*! \brief Class `win::directory` encapsulates a MS-Windows specific
-    directory functionality.
-*/
+/** \brief `struct win::directory` encapsulates a MS-Windows specific
+ *   directory functionality.
+ */
 struct directory : common::directory {
-	/*! \brief Explicitly construct given a path
-	    \param path The pathname of the `directory`.
-	*/
+	/** \brief Explicitly construct given a path
+	 *   \param path The pathname of the directory.
+	 */
 	explicit directory(std::string const & path)
 		: common::directory(path),_handle(INVALID_HANDLE_VALUE){}
 
-	//! Destructor
+	/// Destructor
 	~directory() {
 		close();
 	}
 
-	//! Get the leafname of the current member of the `directory`.
+	/// Get the leafname of the current member of the directory.
 	std::string cur_memb() const {
 		return _obj_info.cFileName;
 	}
 
-	/*! \brief Open the `directory`.
-	    \return True if the `directory` is opened.
-	*/
+	/** \brief Open the directory.
+	 *   \return True if the directory is opened.
+	 */
 	bool open() {
 		return true;
 	}
 
-	/*! \brief Close the `directory`.
-	    \return True if the `directory` is closed.
-	*/
+	/** \brief Close the directory.
+	 *   \return True if the `directory` is closed.
+	 */
 	bool close() {
 		return (_handle != INVALID_HANDLE_VALUE && !FindClose(_handle)) ?
 		       !(_last_error = GetLastError()) : true;
 	}
 
-	/*! \brief Move to the next entry in the `directory`.
-
-	    \return The leafname of the next entry, if any, else an empty string.
-	*/
+	/** \brief Move to the next entry in the directory.
+     *
+	 *   \return The leafname of the next entry, if any, else an empty string.
+	 */
 	std::string next() {
 		bool found = true;
 		int errnum = 0;
@@ -120,14 +120,14 @@ struct directory : common::directory {
 		return _obj_info.cFileName;
 	}
 
-	//! No copying
+	/// No copying
 	no_copy _no_copy;
 
 private:
 
-	//! Handle returned by FindFirstFile()
+	/// Handle returned by FindFirstFile()
 	HANDLE _handle;
-	//! Search data updated by FindFirstFile or FindFile()
+	/// Search data updated by FindFirstFile or FindFile()
 	WIN32_FIND_DATA _obj_info;
 };
 
