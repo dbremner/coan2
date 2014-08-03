@@ -32,9 +32,9 @@
  *                                                                         *
  **************************************************************************/
 
-/*! \file fs_win.cpp
-    This file implements class `fs` for Windows.
-*/
+/** \file fs_win.cpp
+ * This file implements the member functions of namespace `fs` for Windows
+ */
 
 #include "platform.h"
 
@@ -51,28 +51,30 @@
 
 using namespace std;
 
-string fs::real_path(string const & relname)
+namespace fs {
+
+string real_path(string const & relname)
 {
 	char buf[MAX_PATH] = "";
 	_fullpath(buf,relname.c_str(),MAX_PATH);
 	return buf;
 }
 
-std::string fs::cwd()
+std::string cwd()
 {
 	char buf[MAX_PATH] = "";
 	GetCurrentDirectory(MAX_PATH,buf);
 	return buf;
 }
 
-bool fs::is_absolute(std::string pathname)
+bool is_absolute(std::string pathname)
 {
 	return ((!pathname.empty() && pathname[0] == '\\') ||
 	        (pathname.length() >= 3 && pathname[1] == ':' &&
 				pathname[2] == '\\'));
 }
 
-fs::obj_type_t fs::obj_type(string const & name)
+obj_type_t obj_type(string const & name)
 {
 	WIN32_FILE_ATTRIBUTE_DATA obj_info;
 	int res = GetFileAttributesEx(name.c_str(),GetFileExInfoStandard,&obj_info);
@@ -86,7 +88,7 @@ fs::obj_type_t fs::obj_type(string const & name)
 	return OBJ_NONE;
 }
 
-void fs::make_dir(std::string const & abs_path, bool recursive)
+void make_dir(std::string const & abs_path, bool recursive)
 {
 	int result = 0;
 	if (recursive) {
@@ -108,15 +110,17 @@ void fs::make_dir(std::string const & abs_path, bool recursive)
 	}
 }
 
-fs::permissions fs::get_permissions(std::string const & filename)
+permissions get_permissions(std::string const & filename)
 {
 	return -1;
 }
 
-int fs::set_permissions(std::string const & filename, permissions p)
+int set_permissions(std::string const & filename, permissions p)
 {
 	return 0;
 }
+
+} // namespace fs
 #endif
 
 /* EOF*/

@@ -32,8 +32,9 @@
  *                                                                         *
  **************************************************************************/
 
-/*! \file fs_nix.cpp
-    This file implements the class `fs` Unix-like systems.
+/** \file fs_nix.cpp
+ * This file implements the member functions of namespace `fs`
+ * for Unix-like systems.
 */
 #include "platform.h"
 
@@ -50,8 +51,9 @@
 #include <cerrno>
 
 using namespace std;
+namespace fs {
 
-string fs::real_path(string const & relname)
+string real_path(string const & relname)
 {
 	char buf[PATH_MAX];
 	if (!realpath(relname.c_str(),buf)) {
@@ -61,7 +63,7 @@ string fs::real_path(string const & relname)
 	return buf;
 }
 
-string fs::cwd()
+string cwd()
 {
 	char buf[PATH_MAX];
 	if (!getcwd(buf,PATH_MAX)) {
@@ -71,12 +73,12 @@ string fs::cwd()
 	return buf;
 }
 
-bool fs::is_absolute(std::string pathname)
+bool is_absolute(std::string pathname)
 {
 	return !pathname.empty() && pathname[0] == '/';
 }
 
-fs::obj_type_t fs::obj_type(string const & name)
+obj_type_t obj_type(string const & name)
 {
 	obj_type_t type = OBJ_NONE;
 	struct stat obj_info;
@@ -97,7 +99,7 @@ fs::obj_type_t fs::obj_type(string const & name)
 	return type;
 }
 
-void fs::make_dir(std::string const & abs_path, bool recursive)
+void make_dir(std::string const & abs_path, bool recursive)
 {
 	mode_t mode = S_IRWXU | S_IXGRP | S_IRGRP | S_IXOTH | S_IROTH;
 	int result = 0;
@@ -121,7 +123,7 @@ void fs::make_dir(std::string const & abs_path, bool recursive)
 	}
 }
 
-fs::permissions fs::get_permissions(std::string const & filename)
+permissions get_permissions(std::string const & filename)
 {
 	permissions p = -1;
 	struct stat obj_info;
@@ -129,13 +131,15 @@ fs::permissions fs::get_permissions(std::string const & filename)
 	if (!res) {
 		p = obj_info.st_mode & 0777;
 	}
-	return p;	
+	return p;
 }
 
-int fs::set_permissions(std::string const & filename, permissions p)
+int set_permissions(std::string const & filename, permissions p)
 {
 	return chmod(filename.c_str(),p & 0777);
-} 
+}
+
+} // namespace fs
 
 #endif
 
