@@ -37,17 +37,17 @@
  *                                                                         *
  **************************************************************************/
 
-/*! \file directory.h
-    This file defines type `directory`.
-*/
+/** \file directory.h
+ *   This file defines type `directory`.
+ */
 
 #include "platform.h"
 #ifdef WINDOWS
 #include "directory_win.h"
-typedef win::directory directory;
+using directory = win::directory;
 #else
 #include "directory_nix.h"
-typedef nix::directory directory;
+using directory = nix::directory;
 #endif
 
 #endif //EOF
