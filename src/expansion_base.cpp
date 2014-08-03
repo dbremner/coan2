@@ -44,9 +44,9 @@
 #include <algorithm>
 #include <cassert>
 
-/*! \file expansion.cpp
-    This file implements class `expansion`.
-*/
+/** \file expansion.cpp
+ *   This file implements `struct expansion_base`.
+ */
 
 using namespace std;
 using namespace parameter_substitution;

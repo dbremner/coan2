@@ -37,9 +37,9 @@
 #include "citable.h"
 #include <cassert>
 
-/*! \file citable.h
-	This file impplements the overloads of free function `citable`
-*/
+/** \file citable.cpp
+ *	This file implements the overloads of free function `citable`
+ */
 
 using namespace std;
 

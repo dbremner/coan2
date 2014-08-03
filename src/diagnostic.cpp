@@ -42,9 +42,9 @@
 #include <iostream>
 #include <iomanip>
 
-/*! \file diagnostic.cpp
-    This file implements class `diagnostic_base`
-*/
+/** \file diagnostic.cpp
+ *   This file implements types supporting the production of diagnostics.
+ */
 
 using namespace std;
 

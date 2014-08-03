@@ -48,10 +48,9 @@
 
 using namespace std;
 
-/*!
-    \file expression_parser.cpp
-    This file implements class `expression_parser`
-*/
+/** \file expression_parser.cpp
+ *   This file implements `struct expression_parser`
+ */
 
 template<class CharSeq>
 evaluation

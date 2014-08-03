@@ -41,10 +41,9 @@
 #include <algorithm>
 #include <iostream>
 
-/*!
-    \file dataset.cpp
-    This file implements the class `dataset`
-*/
+/** \file dataset.cpp
+ *   This file implements `struct dataset`
+ */
 
 using namespace std;
 

@@ -41,10 +41,9 @@
 
 using namespace std;
 
-/*!
-    \file chew.cpp
-    This file implements specializations of template class `chewer`
-*/
+/** \file chew.cpp
+ *   This file implements specializations of `template class chewer<CharSeq>`
+ */
 
 template<>
 void chewer<parse_buffer>::missing_terminator(size_t mark, char missing)

@@ -34,9 +34,9 @@
 
 #include "file_tree.h"
 
-/*! \file file_tree.cpp
-    This file implements the class `file_tree`
-*/
+/** \file file_tree.cpp
+ *   This file implements the class `file_tree`
+ */
 using namespace std;
 
 void file_tree::node::insert(std::string const & key, node_ptr & child)
@@ -58,12 +58,10 @@ file_tree::node * file_tree::node::root()
 void file_tree::node::traverse(file_tree::traverser & action) const
 {
 	if (_children) {
-		child_list::const_iterator start = _children->begin();
-		child_list::const_iterator end = _children->end();
-		for (   ; start != end; ++start) {
-			action(*start);
-			start->second->traverse(action);
-		}
+        for (auto const & child : *_children) {
+            action(child);
+            child.second->traverse(action);
+        }
 	}
 }
 
@@ -121,4 +119,4 @@ void file_tree::node::display(std::string const & name,
 #endif
 
 
-/* EOF*/
+// EOF

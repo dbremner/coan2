@@ -37,9 +37,9 @@
 #include <iostream>
 #include <iomanip>
 
-/*! \file explained_expansion::.cpp
-    This file implements class `explained_expansion::`.
-*/
+/** \file explained_expansion.cpp
+ *   This file implements `struct explained_expansion`.
+ */
 
 using namespace std;
 

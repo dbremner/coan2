@@ -47,10 +47,9 @@
 #include "symbol.h"
 #include <iostream>
 
-/*!
-	\file directive.cpp
-	This file implements specializations of class template `directive<Type>`
-*/
+/** \file directive.cpp
+ *	This file implements specializations of `template struct directive<Type>`
+ */
 
 using namespace std;
 

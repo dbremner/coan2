@@ -47,7 +47,7 @@
 
 /** \file diagnostic.h
  *   This file defines types supporting the production of diagnostics.
-*/
+ */
 
 /// Enumerated constants representing the severities of diagnostics
 enum struct severity {
