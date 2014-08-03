@@ -57,7 +57,7 @@ unsigned diagnostic_base::_error_directives_operative_(0);
 
 list<diagnostic_base::ptr> diagnostic_base::_queue_;
 
-diagnostic_base::diagnostic_base(std::string severity_name,
+diagnostic_base::diagnostic_base(std::string const & severity_name,
                                  severity level, unsigned id,
                                  bool in_code_only)
 	: _gagged(false)
