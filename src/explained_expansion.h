@@ -38,63 +38,72 @@
  **************************************************************************/
 #include "expansion_base.h"
 
-/*! \file explained_expansion.h
-    This file defines class `explained_expansion`.
+/** \file explained_expansion.h
+ *   This file defines `struct explained_expansion`.
 */
 
-/*! \brief Class `explained_expansion` encapsulates
-	macro-expansion of a reference when the `--explain` option is operative
-*/
+/** \brief `struct explained_expansion` encapsulates
+ *	macro-expansion of a reference when the `--explain` option is operative
+ */
 struct explained_expansion : expansion_base
 {
-	//! Construct from a reference and optional parent
-    explained_expansion(
+	/** \brief Explicitly construct from a reference and optional parent
+	 *  \param ref The reference to be expanded
+	 *  \param parent If not null, then a pointer to the `expansion_base`
+	 *  from whose expansion this one accrues.
+	 */
+    explicit explained_expansion(
         reference const & ref,
         explained_expansion * parent = nullptr)
     : 	expansion_base(ref),_parent(parent){}
 
 	~explained_expansion() override = default;
 
-	/*! Perform the explained expansion of the reference, returning the number
-		of edits applied.
-	*/
+	/** \brief Perform the explained expansion of the reference, returning
+     *  the numbe of edits applied.
+	 */
 	unsigned expand();
 
 protected:
 
-	//! Expand a string, returning the number of edits applied
+	/// Expand a string, returning the number of edits applied
 	unsigned expand(std::string & str) override;
 
-	/*! Recursively replace remaining occurrences of a reference in the
-		parents of the explained_expansion and optionally the explained_expansion itself.
-
-		\param e An explained_expansion, s.t. that each ocurrence of that explained_expansion's
-            reference in `pb` is to replaced with its expanded value.
-        \param in The replacement string.
-		\param do_self If true, this explained_expansion itself is edited and
-			then recursive parents. If false, the parent of the
-			explained_expansion, if any, is edited and then recursive parents.
-        \return The number of replacements made.
-
-		In each explained_expansion reached, if
-		`args_explained_expansion_done()` is false then occurrences of `ref` are
-		replaced with `replacement` throughout the expanded argument at
-		its `cur_arg_index() and subsqequent arguments. Otherwise `ref`
-		is replaced with `replacement` throughout the current value of
-		the explained_expansion.
-	*/
+	/** \brief Recursively replace remaining occurrences of a reference in the
+	 *	parents of this `explained_expansion` and optionally this
+	 *	`explained_expansion` itself.
+     *
+	 *	\param e An explained_expansion.
+     *   \param in A replacement string.
+	 *	\param do_self If true, this `explained_expansion` itself is edited and
+	 *		then recursive parents. If false, the parent of the
+	 *		explained_expansion, if any, is edited and then recursive parents.
+     *   \return The number of replacements made.
+     *
+	 *	In each `explained_expansion` reached, if
+	 *	`args_expansion_done()` is false then occurrences of `ref` are
+	 *	replaced with `replacement` throughout the expanded argument at
+	 *	its `cur_arg_index() and subsqequent arguments. Otherwise `ref`
+	 *	is replaced with `replacement` throughout the current value of
+	 *	the explained_expansion.
+	 *
+	 *  The effect of this member function in explained macro expansion
+	 *  is to propagate immediately each edit performed in this expansion
+	 *  to the expansions, if any, from which it is descended.
+	 */
 	unsigned bubble_edit(
 		explained_expansion const & e,
 		bool do_self = true);
 
+    /// Report the latest value of the expansion
     void report_intermediate_value();
 
-	/*! Pointer to the `explained_expansion`, if any, of which this one is
-		a sub-expansion
-	*/
+	/** \brief Pointer to the `explained_expansion`, if any, of which this
+     *   one is a sub-expansion
+	 */
 	explained_expansion * _parent = nullptr;
 
-	//! Sequential number of the explained expansion step.
+	/// Sequential number of the explained expansion step.
 	unsigned _step = 0;
 
 };

@@ -136,9 +136,6 @@ void explained_expansion::report_intermediate_value()
             << (args_expansion_done() ? value() : invocation())
             << "<<" << endl;
 	}
-	if (_step == 2) {
-        //IMK cout << "Here" << endl;
-	}
 }
 
 // EOF
