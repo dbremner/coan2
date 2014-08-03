@@ -37,28 +37,26 @@
  *                                                                         *
  **************************************************************************/
 
+/** \file directive_type.h
+ *   This defines `enum struct directive_type`
+ */
 
-/*!
-    \file directive_type.h
-    This defines `enum directive_type`
-*/
-
-//! Symbolic constants denoting types of directives.
+/// Symbolic constants denoting types of directives.
 enum directive_type {
-	HASH_UNKNOWN,	//!< An unknown directive
-	HASH_IF,		//!< An `#if` directive
-	HASH_IFDEF,		//!< An `#ifdef` directive
-	HASH_IFNDEF,	//!< An `#ifndef` directive
-	HASH_ELSE,		//!< An `#else` directive
-	HASH_ELIF,		//!< An `#elif` directive
-	HASH_ENDIF,		//!< An `#endif` directive
-	HASH_DEFINE,	//!< An `#define` directive
-	HASH_UNDEF,		//!< An `#undef` directive
-	HASH_INCLUDE,	//!< An `#include` directive
-	HASH_PRAGMA,	//!< A `#pragma` directive
-	HASH_ERROR,		//!< An `#error` directive
-	HASH_LINE,		//!< A `#line` directive
-	COMMANDLINE		//!< The commandline, considered as a `#define`/`#undef`
+	HASH_UNKNOWN,	///< An unknown directive
+	HASH_IF,		///< An `#if` directive
+	HASH_IFDEF,		///< An `#ifdef` directive
+	HASH_IFNDEF,	///< An `#ifndef` directive
+	HASH_ELSE,		///< An `#else` directive
+	HASH_ELIF,		///< An `#elif` directive
+	HASH_ENDIF,		///< An `#endif` directive
+	HASH_DEFINE,	///< An `#define` directive
+	HASH_UNDEF,		///< An `#undef` directive
+	HASH_INCLUDE,	///< An `#include` directive
+	HASH_PRAGMA,	///< A `#pragma` directive
+	HASH_ERROR,		///< An `#error` directive
+	HASH_LINE,		///< A `#line` directive
+	COMMANDLINE		///< The commandline, considered as a `#define`/`#undef`
 };
 
 #endif
