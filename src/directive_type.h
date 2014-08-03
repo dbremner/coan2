@@ -1,5 +1,6 @@
 #ifndef DIRECTIVE_TYPE_H
 #define DIRECTIVE_TYPE_H
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2007-2013 Mike Kinghan, imk@burroingroingjoing.com      *
  *   All rights reserved.                                                  *
@@ -57,7 +58,7 @@ enum directive_type {
 	HASH_PRAGMA,	//!< A `#pragma` directive
 	HASH_ERROR,		//!< An `#error` directive
 	HASH_LINE,		//!< A `#line` directive
-	COMMANDLINE		//!< The commandline, considered as a `#define`/`#undef` 
+	COMMANDLINE		//!< The commandline, considered as a `#define`/`#undef`
 };
 
 #endif

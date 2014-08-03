@@ -1,5 +1,6 @@
 #ifndef GET_OPTIONS_H
 #define GET_OPTIONS_H
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Symbian Software Ltd.                       *
  *   All rights reserved.                                                  *

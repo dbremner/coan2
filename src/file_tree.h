@@ -1,5 +1,6 @@
 #ifndef FILE_TREE_H
 #define FILE_TREE_H
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2007-2013 Mike Kinghan, imk@burroingroingjoing.com      *
  *   All rights reserved.                                                  *
@@ -114,12 +115,12 @@ struct file_tree {
 		unsigned insert(path_t & abs_path, Filter & filter) {
 			return intermediate_insert(abs_path,filter);
 		}
-		
+
 		//! No copying
 		no_copy _no_copy;
 
 	private:
-	
+
 		//! Private default constructor
 		explicit node(node * parent = nullptr)
 			: _parent(parent) {}
@@ -386,7 +387,7 @@ public:
 		virtual void leave_dir(std::string const & dirname) {};
 
 	protected:
-	
+
 		//! No copying
 		no_copy _no_copy;
 		/*! \brief Pointer the node representing the latest directory that

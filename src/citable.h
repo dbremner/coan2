@@ -1,5 +1,6 @@
 #ifndef CITABLE_H
 #define CITABLE_H
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2007-2013 Mike Kinghan, imk@burroingroingjoing.com      *
  *   All rights reserved.                                                  *

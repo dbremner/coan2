@@ -1,5 +1,6 @@
 #ifndef EXPLAINED_EXPANSION_H
 #define EXPLAINED_EXPANSION_H
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2007-2013 Mike Kinghan, imk@burroingroingjoing.com      *
  *   All rights reserved.                                                  *

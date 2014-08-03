@@ -1,5 +1,6 @@
 #ifndef SYSERR_H
 #define SYSERR_H
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2007-2013 Mike Kinghan, imk@burroingroingjoing.com      *
  *   All rights reserved.                                                  *
@@ -47,5 +48,5 @@
 	\return The system error message associated with \c errnum.
 */
 std::string system_error_message(unsigned errnum);
- 
+
 #endif //EOF

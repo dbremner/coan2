@@ -1,5 +1,6 @@
 #ifndef IF_CONTROL_H
 #define IF_CONTROL_H
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2004, 2006 Symbian Software Ltd.                        *
  *   All rights reserved.                                                  *

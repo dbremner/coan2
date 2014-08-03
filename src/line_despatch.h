@@ -1,5 +1,6 @@
 #ifndef LINE_DESPATCH_H
 #define LINE_DESPATCH_H
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2004, 2006 Symbian Software Ltd.                        *
  *   All rights reserved.                                                  *
@@ -98,7 +99,7 @@ struct line_despatch {
 	static parsed_line & cur_line() {
 		return *_cur_line_;
 	}
-	
+
 	//!	Drop the current output line
 	static void drop() {
 		_cur_line_->drop();
@@ -121,7 +122,7 @@ struct line_despatch {
 
 	    Depending on the policy selected by the specified or default value of
 	    the `--conflict option`, a `#define` or `#undef` directive read
-		from input that contradicts one of the `--define` or `--undefine` 
+		from input that contradicts one of the `--define` or `--undefine`
 		options may be replaced on output with a diagnostic comment or a
 		diagnostic `#error` directive.
 	*/
@@ -136,10 +137,10 @@ struct line_despatch {
 	static unsigned & lines_changed() {
 		return _lines_changed_;
 	}
-	
+
 	//! Get a pretty printable version of the current input line
 	static std::string pretty();
-	
+
 private:
 
 	//! Number of input lines suppressed.

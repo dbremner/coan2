@@ -1,5 +1,6 @@
 #ifndef ARGUMENT_LIST_H
 #define ARGUMENT_LIST_H
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2007-2013 Mike Kinghan, imk@burroingroingjoing.com      *
  *   All rights reserved.                                                  *

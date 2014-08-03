@@ -1,5 +1,6 @@
 #ifndef CONTRADICTION_H
 #define CONTRADICTION_H
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2004, 2006 Symbian Software Ltd.                        *
  *   All rights reserved.                                                  *

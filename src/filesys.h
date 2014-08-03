@@ -1,5 +1,6 @@
 #ifndef FILESYS_H
 #define FILESYS_H
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2007-2013 Mike Kinghan, imk@burroingroingjoing.com      *
  *   All rights reserved.                                                  *
@@ -139,31 +140,31 @@ struct fs {
 		The function suceeds if `abs_path` is an existing directory.
 	*/
 	static void make_dir(std::string const & abs_path, bool recursive = true);
-	
-	
+
+
 	//! Type of file permissions mask.
 	typedef int permissions;
-		
+
 	/*! Get the permissions of a file.
-	
+
 		\param filename The file to query
 		\return The file-permission bits of `filename` as `permissions`,
 		unless error, in which case -1
-		
+
 		On Windows the function always returns -1
-		
+
 	*/
 	static permissions get_permissions(std::string const & filename);
 	/*! Set the permissions of a file.
-	
+
 		\param filename The file to modify
-		\param p The permissions to apply. 
+		\param p The permissions to apply.
 		\return 0 unless error, in which case -1
-		
+
 		The permission bits of `p` are applied to `filename`.
-		
+
 		On Windows the function is a no-op.
-		
+
 	*/
 	static int set_permissions(std::string const & filename, permissions p);
 

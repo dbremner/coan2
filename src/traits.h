@@ -1,6 +1,6 @@
 #ifndef TRAITS_H
 #define TRAITS_H
-
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2013 Mike Kinghan, imk@burroingroingjoing.com           *
  *   All rights reserved.                                                  *

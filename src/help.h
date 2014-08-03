@@ -1,5 +1,6 @@
 #ifndef HELP_H
 #define HELP_H
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2007-2013 Mike Kinghan, imk@burroingroingjoing.com      *
  *   All rights reserved.                                                  *
@@ -35,7 +36,7 @@
  *   DAMAGE.                                                               *
  *                                                                         *
  **************************************************************************/
- 
+
 #include <string>
 
 /*! \file help.h
@@ -43,7 +44,7 @@
 	- `help`
 	- `usage`
 */
- 
+
 /*!	\brief Write brief command usage information to `cout`.
 
 	The usage info is written the `--help option`,

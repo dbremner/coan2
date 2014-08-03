@@ -1,5 +1,6 @@
 #ifndef DIRECTORY_NIX_H
 #define DIRECTORY_NIX_H
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2007-2013 Mike Kinghan, imk@burroingroingjoing.com      *
  *   All rights reserved.                                                  *
@@ -107,7 +108,7 @@ struct directory : common::directory {
 	no_copy _no_copy;
 
 private:
-	
+
 	//! The directory handle of this `directory` handle
 	DIR * _dir;
 	//! The current entry in this `directory`.

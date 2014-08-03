@@ -1,5 +1,6 @@
 #ifndef PARSED_LINE_H
 #define PARSED_LINE_H
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2013 Mike Kinghan, imk@burroingroingjoing.com           *
  *   All rights reserved.                                                  *

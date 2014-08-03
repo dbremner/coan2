@@ -1,6 +1,6 @@
 #ifndef EOL_H
 #define EOL_H
-
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2013 Mike Kinghan, imk@burroingroingjoing.com           *
  *   All rights reserved.                                                  *

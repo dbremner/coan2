@@ -1,5 +1,6 @@
 #ifndef REFERENCE_CACHE_H
 #define REFERENCE_CACHE_H
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2007-2013 Mike Kinghan, imk@burroingroingjoing.com      *
  *   All rights reserved.                                                  *
@@ -59,12 +60,12 @@ struct reference_cache
 			bool complete = true)
 		: 	_expansion(expansion),_eval(eval),_reported(reported),
 			_complete(complete){}
-		
+
 		//! Get the expansion of the cached reference
 		std::string const & expansion() const {
 			return _expansion;
 		}
-		
+
 		///@{
 		//! Get a [const] reference to the evaluation of the cached reference
 		evaluation const & eval() const {
@@ -75,27 +76,27 @@ struct reference_cache
 			return _eval;
 		}
 		///@}
-		
+
 		//! Has the cached reference been reported
 		bool reported() const {
 			return _reported;
 		}
-				
+
 		//! Mark the entry as reported, or not.
 		void set_reported(bool value = true) {
 			_reported = value;
 		}
-				
+
 		//! Is the cached reference fully expanded?
 		bool complete() const {
 			return _complete;
 		}
-		
+
 		//! Mark the entry as fully expanded, or not.
 		void set_complete(bool value = true) {
 			_complete = value;
 		}
-				
+
 	private:
 		//! The expansion of the cached reference
 		std::string _expansion;
@@ -106,36 +107,36 @@ struct reference_cache
 		//! Is the cached expansion exhaustive?
 		bool _complete;
 	};
-	
+
 	typedef std::map<std::string,entry> map;
 	typedef map::value_type value_type;
 	typedef map::iterator iterator;
 	typedef map::const_iterator const_iterator;
 	typedef std::pair<iterator,bool> insert_result;
-	
+
 	//! Insert a `value_type` into the cache
 	static iterator insert(value_type const & v, iterator hint) {
 		return get_map().insert(hint,v);
 	}
-	
-	
+
+
 	//! Insert an `entry` by key into cache
-	static iterator 
+	static iterator
 	insert(std::string const & key, entry const & e, iterator hint) {
 		return insert(value_type(key,e),hint);
 	}
-	
+
 	//! Get an iteraror to the lower bound of a key in the cache.
 	static iterator lower_bound(std::string const & key) {
 		return get_map().lower_bound(key);
 	}
-	
-	//! Delete all cached references of a given symbol. 
+
+	//! Delete all cached references of a given symbol.
 	static void erase_symbol(std::string const & id){
 		auto i = get_map().lower_bound(id);
 		while (i != get_map().end()) {
 			std::string const & key = i->first;
-			if (key.find(id) == 0 && 
+			if (key.find(id) == 0 &&
 				(key.length() == id.length() || key[id.length()] == '(')) {
 				i = get_map().erase(i);
 			} else {
@@ -143,18 +144,18 @@ struct reference_cache
 			}
 		}
 	}
-	
+
 	//! Empty the cache
 	static void clear() {
 		get_map().clear();
 	}
-	
+
 	//! Say whether an iterator points to the end of the cache.
 	template<class Iter>
 	static bool at_end(Iter i) {
 		return i == get_map().end();
 	}
-	
+
 private:
 
 	//! The cache map.

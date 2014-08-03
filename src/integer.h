@@ -1,5 +1,6 @@
 #ifndef INTEGER_H
 #define INTEGER_H
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2007-2013 Mike Kinghan, imk@burroingroingjoing.com      *
  *   All rights reserved.                                                  *
@@ -92,7 +93,7 @@ struct integer {
 	unsigned long long raw() const {
 		return _val;
 	}
-	
+
 	//! Get the text descriptor of this integer's type.
 	char const * type_desc() const {
 		return type_desc(_type);
@@ -291,7 +292,7 @@ private:
 	*/
 	static bool
 	valid_shift(int direction, integer const & lhs, integer const & rhs);
-	
+
 	//! Get textual descriptor of an integral type
 	static char const * type_desc(integer_type it);
 

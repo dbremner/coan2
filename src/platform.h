@@ -1,5 +1,6 @@
 #ifndef PLATFORM_H
 #define PLATFORM_H
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2007-2013 Mike Kinghan, imk@burroingroingjoing.com      *
  *   All rights reserved.                                                  *
@@ -70,7 +71,7 @@
 		//! This is a GNU Windows build (probably mingw)
 		#define GNUWIN
 	#endif
-	
+
 #else //!defined(_WIN32) && defined(_WIN64)
 
 	//! Character that delimits elements of a filesystem path for Unix/Linux.
@@ -103,12 +104,12 @@
 		// Disable VC++ warning unary minus applied to unsigned type.
 		#pragma warning(disable : 4146)
 			//! Do we have c++11 feature `auto foo = bar()'?
-		#define CXX11_HAVE_DECL_AUTO 1		
+		#define CXX11_HAVE_DECL_AUTO 1
 		//! Do we have c++11 feature ` = default' ?
 		#define CXX11_HAVE_DECL_DEFAULT 0
 		//! Do we have c++11 feature ` = delete' ?
 		#define CXX11_HAVE_DECL_DELETE 0
-		//! Non-public defaulted member functions are supported	
+		//! Non-public defaulted member functions are supported
 		#define CXX11_HAVE_NON_PUBLIC_DEFAULT_DECL 1
 		//! Do we have c++11 feature default template arguments for functions?
 		#define CXX11_HAVE_FUNC_DEFAULT_TEMPLATE_ARGS 0
@@ -126,7 +127,7 @@
 			#define CXX11_HAVE_STRING_BACK 0
 		#endif
 	#endif
-#endif 
+#endif
 
 #ifdef __clang__
 	#if (__clang_major__ < 3) || (__clang_major__ == 3 && \
@@ -135,13 +136,13 @@
 	#else
 			//! Do we have c++11 feature `auto foo = bar()'?
 		#define CXX11_HAVE_DECL_AUTO 1
-		//! Do we have c++11 feature ` = default' ?		
+		//! Do we have c++11 feature ` = default' ?
 		#define CXX11_HAVE_DECL_DEFAULT 1
 		//! Do we have c++11 feature ` = delete' ?
 		#define CXX11_HAVE_DECL_DELETE 1
-		//! Do we have c++11 feature uniform initializers?	
+		//! Do we have c++11 feature uniform initializers?
 		#define CXX11_HAVE_UNIFORM_INITIALIZATION 1
-			//! Non-public defaulted member functions are supported	
+			//! Non-public defaulted member functions are supported
 		#define CXX11_HAVE_NON_PUBLIC_DEFAULT_DECL 1
 		//! Do we have c++11 feature default template arguments for functions?
 		#define CXX11_HAVE_FUNC_DEFAULT_TEMPLATE_ARGS 1

@@ -1,5 +1,6 @@
 #ifndef OPTIONS_H
 #define OPTIONS_H
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Symbian Software Ltd.                       *
  *   All rights reserved.                                                  *
@@ -82,7 +83,7 @@ enum command_code {
 
 //! Class \c options manages coan's commandline arguments
 struct  options {
-	
+
 	//! Get the operative coan command code.
 	static command_code get_command();
 
@@ -193,7 +194,7 @@ struct  options {
 		return	_implicit_;
 	}
 	/*! Do we suppress transient symbol configurations for in-source
-		`#define` and `#undef` directives? 
+		`#define` and `#undef` directives?
 	*/
 	static bool no_transients() {
 		return	_no_transients_;
@@ -210,17 +211,17 @@ struct  options {
 	static unsigned & max_expansion() {
 		return	_max_expansion_;
 	}
-	
+
 	//! Say whether the current comment generates source code
 	static bool have_source_output() {
-		static bool yes = 
+		static bool yes =
 				get_command() == CMD_SOURCE || get_command() == CMD_SPIN;
 		return yes;
 	}
-	
+
 	//! Say whether items are reportable at most once per file
 	static bool list_at_most_once_per_file() {
-		static bool yes = 
+		static bool yes =
 				_list_only_once_ || _list_once_per_file_;
 		return yes;
 	}
@@ -328,7 +329,7 @@ private:
 
 	//! Excluded options for the `errors` command.
 	static int const errors_cmd_exclusions[];
-	
+
 	//! Excluded options for the `lines` command.
 	static int const lines_cmd_exclusions[];
 
@@ -470,7 +471,7 @@ private:
 	//! Do we implicitly `--undef` all unconfigured symbols?
 	static bool	_implicit_;
 	/*! Do we suppress transient symbol configurations for in-source
-		`#define` and `#undef` directives? 
+		`#define` and `#undef` directives?
 	*/
 	static bool _no_transients_;
 	//! Do we report the derivation of symbol resolutions?

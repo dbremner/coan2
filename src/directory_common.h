@@ -1,5 +1,6 @@
 #ifndef DIRECTORY_COMMON_H
 #define DIRECTORY_COMMON_H
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2007-2013 Mike Kinghan, imk@burroingroingjoing.com      *
  *   All rights reserved.                                                  *
@@ -73,7 +74,7 @@ struct directory {
 	operator bool () const {
 		return good();
 	}
-	
+
 #if CXX11_HAVE_DECL_DEFAULT && !CXX11_HAVE_NON_PUBLIC_DEFAULT_DECL
 	//! Default constructor
 	directory(directory const &) = default;

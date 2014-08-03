@@ -1,5 +1,6 @@
 #ifndef IO_H
 #define IO_H
+#pragma once
 /***************************************************************************
  *   Copyright (C) 2004, 2006 Symbian Software Ltd.                        *
  *   All rights reserved.                                                  *
@@ -115,7 +116,7 @@ struct io {
 	static std::ostream * output() {
 		return _output_;
 	}
-	
+
 	//! Get a pointer to the input stream.
 	static std::istream * input() {
 		return _input_;
