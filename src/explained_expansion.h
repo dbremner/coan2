@@ -83,7 +83,7 @@ protected:
 	 *	In each `explained_expansion` reached, if
 	 *	`args_expansion_done()` is false then occurrences of `ref` are
 	 *	replaced with `replacement` throughout the expanded argument at
-	 *	its `cur_arg_index() and subsqequent arguments. Otherwise `ref`
+	 *	its `cur_arg_index() and subsquent arguments. Otherwise `ref`
 	 *	is replaced with `replacement` throughout the current value of
 	 *	the explained_expansion.
 	 *

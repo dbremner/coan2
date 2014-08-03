@@ -103,7 +103,7 @@ reference_cache::value_type reference::digest()
 			chew(header_name); // Expands as header name?
 		}
 		if (size_t(chew) == 0) {
-			resolved.eval() = expression_parser<string>(chew,this);
+			resolved.eval() = evaluation(expression_parser<string>(chew,this));
 		} else {
 			resolved.eval().set_insoluble();
 		}
