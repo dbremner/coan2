@@ -40,138 +40,127 @@
 #include "integer.h"
 #include <string>
 
-/*! \file evaluation.h
-   This file defines class `evaluation`.
-*/
+/** \file evaluation.h
+ *  This file defines `struct evaluation`.
+ */
 
-/*! \brief Class `evaluation` represents the result of evaluating a putative
-    expression.
-*/
+/** \brief `struct evaluation` represents the result of evaluating a putative
+ *   expression.
+ */
 struct evaluation {
-	//! Default constructor
-	evaluation()
-		: 	_value(INT_UNDEF),_net_infix_ops(0),
-			_empty(false),_insoluble(false),
-			_lparen_off(-1),_rparen_off(-1){}
 
-	/*! \brief Explicitly construct from an `integer`, optionally a constant.
-	    \param  val An integer to be evaluated.
-	    \param  constant    True iff `val` is a constant.
-	*/
+    evaluation() = default;
+
+	/** \brief Explicitly construct from an `integer`.
+	 *   \param  val An `integer` to be evaluated.
+	 */
 	explicit evaluation(integer const & val)
-		: 	_value(val),_net_infix_ops(0),
-			_empty(false),_insoluble(false),
-			_lparen_off(-1),_rparen_off(-1){}
+		: 	_value(val){}
 
-	/*! \brief Explicitly construct from `int`.
-	    \param  val An integer to be evaluated.
-	*/
+	/** \brief Explicitly construct from `int`.
+	 *   \param  val An int to be evaluated.
+	 */
 	explicit evaluation(int val)
-		: 	_value(integer(INT_INT,val)),_net_infix_ops(0),
-			_empty(false),_insoluble(false),
-			_lparen_off(-1),_rparen_off(-1){}
+		: 	_value(integer(INT_INT,val)){}
 
-	//! Destructor
-	~evaluation() {}
-
-	//! Say whether the expression has been resolved.
+	/// Say whether the expression has been resolved.
 	bool resolved() const {
 		return _value.type() != INT_UNDEF;
 	}
 
-	//! Say whether the expression is true.
+	/// Say whether the expression is true.
 	bool is_true() const {
 		return resolved() && _value.raw() != 0;
 	}
 
-	//! Say whether the expression is false.
+	/// Say whether the expression is false.
 	bool is_false() const {
 		return resolved() && _value.raw() == 0;
 	}
 
-	//! Say whether the expression is insoluble.
+	/// Say whether the expression is insoluble.
 	bool insoluble() const {
 		return _insoluble;
 	}
 
-	//! Say whether the expression is empty.
+	/// Say whether the expression is empty.
 	bool empty() const {
 		return _empty;
 	}
 
-	/*! Get/set the residual number of binary operators in the expression,
-		after simplification.
-	*/
+	/** Get/set the residual number of binary operators in the expression,
+	 *	after simplification.
+	 */
 	unsigned short & net_infix_ops() {
 		return _net_infix_ops;
 	}
 
-	//! Get the integral value of the expression.
+	/// Get the integral value of the expression.
 	integer const & value() const {
 		return _value;
 	}
 
-	//! Set the integral value of the expression.
+	/// Set the integral value of the expression.
 	void set_value(integer const & val) {
 		_value = val;
 		_net_infix_ops = 0;
 	}
 
-	//! Set the integral value of the expression to an integer.
+	/// Set the integral value of the expression.
 	void set_value(int val) {
 		_value = integer(INT_INT,val);
 		_net_infix_ops = 0;
 	}
 
-	//! Classify the expression as insoluble.
+	/// Classify the expression as insoluble.
 	void set_insoluble() {
 		_value = integer(INT_UNDEF);
 		_insoluble = true;
 	}
 
-	//! Classify the expression as empty.
+	/// Classify the expression as empty.
 	void set_empty() {
 		_empty = true;
 	}
 
-	//! Set the text offsets of surrounding parentheses.
+	/// Set the text offsets of surrounding parentheses.
 	void set_parens_off(size_t loff, size_t roff) {
 		_lparen_off = loff;
 		_rparen_off = roff;
 	}
 
-	//! Clear the text offsets of surrounding parentheses.
+	/// Clear the text offsets of surrounding parentheses.
 	void clear_parens_off() {
 		_lparen_off = size_t(-1);
 		_rparen_off = size_t(-1);
 	}
 
-	//! Get the text offset of the left parenthesis, if any. -1 if none.
+	/// Get the text offset of the left parenthesis, if any. -1 if none.
 	size_t lparen_off() const {
 		return _lparen_off;
 	}
 
-	//! Get the text offset of the right parenthesis, if any. -1 if none.
+	/// Get the text offset of the right parenthesis, if any. -1 if none.
 	size_t rparen_off() const {
 		return _rparen_off;
 	}
 
 private:
-	//! The integer value of the evaluated expression if it is soluble
-	integer _value;
-	/*! Number of binary operators remaining in the evaluated expression
-		after simplification.
-	*/
-	unsigned short _net_infix_ops ;
-	//! Is the expression empty?
-	bool _empty;
-	//! Is the expression insoluble;
-	bool _insoluble;
-	//! Has the expression been simplified?
-	//! Text offset of left parenethesis, if any
-	size_t _lparen_off;
-	//! Text offset of right parenethesis, if any
-	size_t _rparen_off;
+	/// The integer value of the evaluated expression if it is soluble
+	integer _value{INT_UNDEF};
+	/** \brief Number of binary operators remaining in the evaluated expression
+	 *	after simplification.
+	 */
+	unsigned short _net_infix_ops = 0;
+	/// Is the expression empty?
+	bool _empty = false;
+	/// Is the expression insoluble;
+	bool _insoluble = false;
+	/// Has the expression been simplified?
+	/// Text offset of left parenethesis, if any
+	size_t _lparen_off = size_t(-1);
+	/// Text offset of right parenethesis, if any
+	size_t _rparen_off = size_t(-1);
 };
 
 #endif /* EOF*/
