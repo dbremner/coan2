@@ -43,32 +43,32 @@
 #include <vector>
 #include <memory>
 
-/*! \file expansion_base.h
-    This file defines class `expansion_base`.
-*/
+/** \file expansion_base.h
+ *   This file defines `struct expansion_base`.
+ */
 
-/*! \brief Class `expansion_base` is a base for classes that encapsulates
-	a mode of macro-expansion of a reference.
-*/
+/** \brief ` struct expansion_base` is a base for classes that encapsulates
+ *	a mode of macro-expansion of a reference.
+ */
 struct expansion_base : reference
 {
-	//! Construct from a reference
+	/// Construct from a reference
 	explicit expansion_base(reference const & ref);
 	~expansion_base() override = default;
 
-	//! Get the current expanded value of the reference
+	/// Get the current expanded value of the reference
 	std::string const & value() const {
         return _value;
 	}
 
-	/*! Perform the expansion of the reference returning the
-        total number of edits applied
-    */
+	/** \brief Perform the expansion of the reference returning the
+     *   total number of edits applied
+     */
 	virtual unsigned expand() = 0;
 
-	/*! Get a string representing the invocation of the reference
-        with the current expansions of its arguments
-	*/
+	/** \brief Get a string representing the invocation of the reference
+     *  with the current expansions of its arguments
+	 */
 	std::string const & invocation() const override {
         static std::string s;
         s = id();
@@ -78,18 +78,29 @@ struct expansion_base : reference
 		return s;
 	}
 
+    /** \brief Global factory of subclasses of `expansion_base`
+     *  \param explain Is an `explained_expansion` or an `unexplained_expansion`
+     *  to be constructed?
+     *  \param ref A `reference` to be expanded.
+     *  \return Pointer to a dynamically allocated `explained_expansion` or
+     *  `unexplained_expansion` depending on whether the `--explain` option
+     *  is operative.
+     */
 	static std::unique_ptr<expansion_base>
 	factory(bool explain, reference const & ref);
 
 protected:
 
-	/*! Assign the expand-flags of the reference's arguments, if any,
-        in accordance with the definition, if any, of the referenced symbol
-    */
+	/** \brief Assign the expand-flags of the reference's arguments, if any,
+     *   in accordance with the definition, if any, of the referenced symbol.
+     *
+     *  The definition of the referenced symbol determines whether an argument
+     *  of the reference is to be expanded, quoted, or retained literally.
+     */
 	void set_expansion_flags();
 
-	/*! Seek to the next argument of the reference, if any, that is eligible for
-        returning its index if found, else `args.size()`
+	/** \brief Seek to the next argument of the reference, if any, that is
+        eligible for expansion, returning its index if found, else `args.size()`
 	*/
 	size_t seek_expandable_arg() {
 		for (	;_cur_arg < args().size() && !args().is_expandable(_cur_arg);
@@ -97,63 +108,66 @@ protected:
 		return _cur_arg;
 	}
 
-	/*! Edit a `parse_buffer`
-		\param str	The string to edit
-		\param at	Offset in `str` where replacement starts
-		\param len	Length to be replaced.
-		\param replacement String to replace the `len` characters
-			at `at`
-	*/
-	void edit(	std::string & str,
+	/** Edit a string
+	 *	\param str	The string to edit
+	 *	\param at	Offset in `str` where replacement starts
+	 *	\param len	Length to be replaced.
+	 *	\param replacement String to replace the `len` characters
+	 *		at `at`
+	 */
+	static void edit(	std::string & str,
 					size_t at, size_t len,
 					std::string const & replacement) {
         str.replace(at,len,replacement);
 	}
 
 
-	/*! Replace all remaining occurrences of a reference throughout a parse
-		buffer
-		\param str The string to edit.
-		\param e An expansion, s.t. that each ocurrence of that expansion's
-            reference in `str` is to replaced with its expanded value.
-		\param	off Offset into `str` at which to start replacement.
-		\return The number of replacements made.
-	*/
-	unsigned edit_buf(
+	/** \brief Replace all remaining occurrences of a reference throughout a
+     *  string.
+     *  \param str The string to edit.
+     *  \param e An expansion, s.t. that each ocurrence of that expansion's
+     *      reference in `str` is to be replaced with its expanded value.
+     *	\param	off Offset into `str` at which to start replacement.
+     *  \return The number of replacements made.
+	 */
+	static unsigned edit_buf(
 		std::string & str,
 		expansion_base const & e,
 		size_t off = 0);
 
-	/*! Replace all occurrences of a reference in a terminal segment of
-		the `subst_args`.
-
-		\param e An expansion, s.t. that each ocurrence of that expansion's
-            reference in `pb` is to replaced with its expanded value.
-        \param replacement A string that is to replace occurrences of 'ref`
-		\param start Index of the `subst_args` element at which to start.
-		\return The number of replacements made
+	/** \brief Replace all occurrences of a reference throughout a terminal
+     *   segment of the this expansions's arguments
+     *
+	 *	\param e An expansion.
+     *   \param replacement A replacement string.
+	 *	\param start Index into the arguments of this expansion.
+	 *	\return The number of replacements made.
+     *
+     *   In each expandable argument of the reference of this expansion,
+     *   starting at index `start`, all occurrences of the reference of `e` are
+     *   replaced with `replacement`
 	*/
 	unsigned edit_trailing_args(
 		expansion_base const & e,
 		size_t start = 0);
 
-	//! Say whether all arguments are fully expanded
+	/// Say whether all arguments are fully expanded
 	bool args_expansion_done() const {
 		return _cur_arg == args().size();
 	}
 
-	//! Expand a string, returning the number of edits applied
+	/// Expand a string, returning the number of edits applied
 	virtual unsigned expand(std::string & str) = 0;
 
-	/*! Substitute the fully expanded arguments into the
-		definition of the reference, returning true
-		if the current value of the expansion is changed.
-	*/
+	/** \brief Substitute the fully expanded arguments into the
+	 *	definition of the reference, returning true
+	 *	if the current value of the expansion is changed.
+	 */
 	bool substitute();
 
-	//! The current expanded value
+	/// The current expanded value
 	std::string _value;
-	//! Index of the first argument not yet fully expanded.
+	/// Index of the first argument not yet fully expanded.
 	size_t _cur_arg = 0;
 };
 
