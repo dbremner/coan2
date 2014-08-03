@@ -34,9 +34,9 @@
 #include "formal_parameter_list.h"
 #include "canonical.h"
 
-/*! \file formal_parameter_list.cpp
-    This file implements class `formal_parameter_list`.
-*/
+/** \file formal_parameter_list.cpp
+ *   This file implements `struct formal_parameter_list`.
+ */
 
 using namespace std;
 

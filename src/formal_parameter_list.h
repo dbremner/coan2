@@ -36,52 +36,52 @@
  **************************************************************************/
 #include "parameter_list_base.h"
 
-/*! \file formal_parameter_list.h
-    This file class `formal_parameter_list`.
-*/
+/** \file formal_parameter_list.h
+ *   This file defines `struct formal_parameter_list`.
+ */
 
-/*! \brief Class `formal_parameter_list` encapsulates a list of
-    formal macro parameters.
-
-*/
+/** \brief `struct formal_parameter_list` encapsulates a list of
+ *   formal macro parameters.
+ */
 struct formal_parameter_list : innards::parameter_list_base {
 
     using base = innards::parameter_list_base;
 
-	//! Explicitly construct from a `parameter_list_base`
+	/// Explicitly construct from a `parameter_list_base`
 	explicit formal_parameter_list(parameter_list_base const & parms)
 	: base(parms){}
 
-	/*! \brief Construct for `n` arguments
-
-		If `n` > 0, the list of placeholder arguments `$1,...,$n` is
-		constructed.
-	*/
+	/** \brief Construct for `n` arguments
+     *
+     *   If `n` > 0, the list of placeholder arguments `$1,...,$n` is
+     *constructed.
+	 */
 	explicit formal_parameter_list(size_t n = 0)
 	: base(n){}
 
-	/*! \brief Explicitly construct given a text pointer.
-	    \param chew On entry, a `chewer` referencing the text offset from which
-			to scan. On return receives a `chewer` referencing the first
-			offset not consumed.
-	*/
+	/** \brief Explicitly construct given a `chewer<CharSeq>`
+	 *  \param chew On entry, a `chewer<CharSeq>` positioned at the offset
+	 *  in the associated `CharSeq` from which to scan. On return`chew` is
+	 *  positioned to the first offset not consumed.
+	 *
+	 *  \tparam A character-sequence type
+	 */
 	template<class CharSeq>
 	explicit formal_parameter_list(chewer<CharSeq> & chew) {
 		read(chew);
 	}
 
-	/*! \brief Read the `formal_parameter_list` from a text pointer.
-
-	    \param chew On entry, a `chewer` referencing the text offset from which
-			to scan. On return receives a `chewer` referencing the first
-			offset not consumed.
-
-	    The `formal_parameter_list` is emptied and replaced by parsing the text
-	    from `chew`
+	/** \brief Read the `formal_parameter_list` from a `chewer<CharSeq>`
+     *
+	 *  \param chew On entry, a `chewer<CharSeq>` positioned at the offset
+	 *  in the associated `CharSeq` from which to scan. On return`chew` is
+	 *  positioned to the first offset not consumed.
+     *
+     *  The `formal_parameter_list` is emptied and replaced by parsing the text
+	 *   from `chew`
 	 */
     template<class CharSeq>
 	void read(chewer<CharSeq> & chew);
-
 
 private:
 
