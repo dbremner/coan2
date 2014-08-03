@@ -40,9 +40,9 @@
 #include <cassert>
 #include <cstring>
 
-/*! \file get_options.cpp
+/** \file get_options.cpp
  * This file implements the `get_options` API
-*/
+ */
 
 int optind;
 int optopt;
