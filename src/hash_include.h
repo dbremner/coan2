@@ -40,104 +40,102 @@
 #include "reference.h"
 #include "directive.h"
 
-/*! \file hash_include.h
-	This file defines class `hash_include`
-*/
+/** \file hash_include.h
+ *	This file defines `struct hash_include`
+ */
 
-/*! \brief Class \c hash_include encapsulates an `#include` directive.
-*/
+/// \brief `struct hash_include` encapsulates an `#include` directive.
 struct hash_include {
 
-	/*! \brief Explicitly construct from the argument of an
-	    `#include`  directive.
-	    \param  arg The body of the `#include` directive
-	*/
+	/** \brief Explicitly construct from the argument of an
+	 *   `#include`  directive.
+	 *   \param  arg The body of the `#include` directive
+	 */
 	explicit hash_include(std::string const & arg)
 	: 	_no_default_ctor(nullptr),_directive(arg) {}
 
-	/*! \brief Explicitly construct from the argument of an
-	    `#include`  directive.
-	    \param chew On entry, a `chewer` referencing the text offset from which
-			to scan. On return receives a `chewer` referencing the first
-			offset not consumed.
-	*/
+	/** \brief Explicitly construct from the argument of an
+	 *   `#include`  directive.
+	 *  \param chew On entry, a `chewer<parse_buffer>` positioned at the offset
+	 *  in the associated `parse_buffer` from which to scan. On return`chew` is
+	 *  positioned to the first offset not consumed.
+     */
 	explicit hash_include(chewer<parse_buffer> & chew)
 	:  	_no_default_ctor(nullptr),_directive(read(chew)) {}
 
 
-	/*! \brief Say whether the body of an `#include` directive is
-	    a macro-reference.
-
-	    \return If the body of the directive is a putative macro reference
-		a pointer to that reference is returned, else a null pointer.
+	/** \brief Say whether the body of an `#include` directive is
+	 *  a macro-reference.
+     *
+	 *  \return If the body of the directive is a putative macro reference
+	 *	a pointer to that reference is returned, else a null pointer.
 	*/
 	std::shared_ptr<reference> symbolic_argument() const {
 		return _ref;
 	}
 
-	/*! \brief Return the header file expression.
-
-	    \return If the body of the `#include` is a macro-reference of
-	    a configured symbol then result of resolving that reference is
-	    returned. Otherwise the returned string is the same as returned by
-	    `argument()`.
-	*/
+	/** \brief Return the header file expression.
+     *
+	 *  \return If the body of the `#include` is a macro-reference of
+	 *  a configured symbol then result of resolving that reference is
+	 *  returned. Otherwise the returned string is the same as returned by
+	 *  `argument()`.
+	 */
 	std::string filename() const {
 		return  _ref ? _ref->expansion() : _directive.argument();
 	}
 
 
-	/*! \brief Test whether the `#include` specifies a system header,
-	    i.e. `<headername>`
-
-	    \return True iff the `#include` specifies a system header.
-	*/
+	/** \brief Test whether the `#include` specifies a system header,
+	 *  i.e. `<headername>`
+     *
+	 *  \return True iff the `#include` specifies a system header.
+	 */
 	bool system_header() const {
 		return filename()[0] == '<';
 	}
 
-	/*! \brief Test whether the `#include` specifies a local header,
-	    i.e. "headername".
-
-	    \return True iff the `#include` specifies a local header.
-
-	    `system_header()` and `local_header()` are not mutually
-	    exclusive, as a symbolic `#include` argument may fail
-	    to resolve as either.
-	*/
+	/** \brief Test whether the `#include` specifies a local header,
+	 *   i.e. "headername".
+     *
+	 *   \return True iff the `#include` specifies a local header.
+     *
+	 *  `system_header()` and `local_header()` are not mutually
+	 *  exclusive, as a symbolic `#include` argument may fail
+	 *  to resolve as either.
+	 */
 	bool local_header() const {
 		return filename()[0] == '\"';
 	}
 
-	//! Say whether the `#include` directive is valid.
+	/// Say whether the `#include` directive is valid.
 	bool valid() const;
 
 
-	//! Report the `#include` directive.
-	virtual void report();
+	/// Report the `#include` directive.
+	void report();
 
-	//! No default construction
+	/// No default construction
 	no_default_ctor _no_default_ctor;
-	//! No copying
+	/// No copying
 	no_copy _no_copy;
 
 private:
 
-	/*! \brief Read the body of an `#include` directive.
-
-	    \param chew On entry, a `chewer` referencing the text offset from which
-			to scan. On return receives a `chewer` referencing the first
-			offset not consumed.
-
-	    \return The parsed argument.
-	*/
+	/** \brief Read the body of an `#include` directive.
+	 *  \param chew On entry, a `chewer<parse_buffer>` positioned at the offset
+	 *  in the associated `parse_buffer` from which to scan. On return`chew` is
+	 *  positioned to the first offset not consumed.
+     *
+	 *   \return The parsed argument.
+	 */
 	std::string read(chewer<parse_buffer> & chew);
 
-	/*! A pointer to the `#include` argument as a symbol reference, if
-		it is one is a macro ref.
-	*/
+	/** \brief A pointer to the `#include` argument as a `reference`, if
+	 *	it one, else a null pointer.
+	 */
 	std::shared_ptr<reference> _ref;
-	//! The member handles reporting the `#include` directive.
+	/// The member handles reporting the `#include` directive.
 	directive<HASH_INCLUDE> _directive;
 
 };

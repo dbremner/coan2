@@ -44,9 +44,9 @@
 #include "symbol.h"
 #include <iostream>
 
-/*! \file hash_include.cpp
-    This file implements class `hash_include`.
-*/
+/** \file hash_include.cpp
+ *   This file implements `struct hash_include`.
+ */
 
 using namespace std;
 

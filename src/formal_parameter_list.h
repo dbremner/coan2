@@ -73,6 +73,7 @@ struct formal_parameter_list : innards::parameter_list_base {
 
 	/** \brief Read the `formal_parameter_list` from a `chewer<CharSeq>`
      *
+     *  \tparam CharSeq A character-sequence type
 	 *  \param chew On entry, a `chewer<CharSeq>` positioned at the offset
 	 *  in the associated `CharSeq` from which to scan. On return`chew` is
 	 *  positioned to the first offset not consumed.
