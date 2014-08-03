@@ -96,7 +96,6 @@ map<string,bool> directive<HASH_LINE>::_directives_tab_ = map<string,bool>();
 
 //! \endcond NO_DOXYGEN
 
-#if CXX11_HAVE_UNIFORM_INITIALIZATION
 vector<directive_base::evaluator> directive_base::_evaluator_tab_ = {
 	&directive<HASH_UNKNOWN>::eval,
 	&directive<HASH_IF>::eval,
@@ -112,31 +111,6 @@ vector<directive_base::evaluator> directive_base::_evaluator_tab_ = {
 	&directive<HASH_ERROR>::eval,
 	&directive<HASH_LINE>::eval
 };
-#else
-directive_base::evaluator directive_base::_evaluator_tab_initor_[] =  {
-	&directive<HASH_UNKNOWN>::eval,
-	&directive<HASH_IF>::eval,
-	&directive<HASH_IFDEF>::eval,
-	&directive<HASH_IFNDEF>::eval,
-	&directive<HASH_ELSE>::eval,
-	&directive<HASH_ELIF>::eval,
-	&directive<HASH_ENDIF>::eval,
-	&directive<HASH_DEFINE>::eval,
-	&directive<HASH_UNDEF>::eval,
-	&directive<HASH_INCLUDE>::eval,
-	&directive<HASH_PRAGMA>::eval,
-	&directive<HASH_ERROR>::eval,
-	&directive<HASH_LINE>::eval
-};
-size_t directive_base::_n_evaluators_ =
-    sizeof(directive_base::_evaluator_tab_initor_)/
-		sizeof(directive_base::evaluator);
-vector<directive_base::evaluator>
-directive_base::_evaluator_tab_(&directive_base::_evaluator_tab_initor_[0],
-	&directive_base::_evaluator_tab_initor_[directive_base::_n_evaluators_]);
-#endif
-
-#if CXX11_HAVE_UNIFORM_INITIALIZATION
 map<string, directive_type>
 directive_base::_keyword_to_type_map_ = {
 	{	string(TOK_IF),         	HASH_IF },
@@ -152,40 +126,10 @@ directive_base::_keyword_to_type_map_ = {
 	{	string(TOK_ERROR),      	HASH_ERROR },
 	{	string(TOK_LINE),			HASH_LINE }
 };
-#else
-directive_base::keyword_map_element
-directive_base::_keyword_to_type_map_initor_[] = {
-	keyword_map_element(string(TOK_IF),HASH_IF),
-	keyword_map_element(string(TOK_IFDEF),HASH_IFDEF),
-	keyword_map_element(string(TOK_IFNDEF),HASH_IFNDEF),
-	keyword_map_element(string(TOK_ELSE),HASH_ELSE),
-	keyword_map_element(string(TOK_ELIF),HASH_ELIF),
-	keyword_map_element(string(TOK_ENDIF),HASH_ENDIF),
-	keyword_map_element(string(TOK_DEFINE),HASH_DEFINE),
-	keyword_map_element(string(TOK_UNDEF),HASH_UNDEF),
-	keyword_map_element(string(TOK_INCLUDE),HASH_INCLUDE),
-	keyword_map_element(string(TOK_PRAGMA),HASH_PRAGMA),
-	keyword_map_element(string(TOK_ERROR),HASH_ERROR)
-	keyword_map_element(string(TOK_LINE),HASH_LINE)
-};
-size_t directive_base::_n_keywords_ =
-    sizeof(directive_base::_keyword_to_type_map_initor_)/
-		sizeof(directive_base::keyword_map_element);
-map<string, directive_type>
-directive_base::
-_keyword_to_type_map_(&directive_base::_keyword_to_type_map_initor_[0],
-	&directive_base::_keyword_to_type_map_initor_[directive_base::_n_keywords_]);
-
-#endif
 
 directive_type directive_base::get_type(std::string const & keyword)
 {
-#if CXX11_HAVE_DECL_AUTO
 	auto where = _keyword_to_type_map_.find(keyword);
-#else
-	std::map<std::string, directive_type>::const_iterator where =
-				_keyword_to_type_map_.find(keyword);
-#endif
 	if (where == _keyword_to_type_map_.end()) {
 		warning_unknown_directive() << "Unknown directive #"
 		                            << keyword << emit();
@@ -497,4 +441,4 @@ line_type directive<HASH_LINE>::eval(chewer<parse_buffer> & chew)
 	return LT_PLAIN;
 }
 
-/* EOF*/
+// EOF
