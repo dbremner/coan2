@@ -46,9 +46,9 @@
 #include "chew.h"
 #include "io.h"
 
-/*!	\file if_control.cpp
-    This file implements class `if_control`
-*/
+/**	\file if_control.cpp
+ *   This file implements `struct if_control`
+ */
 if_control::if_state	if_control::ifstate[MAXDEPTH] = {if_state(0)};
 size_t		if_control::depth = 0;
 size_t		if_control::if_start_lines[MAXDEPTH] = {0};

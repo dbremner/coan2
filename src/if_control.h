@@ -46,206 +46,202 @@
 #include "platform.h"
 #include "line_despatch.h"
 
-/*! \file if_control.h
-    This file defines class `if_control`
-*/
+/** \file if_control.h
+ *   This file defines `struct if_control`
+ */
 
-/*! \brief Maintains state with respect to `#if` logic.
-
-    Class `if_control` maintains state with respect to
-    `#if` logic in the course of parsing and provides queries
-    on this state.
-*/
+/** \brief Maintains state with respect to `#if` logic.
+ *
+ *  `struct if_control` maintains state with respect to
+ *  `#if` logic in the course of parsing and provides queries
+ *  on this state.
+ */
 struct if_control {
 
-	//! symbolic constants denoting the if-control states.
+	/// symbolic constants denoting the if-control states.
 	enum if_state {
-	    //! We are outside any `if`
+	    /// We are outside any `if`
 	    IF_STATE_OUTSIDE,
-	    //! We have a false `if` followed by false `elif`
+	    /// We have a false `if` followed by false `elif`
 	    IF_STATE_FALSE_PREFIX,
-	    //! The first non-false `(el)if` is true
+	    /// The first non-false `(el)if` is true
 	    IF_STATE_TRUE_PREFIX,
-	    //! The first non-false `(el)if` is insoluble
+	    /// The first non-false `(el)if` is insoluble
 	    IF_STATE_PASS_MIDDLE,
-	    //! We have a false `elif` after a pass state
+	    /// We have a false `elif` after a pass state
 	    IF_STATE_FALSE_MIDDLE,
-	    //! We have a true `elif` after a pass state
+	    /// We have a true `elif` after a pass state
 	    IF_STATE_TRUE_MIDDLE,
-	    //! We have an `else` after a pass state
+	    /// We have an `else` after a pass state
 	    IF_STATE_PASS_ELSE,
-	    //! We have an `else` after a true state
+	    /// We have an `else` after a true state
 	    IF_STATE_FALSE_ELSE,
-	    //! We have an `else` after only false states
+	    /// We have an `else` after only false states
 	    IF_STATE_TRUE_ELSE,
-	    //! All `elifs` after a true are false
+	    /// All `elifs` after a true are false
 	    IF_STATE_FALSE_TRAILER,
-	    //! Count of if-control states
+	    /// Count of if-control states
 	    IF_STATE_COUNT
 	};
 
-	/*!	\brief Transition the if-control state given an evaluated
-	    line type.
-
-	    The function advances a state-machine whose parameters are the
-	    current input linetype and the current if-control state. The
-	    transition performs the appropriate action to despatch the
-	    line just evaluated and sets a new if-state.
-
-	    \param	linetype	The linetype of the last evaluated input line.
-
-	*/
+	/**	\brief Transition the if-control state given an evaluated
+	 *   line type.
+     *
+	 *  The function advances a state-machine whose parameters are the
+	 *  current input linetype and the current if-control state. The
+	 *  transition performs the appropriate action to despatch the
+	 *  line just evaluated and sets a new if-state.
+     *
+	 *  \param	linetype	The linetype of the last evaluated input line.
+	 */
 	static void transition(line_type linetype);
 
-	//! Is the current line rejected?
+	/// Is the current line rejected?
 	static bool dead_line();
 
-	//! Is the current line outside any `if` scope?
+	/// Is the current line outside any `#if` scope?
 	static bool was_unconditional_line() {
 		return ifstate[if_depth()] == IF_STATE_OUTSIDE;
 	}
 
-	/*!	\brief Is the current line outside any `if` scope or in the scope of a
-	    satisfied `if`?
-	*/
+	/**	\brief Is the current line outside any `#if` scope or in the scope of a
+	 *   satisfied `#if`?
+	 */
 	static bool is_unconditional_line();
 
-	//! Get the starting line number of the current `if` sequence.
+	/// Get the starting line number of the current `#if` sequence.
 	static size_t if_start_line() {
 		return if_start_lines[if_depth()];
 	}
 
-	//! Get the current depth of `if` nesting.
+	/// Get the current depth of `#if`-nesting.
 	static size_t if_depth() {
 		return depth;
 	}
 
-	//! Get the current if-state.
+	/// Get the current `#if`-state.
 	static if_state state() {
 		return ifstate[if_depth()];
 	}
 
-	//! Reset the depth of if-nesting to 0.
+	/// Reset the depth of `#if`-nesting to 0.
 	static void top() {
 		depth = 0;
 	}
 
 private:
 
-	enum {
-	    /*! \brief Maximum depth of hash-if nesting.
+    /** \brief Maximum depth of hash-if nesting.
+     *
+     *   c.f. Minimum translation limits from ISO/IEC 9899:1999 5.2.4.1
+     */
+    static const unsigned MAXDEPTH = 64;
 
-	        c.f. Minimum translation limits from ISO/IEC 9899:1999 5.2.4.1
-	    */
-	    MAXDEPTH = 64
-	};
+	/// Type of `#if`-state transition functions.
+	using transition_t = void();
 
-	//! Type of if-state transition functions.
-	typedef void transition_t();
-
-	/*! \brief The if-state transition table.
-
-	    An array of pointers to state transition functions.
-	*/
+	/** \brief The `#if`-state transition table.
+     *
+	 *   An array of pointers to state transition functions.
+	 */
 	static transition_t * const transition_table[IF_STATE_COUNT][LT_SENTINEL];
 
-	//! Increment the if-nesting depth.
+	/// Increment the `#if`-nesting depth.
 	static void nest();
 
-	//! Set the if-state at the current nesting depth.
+	/// Set the `#if`-state at the current nesting depth.
 	static void set_state(if_state is) {
 		size_t deep = if_depth();
 		ifstate[deep] = is;
 	}
 
-
-	//! State transition
+	/// State transition
 	static void Strue();
 
-	//! State transition
+	/// State transition
 	static void Sfalse();
 
-	//! State transition
+	/// State transition
 	static void Selse();
 
-	//! State transition
+	/// State transition
 	static void Pelif();
 
-	//! State transition
+	/// State transition
 	static void Pelse();
 
-	//! State transition
+	/// State transition
 	static void Pendif();
 
-	//! State transition
+	/// State transition
 	static void Dfalse();
 
-	//! State transition
+	/// State transition
 	static void Delif();
 
-	//! State transition
+	/// State transition
 	static void Delse();
 
-	//! State transition
+	/// State transition
 	static void Dendif();
 
-	//! State transition
+	/// State transition
 	static void Fdrop() {
 		nest();
 		Dfalse();
 	}
 
-	//! State transition
+	/// State transition
 	static void Fpass() {
 		nest();
 		Pelif();
 	}
 
-	//! State transition
+	/// State transition
 	static void Ftrue() {
 		nest();
 		Strue();
 	}
 
-	//! State transition
+	/// State transition
 	static void Ffalse() {
 		nest();
 		Sfalse();
 	}
 
-	//! State transition
+	/// State transition
 	static void Mpass();
 
-	//! State transition
+	/// State transition
 	static void Mtrue();
 
-	//! State transition
+	/// State transition
 	static void Melif();
 
-	//! State transition
+	/// State transition
 	static void Melse();
 
-	//! Diagnose an input orphan hash-elif on `cerr`
+	/// Diagnose an input orphan `#elif` on `cerr`
 	static void orphan_elif();
 
-	//! Diagnose an input orphan hash-else on `cerr`
+	/// Diagnose an input orphan `#else` on `cerr`
 	static void orphan_else();
 
-	//! Diagnose an input orphan hash-endif on `cerr`
+	/// Diagnose an input orphan `#endif` on `cerr`
 	static void orphan_endif();
 
-	//! Diagnose unexpected end of input on `cerr`
+	/// Diagnose unexpected end of input on `cerr`
 	static void early_eof();
 
-	//! Array of states of nested if-directives
+	/// Array of states of nested `#if`-directives
 	static if_state	ifstate[MAXDEPTH];
 
-	//! Current depth of if-nesting
+	/// Current depth of `#if`-nesting
 	static size_t		depth;
 
-	//! Array of start lines of nested if-directives
+	/// Array of start lines of nested `#if`-directives
 	static size_t		if_start_lines[MAXDEPTH];
 
 };
 
-#endif /* EOF*/
+#endif // EOF
