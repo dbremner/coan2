@@ -39,21 +39,20 @@
 
 #include <string>
 
-/*! \file help.h
-	This file defines free functions:-
-	- `help`
-	- `usage`
-*/
+/** \file help.h
+ *	This file defines free functions:-
+ *	- `help`
+ *	- `usage`
+ */
 
-/*!	\brief Write brief command usage information to `cout`.
-
-	The usage info is written the `--help option`,
-	then the program is terminated without error.
-*/
+/**	\brief Write brief command usage information to `cout`.
+ *
+ *	The usage info is written the `--help option`,
+ *	then the program is terminated without error.
+ */
 void help();
 
-//! Get program usage summary in a string.
+/// Get program usage summary in a string.
 std::string usage();
-
 
 #endif // EOF

@@ -39,8 +39,14 @@
 #include <iostream>
 #include <cstdlib>
 
+/** \file help.cpp
+ *	This file implements free functions:-
+ *	- `help`
+ *	- `usage`
+ */
+
 using namespace std;
- 
+
 void help()
 {
 	cout << usage() << '\n';
@@ -193,7 +199,7 @@ string usage()
 	        "\t\tIn organizing output files beneath the directory DIRNAME, "
 	        "DIRNAME will be equated to the path prefix PATHNAME of any "
 	        "input file.\n"
-			
+
 	        "symbols OPTIONs:-\n"
 	        "\t-i, --ifs\n"
 	        "\t\tList symbols that occur #if[[n]def]/#elif directives.\n"
@@ -210,7 +216,7 @@ string usage()
 	        "\t\tList only the first occurrence of of each distinct "
 			"reference a symbol\n"
 	        "\t--once-per_file\n"
-	        "\t\tList only the first occurrence per file of of each distinct " 
+	        "\t\tList only the first occurrence per file of of each distinct "
 			"reference of a symbol\n"
 	        "\t-A, --active\n"
 	        "\t\tList only symbols from operative directives\n"
@@ -229,7 +235,7 @@ string usage()
 	        "\t--select=NAME1[*][,NAME2[*]...]\n"
 	        "\t\tReport only on symbols that match one of the optionally "
 			"wildcard-terminated names\n"
-			
+
 	        "includes OPTIONs:-\n"
 	        "\t-s, --system\n"
 	        "\t\tList system headers, i.e. <header.h>\n"
@@ -290,7 +296,7 @@ string usage()
 	        "\t-L, --locate\n"
 	        "\t\tReport the source file and line number of each listed "
 	        "occurrence.\n"
-			
+
 	        "lines OPTIONs:-\n"
 	        "\t-o, --once-only\n"
 	        "\t\tList only the first occurrence of each #line directive\n"
@@ -304,7 +310,7 @@ string usage()
 	        "\t-L, --locate\n"
 	        "\t\tReport the source file and line number of each listed "
 	        "occurrence.\n"
-			
+
 	        "directives OPTIONs:-\n"
 	        "\t-o, --once-only\n"
 	        "\t\tList only the first occurrence of each distinct directive\n"
@@ -319,3 +325,6 @@ string usage()
 	        "\t\tReport the source file and line number of each listed "
 	        "occurrence.";
 }
+
+// EOF
+
