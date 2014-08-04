@@ -39,9 +39,9 @@
 #include "citable.h"
 #include <cassert>
 
-/*! \file integer.cpp
-    This file implements class `integer`.
-*/
+/** \file integer.cpp
+ *   This file `struct integer`.
+ */
 using namespace std;
 
 int integer::sign() const
