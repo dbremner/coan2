@@ -42,8 +42,9 @@
 #include "canonical.h"
 #include <vector>
 
-#include <iostream> //IMK delete
-
+/** \file parameter_substitution.cpp
+ *   This file implements the members of `namespace parameter_substitution`.
+ */
 using namespace std;
 
 namespace parameter_substitution {
@@ -52,7 +53,7 @@ string specifier::legible() const
 {
 	string s = "%{";
 	s += to_string(get_param_index());
-	s+= ':';
+	s += ':';
 	switch(get_handling()) {
 	case handling::substitute_arg:
 		s += "as-is";

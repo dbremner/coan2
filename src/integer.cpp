@@ -42,6 +42,7 @@
 /** \file integer.cpp
  *   This file `struct integer`.
  */
+
 using namespace std;
 
 int integer::sign() const
