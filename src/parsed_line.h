@@ -37,129 +37,130 @@
  *                                                                         *
  **************************************************************************/
 
-/*! \file abstract_parsed_line.h
-	This file defines \c struct \c parsed_line
-*/
+/** \file parsed_line.h
+ *	This file defines `struct parsed_line`
+ */
 #include "parse_buffer.h"
 #include "directive_type.h"
 #include "options.h"
 
 
-/*! \brief \c struct \c parsed_line is the coan parser's
-	base representation of a parsed line of input read from a file.
-*/
+/** `struct parsed_line` is the coan parser's
+ *	representation of a parsed line of input read from a file.
+ */
 
 struct parsed_line : parse_buffer
 {
-	//! Type of base class.
+	/// Type of base class.
 	using base_type = parse_buffer;
 
-	//! Construct given pointers to input and output streams.
+	/// Construct given pointers to input and output streams.
 	explicit parsed_line(std::istream * in, std::ostream * out);
 
 	~parsed_line() override {}
 
-	/*! \brief Get a reference to the input stream from which this `parsed_line`
-		reads.
-	*/
+	/** \brief Get a pointer to the input stream from which this `parsed_line`
+	 *	reads.
+	 */
 	std::istream * file() {
 		return _in;
 	}
 
-	//! Get the greatest source line number spanned by this line.
+	/// Get the greatest source line number spanned by this line.
 	unsigned num() const {
 		return _lineno;
 	}
 
-	//! Get the number of linefeeds embedded in this line
+	/// Get the number of linefeeds embedded in this line
 	unsigned extensions() const {
 		return _extensions;
 	}
 
-	//! \brief Record the offset and length of a directive keyword in the line
+	/// \brief Record the offset and length of a directive keyword in the line
 	void mark_keyword(size_t off, size_t len) {
 		_keyword_posn = off;
 		_keyword_len = len;
 	}
 
-	/*! \brief Try to read a line of input.
-	    \return \e true iff a line is read.
-	*/
+	/** \brief Try to read a line of input.
+	 *   \return \e true iff a line is read.
+	 */
 	bool get();
 
-	//! Replace the line with another string.
+	/// Replace the line with another string.
 	void replace(std::string const & replacement) {
 		_text = replacement;
 	}
 
-	/*! \brief Replace the directive in the line
-
-		\tparam DirectiveType The type of directive that is to
-		replace the existing one.
-
-	    The member function edits the line to subsitute a directive of
-		type DirectiveType for the existing directive in the line
-		to rectify the \c #if-logic of the file in the light of
-		lines that have been dropped.
-
-		If DirectiveType denotes a type of directive that
-		has no argument then the existing directive keyword is
-		replaced the keyword corresponding to DirectiveType
-		and the line is then terminated with a linefeed.
-
-		Otherwise the existing directive keyord is simply
-		replaced the keyword corresponding to DirectiveType.
-	*/
+	/** \brief Replace the directive in the line
+     *
+	 *	\tparam DirectiveType The type of directive that is to
+	 *	replace the existing one.
+     *
+	 *  The member function edits the line to subsitute a directive of
+	 *	type `DirectiveType` for the existing directive in the line
+	 *	to rectify the \c #if-logic of the file in the light of
+	 *	lines that have been dropped.
+     *
+	 *	If `DirectiveType` denotes a type of directive that
+	 *	has no argument then the existing directive keyword is
+	 *	replaced the keyword corresponding to `DirectiveType`
+	 *	and the line is then terminated with a linefeed.
+     *
+	 *	Otherwise the existing directive keyord is simply
+	 *	replaced the keyword corresponding to `DirectiveType`.
+	 */
 	template<directive_type DirectiveType>
 	void keyword_edit();
 
-	//! Classifiy the line as simplified or not
+	/// Classifiy the line as simplified or not
 	void set_simplified(bool value = true) {
 		_simplified = value;
 	}
 
-	//! Say whether the line has been simplified.
+	/// Say whether the line has been simplified.
 	bool is_simplified() const {
 		return _simplified;
 	}
 
-	//! Is the line reportable for the operative command
+	/// Is the line reportable for the operative command
 	bool reportable() {
 		return _reportable;
 	}
 
-	//! Set the directive type of the line
+	/// Set the directive type of the line
 	void set_directive_type(directive_type dtype) {
 		_dtype = dtype;
 		set_reportable();
 	}
 
-	//! Get Set the directive type of the line
+	/// Get Set the directive type of the line
 	directive_type get_directive_type() const {
 		return _dtype;
 	}
 
-	//! Record whether we are dropping the line.
+	/// Record whether we are dropping the line.
 	void set_dropping();
 
-	//! Are we dropping the line?
+	/// Are we dropping the line?
 	bool dropping() const {
 		return _dropping;
 	}
 
-	//! Output the line
+	/// Output the line
 	void output();
 
-	//! Drop the line
+	/// Drop the line
 	void drop();
 
-	//! Get a reference to the line's indentation amount.
+	/// Get a reference to the line's indentation amount.
 	unsigned & indent() {
 		return _indent;
 	}
 
 protected:
 
+    /// Say whether a line extension is pending at an offset in the line.
 	size_t extension_pending(size_t off) const override {
 		if (at(off) == '\\') {
 			auto advance = eol(++off);
@@ -170,68 +171,78 @@ protected:
 		return 0;
 	}
 
+    /// Try to extend the line past a new-line sequence of length `skip`,
+    /// returning the net length of the extension.
 	size_t extend(size_t skip) override;
 
-	/*! Try to read another line of input.
-	    \return the number of bytes read.
-	*/
+	/// Try to read another line of input, returning the number of bytes read.
 	size_t extend() override;
 
-	/*! \brief Convert the directive in the line into a
-		another one that has no argument.
-
-		\param keyword. The keyword of the replacement directive.
-
-		The existing directive keyword in the line, if any,
-		is replaced the \c keyword and the line is then terminated
-		with a linefeed.
-	*/
+	/** \brief Convert the directive in the line into a
+	 *	another one that has no argument.
+     *
+	 *  \param keyword. The keyword of the replacement directive.
+     *
+	 *	The existing directive keyword in the line, if any,
+	 *	is replaced the `keyword` and the line is then terminated
+	 *	with a linefeed.
+	 */
 	void keyword_lop(std::string const & keyword);
 
-	/*! \brief Replace the directive keyword in the line with another
-		one.
-
-		\param keyword. The keyword of the replacement directive.
-	*/
+	/** \brief Replace the directive keyword in the line with another
+	 *	one.
+     *
+	 *	\param keyword. The keyword of the replacement directive.
+	 */
 	void keyword_swap(std::string const & directive);
 
+    /// Output the line
 	void write();
+	/// Output the line commented out
 	void write_commented_out();
+	/// Output the line fast, when possible
 	void write_fast();
+	/// Output the line slowely, when necessary
 	void write_slow();
+	/** \brief Output the line or else discard it according to options
+	 *  \param keep Whether to retain or drop the line
+	 *
+	 *  `keep` is negated if `options::complement()` is true.
+	 *  Then, if keep is true, the line is output. Otherwise
+	 *  a blank line or a commented-out line, or nothing, is
+	 *  output depending on the specified or default `--discard` option.
+	 */
 	void write(bool keep);
 
-	/*! \brief Record whether the line is reportable for the operative
-		command
-	*/
+	/** \brief Record whether the line is reportable for the operative
+     *command
+	 */
 	void set_reportable();
 
-	//! The number of linefeeds embedded in the line
+	/// The number of linefeeds embedded in the line
 	unsigned _extensions;
-	//! The greatest source line number spanned by this line
+	/// The greatest source line number spanned by this line
 	unsigned _lineno;
-	//! The input stream from which this line is read
+	/// The input stream from which this line is read
 	std::istream * _in;
-	//! The output stream to which this line is written
+	/// The output stream to which this line is written
 	std::ostream * _out;
-	//! Offset to directive keyword, if any.
+	/// Offset to directive keyword, if any.
 	size_t	_keyword_posn;
-	//! Length of directive keyword, if any
+	/// Length of directive keyword, if any
 	size_t _keyword_len;
-	//! The directive type of this line.
+	/// The directive type of this line.
 	directive_type _dtype;
-	//! Is this line reportable?
+	/// Is this line reportable?
 	bool _reportable;
-	//! Are we dropping this line
+	/// Are we dropping this line
 	bool _dropping;
-	//! Has the line been simplified?
+	/// Has the line been simplified?
 	bool _simplified;
-	//! Count of contiguous lines that are dropped together.
+	/// Count of contiguous lines that are dropped together.
 	unsigned _drop_run_length = 0;
-	//! Amount by which the line is indented
+	/// Amount by which the line is indented
 	unsigned _indent;
-
 };
-
 
 #endif //EOF
