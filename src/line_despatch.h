@@ -49,107 +49,106 @@
 #include <string>
 #include <memory>
 
-/*!
-    \file line_despatch.h
-    This defines class `line_despatch`
-*/
+/** \file line_despatch.h
+ *   This defines `struct line_despatch`
+ */
 
-//! Enumeration of types of input lines
+/// Enumeration of types of input lines
 enum line_type {
-    //! An hash-if that we can't resolve
+    /// An `#if` that we can't resolve
     LT_IF,
-    //! A true hash-if
+    /// A true `#if`
     LT_TRUE,
-    //! A false hash-if
+    /// A false `#if`
     LT_FALSE,
-    //! An hash-elif that we can't resolve
+    /// An `#elif` that we can't resolve
     LT_ELIF,
-    //! A true hash-elif
+    /// A true `#elif`
     LT_ELTRUE,
-    //! A false hash-elif
+    /// A false `#elif`
     LT_ELFALSE,
-    //! An hash-else that we can't resolve
+    /// An `#else` that we can't resolve
     LT_ELSE,
-    //! An hash-endif
+    /// An `#endif`
     LT_ENDIF,
-    //! A non-directive line
+    /// A non-directive line
     LT_PLAIN,
-    //! End of file
+    /// End of file
     LT_EOF,
-    //! A directive line of no more specific type than that is to be dropped
+    /// A directive line of no more specific type than that is to be dropped
     LT_DIRECTIVE_DROP,
-    //! A directive line of no more specific type that is to be kept
+    /// A directive line of no more specific type that is to be kept
     LT_DIRECTIVE_KEEP,
-    //! Sentinel
+    /// Sentinel
     LT_SENTINEL
 };
 
-/*! \brief Manages printing, discarding and replacement of lines.
-
-    Class \c line_despatch class manages the printing of lines
-    selected or generated for output and the dropping or
-    replacing of lines not selected for output.
-*/
+/** \brief Manages printing, discarding and replacement of lines.
+ *
+ *   `struct line_despatch` manages the printing of lines
+ *   selected or generated for output and the dropping or
+ *   replacing of lines not selected for output.
+ */
 struct line_despatch {
 
-	//! Reinitialize the class static state.
+	/// Reinitialize the class static state.
 	static void top();
 
-	//! Get a reference to the current output line
+	/// Get a reference to the current output line
 	static parsed_line & cur_line() {
 		return *_cur_line_;
 	}
 
-	//!	Drop the current output line
+	///	Drop the current output line
 	static void drop() {
 		_cur_line_->drop();
 	}
 
-	//! Print the current output line.
+	/// Print the current output line.
 	static void print() {
 		_cur_line_->output();
 	}
 
-	/*! \brief Process the current input line and return its line type.
-	    \return The `line_type` of the current input line.
-	*/
+	/** \brief Process the current input line and return its line type.
+     *  \return The `line_type` of the current input line.
+	 */
 	static line_type next();
 
 	/*! \brief Substitute a diagnostic insert for the line in the line-buffer
-	    and print it to output.
-
-	    \param	replacement	The diagnostic insert to print.
-
-	    Depending on the policy selected by the specified or default value of
-	    the `--conflict option`, a `#define` or `#undef` directive read
-		from input that contradicts one of the `--define` or `--undefine`
-		options may be replaced on output with a diagnostic comment or a
-		diagnostic `#error` directive.
-	*/
+	 *   and print it to output.
+     *
+	 *  \param	replacement	The diagnostic insert to print.
+     *
+	 *  Depending on the policy selected by the specified or default value of
+	 *  the `--conflict option`, a `#define` or `#undef` directive read
+     *  from input that contradicts one of the `--define` or `--undefine`
+     *  options may be replaced on output with a diagnostic comment or a
+	 *	diagnostic `#error` directive.
+	 */
 	static void  substitute(std::string const & replacement);
 
-	//! Get a reference to the count of suppressed lines.
+	/// Get a reference to the count of suppressed lines.
 	static unsigned & lines_suppressed() {
 		return _lines_suppressed_;
 	}
 
-	//! Get a reference to the count of changed lines.
+	/// Get a reference to the count of changed lines.
 	static unsigned & lines_changed() {
 		return _lines_changed_;
 	}
 
-	//! Get a pretty printable version of the current input line
+	/// Get a pretty printable version of the current input line
 	static std::string pretty();
 
 private:
 
-	//! Number of input lines suppressed.
+	/// Number of input lines suppressed.
 	static unsigned _lines_suppressed_;
-	//! Number of input lines changed
+	/// Number of input lines changed
 	static unsigned _lines_changed_;
-	// The current output line
+	/// The current output line
 	static std::unique_ptr<parsed_line> _cur_line_;
 
 };
 
-#endif /* EOF*/
+#endif // EOF

@@ -54,9 +54,9 @@
 #include <cassert>
 #include <cstring>
 
-/*!
-    \file line_despatch.cpp
-    This file implements class `line_despatch`*/
+/** \file line_despatch.cpp
+ *  This file implements `struct line_despatch`
+ */
 using namespace std;
 
 unsigned line_despatch::_lines_suppressed_(0);
