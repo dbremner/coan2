@@ -43,9 +43,9 @@
 #include <fstream>
 #include <iostream>
 
-/*! \file io.cpp
-    This file implements class `io`
-*/
+/** \file io.cpp
+ *   This file implements `struct io`
+ */
 
 using namespace std;
 
@@ -124,9 +124,9 @@ void io::replace_infile()
 	if (rename(_out_filename_.c_str(),_in_filename_.c_str())) {
 		abend_cant_rename_file() <<
 			 "Cannot rename file \"" << _out_filename_ << "\" as \""
-			 << _in_filename_ << '\"' << emit();			 
+			 << _in_filename_ << '\"' << emit();
 	} else if (_in_out_permissions_ != -1) {
-		_in_out_permissions_ = 
+		_in_out_permissions_ =
 			fs::set_permissions(_in_filename_,_in_out_permissions_);
 		assert(_in_out_permissions_ != -1);
 	}
@@ -203,7 +203,7 @@ void io::open(string const & fname)
 	_in_filename_ = fname;
 	delete _input_;
 	if (fname != _stdin_name_) {
-		_in_out_permissions_ = 
+		_in_out_permissions_ =
 			options::replace() ? fs::get_permissions(fname) : -1;
 		_infile_.open(fname.c_str(),ios_base::in);
 		if (!_infile_.is_open()) {

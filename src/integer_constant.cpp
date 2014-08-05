@@ -41,9 +41,9 @@
 #include <limits>
 #include <cassert>
 
-/*! \file integer_constant.cpp
-    This file defines class `integer_constant`.
-*/
+/** \file integer_constant.cpp
+ *   This file defines `struct integer_constant`.
+ */
 
 using namespace std;
 
