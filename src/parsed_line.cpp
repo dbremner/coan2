@@ -34,9 +34,9 @@
  *                                                                         *
  **************************************************************************/
 
-/*! \file parsed_line.cpp
-	This file implements \c struct \c parsed_line
-*/
+/** \file parsed_line.cpp
+ *	This file implements `struct parsed_line`
+ */
 
 #include "parsed_line.h"
 #include "io.h"
