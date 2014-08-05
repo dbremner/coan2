@@ -41,9 +41,9 @@
 #include <cassert>
 #include <cstring>
 
-/*! \file parameter_list_base.cpp
-    This file implements class `parameter_list_base`
-*/
+/** \file parameter_list_base.cpp
+ *   This file implements `struct innards::parameter_list_base`
+ */
 
 using namespace std;
 using namespace innards;

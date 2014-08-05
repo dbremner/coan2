@@ -40,40 +40,42 @@
 #include <memory>
 #include <stdexcept>
 
-/*! \file parameter_list_base.h
-    This file defines class `parameter_list_base`
-*/
+/** \file parameter_list_base.h
+ *   This file defines `struct innards::parameter_list_base`
+ */
 
 // Forward decl
 struct symbol;
 
 namespace innards {
 
-/*! \brief Class template `innards::parameter_list_base<Tag>` generically
-    defines a common interface of types representing a formal
-    parameter list or an argment list.
-*/
+/** \brief `template struct innards::parameter_list_base<Tag>` generically
+ *   defines a common interface of types representing a formal
+ *   parameter list or an argment list.
+ */
 struct parameter_list_base {
 
-	/*! \brief Constructor for `n` parameters
-
-		If `n` > 0, the list of placeholder parameters `$1,...,$n`
-		is constructed.
-	*/
+	/** \brief Constructor for `n` parameters
+     *
+	 *	If `n` > 0, the list of placeholder parameters `$1,...,$n`
+	 *	is constructed.
+	 */
 	explicit parameter_list_base(size_t n = 0);
 
-	/*! \brief Explicitly construct a given a `chewer` to a text offset.
-	    \param chew On entry, a `chewer` referencing the text offset from which
-			to scan. On return receives a `chewer` referencing the first
-			offset not consumed.
-	*/
+	/** \brief Explicitly construct a given a `chewer<CharSeq>`.
+	 *
+	 *  \tparam CharSeq A character-sequence type.
+	 *  \param chew On entry, a `chewer<CharSeq>` positioned at the offset
+	 *  in the associated `CharSeq` from which to scan. On return`chew` is
+	 *  positioned to the first offset not consumed.
+     */
 	template<class CharSeq>
 	explicit parameter_list_base(chewer<CharSeq> & chew)
 	: _defect(none),_variadic(false) {
 		read(chew);
 	}
 
-	//! Copy constructor.
+	/// Copy constructor.
 	parameter_list_base(parameter_list_base const & other)
 	:	 _params(
 		other._params ?
@@ -81,66 +83,66 @@ struct parameter_list_base {
 		_defect(other._defect),
 		_variadic(other._variadic){}
 
-	//! Swap with another `parameter_list_base`
+	/// Swap with another `parameter_list_base`
 	void swap(parameter_list_base & other) {
 		std::swap(_params,other._params);
 		std::swap(_defect,other._defect);
 		std::swap(_variadic,other._variadic);
 	}
 
-	//! Assignment
+	/// Assignment
 	parameter_list_base & operator=(parameter_list_base other) {
 		swap(other);
 		return *this;
 	}
 
-	//! Equality
+	/// Equality
 	bool operator==(parameter_list_base const & other) const {
 		return str() == other.str();
 	}
 
-	//! Inequality
+	/// Inequality
 	bool operator!=(parameter_list_base const & other) const {
 		return !(*this == other);
 	}
 
-	//! Say whether the `parameter_list_base` is well-formed
+	/// Say whether the `parameter_list_base` is well-formed
 	bool well_formed() const {
 		return _defect == none;
 	}
 
-	//! Say whether the `parameter_list_base` is variadic
+	/// Say whether the `parameter_list_base` is variadic
 	bool variadic() const {
 		return _variadic;
 	}
 
-	/*! \brief Get the number of parameters in the `parameter_list_base`
-
-		The non-null parameter list "()" has size 0, as does the null
-		parameter list "" has size `size_t(-1)`
-	*/
+	/** \brief Get the number of parameters in the `parameter_list_base`
+     *
+	 *	The non-null parameter list "()" has size 0, as does the null
+	 *	parameter list ""
+	 */
 	size_t size() const {
 		return _params ? _params->size() : 0;
 	}
 
-	//! Say whether the `parameter_list_base` is null, i.e. is not even "()"
+	/// Say whether the `parameter_list_base` is null, i.e. is not even "()"
 	bool null() const {
 		return !_params;
 	}
 
-	//! Cast to boolean = !null()
+	/// Cast to boolean = !null()
 	operator bool () const {
 		return !null();
 	}
 
-	//! Cast the parameter list to its canonical string representation
+	/// Cast the parameter list to its canonical string representation
 	std::string str() const;
 
 
     ///@{
-    /*! Get a [const] iterator to the start of the parameter list,
-        which is `std::vector<string>::iterator()` if `null()` is true
-    */
+    /** Get a [const] iterator to the start of the parameter list,
+     *   which is `std::vector<string>::iterator()` if `null()` is true
+     */
     std::vector<std::string>::iterator begin() {
         using namespace std;
         return null() ? vector<string>::iterator() : _params->begin();
@@ -153,9 +155,9 @@ struct parameter_list_base {
     ///@}
 
     ///@{
-    /*! Get a [const] iterator to the end of the parameter list,
-        which is `std::vector<string>::iterator()` if `null()` is true
-    */
+    /** Get a [const] iterator to the end of the parameter list,
+     *   which is `std::vector<string>::iterator()` if `null()` is true
+     */
     std::vector<std::string>::iterator end() {
         using namespace std;
         return null() ? vector<string>::iterator() : _params->end();
@@ -168,9 +170,9 @@ struct parameter_list_base {
     ///@}
 
     ///@{
-    /*! Get a range-checked [const] reference to the nth parameter,
-        throwing `std::out_of_range` on out-of-range error
-    */
+    /** Get a range-checked [const] reference to the nth parameter,
+     *   throwing `std::out_of_range` on out-of-range error
+     */
     std::string const & at(size_t n) const {
         using namespace std;
         if (!size()) {
@@ -189,9 +191,9 @@ struct parameter_list_base {
     ///@}
 
     ///@{
-    /*! Get an un-range-checked [const] reference to the nth parameter,
-        throwing `std::out_of_range` on out-of-range error
-    */
+    /** Get an un-range-checked [const] reference to the nth parameter,
+     *   throwing `std::out_of_range` on out-of-range error
+     */
     std::string const & operator[](size_t n) const {
         return (*_params)[n];
     }
@@ -202,29 +204,29 @@ struct parameter_list_base {
     ///@}
 
 
-	//! Get the index of the parameter that matches a string, if any, else -1
-
+	/// Get the index of the parameter that matches a string, if any, else -1
 	size_t which(std::string const & str) const;
 
-	/*! \brief Read the `parameter_list_base` from a text offset.
-
-	    \param chew On entry, a `chewer` referencing the text offset from which
-			to scan. On return receives a `chewer` referencing the first
-			offset not consumed.
-
-	    The `parameter_list_base` is emptied and replaced by parsing the text
-	    from `chew`
+	/*! \brief Read the `parameter_list_base` from `chewer<CharSeq>`
+     *
+	 *  \tparam CharSeq A character-sequence type.
+	 *  \param chew On entry, a `chewer<CharSeq>` positioned at the offset
+	 *  in the associated `CharSeq` from which to scan. On return`chew` is
+	 *  positioned to the first offset not consumed.
+     *
+	 *  The `parameter_list_base` is emptied and replaced by parsing the text
+	 *  from `chew`
 	 */
     template<class CharSeq>
  	void read(chewer<CharSeq> & chew);
 
-	/*! Make a parameter list from a range of objects that are
-		convertible to `std::string`
-
-		\tparam BiIter A bidorectional iterator
-		\param first The start of the range of objects.
-		\param last The end of the range of objects
-	*/
+	/** \brief Make a parameter list from a range of objects that are
+	 *	convertible to `std::string`
+     *
+	 *	\tparam BiIter A bidorectional iterator
+	 *	\param first The start of the range of objects.
+	 *	\param last The end of the range of objects
+	 */
 	template<typename BiIter>
 	static std::string make(BiIter first, BiIter last) {
 		std::string s(1,'(');
@@ -242,23 +244,23 @@ struct parameter_list_base {
 
 protected:
 
-	//! Enumeration of possible defects in a `parameter_list_base`
+	/// Enumeration of possible defects in a `parameter_list_base`
 	enum defect {
-		//! No defects
+		/// No defects
 		none,
-		//! An empty parameter
+		/// An empty parameter
 		empty_param,
-		//! No closing ')'
+		/// No closing ')'
 		unclosed,
-		//! Non-identifier where parameter expected.
+		/// Non-identifier where parameter expected.
 		non_param
 	};
 
-	//! The list of parameters
+	/// The list of parameters
 	std::shared_ptr<std::vector<std::string>> _params;
-	//! Is the `parameter_list_base` well-formed?
+	/// Is the `parameter_list_base` well-formed?
 	defect _defect;
-	//! Is the `parameter_list_base` variadic?
+	/// Is the `parameter_list_base` variadic?
 	bool _variadic;
 };
 
