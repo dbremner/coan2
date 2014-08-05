@@ -41,48 +41,48 @@
 #include <cstddef>
 #include "eol.h"
 
-/*! \file base_parse_buffer
+/** \file base_parse_buffer
+ *
+ *	This file defines `struct parse_buffer`
+ */
 
-	This file defines \c struct \c parse_buffer
-*/
-
-/*! \brief `struct parse_buffer` is a polymorphic base for classes representing
-        possibly extensible lines of parsed text.
-*/
+/** \brief `struct parse_buffer` is a polymorphic base for classes representing
+ *       possibly extensible lines of parsed text.
+ */
 struct parse_buffer
 {
     using value_type = char;
 
-	//! Default constuctor
+	/// Default constuctor
 	parse_buffer() = default;
 
-	//! Destructor
+	/// Destructor
 	virtual ~parse_buffer(){};
 
-	//! Construct from an \c std::string
+	/// Explicitly construct from an `std::string`
 	explicit parse_buffer(std::string const & str)
 	: _text(str){}
 
-	//! Assign another `parse_buffer`
+	/// Assign another `parse_buffer`
 	parse_buffer & operator=(parse_buffer const &) = default;
 
-	//! Assign an `std::string`
+	/// Assign an `std::string`
 	parse_buffer & operator=(std::string const & str) {
 		_text = str;
 		return *this;
 	}
 
-	//! Equality
+	/// Equality
 	bool operator==(parse_buffer const & other) const {
 		return _text == other._text;
 	}
 
-	//! Inequality operator
+	/// Inequality operator
 	bool operator!=(parse_buffer const & other) const {
 		return _text != other._text;
 	}
 
-	//! Get the length of the `parse_buffer`
+	/// Get the length of the `parse_buffer`
 	size_t size() const {
 		return _text.size();
 	}
@@ -98,13 +98,13 @@ struct parse_buffer
 	}
 	///@}
 
-	//! Explicitly cast to `std::string`
+	/// Explicitly cast to `std::string`
 	explicit operator std::string const &() const {
 		return str();
 	}
 
 	///@{
-	//! Get a [const] pointer to the buffer
+	/// Get a [const] pointer to the data
 	char const * data() const {
 		return _text.data();
 	}
@@ -114,101 +114,100 @@ struct parse_buffer
 	}
 	///@}
 
-	//! Get a substring of the `parse_buffer`.
+	/// Get a substring of the `parse_buffer`.
 	std::string substr(size_t start, size_t len = std::string::npos) const {
 		return _text.substr(start,len);
 	}
 
-	/*! \brief Say whether an offset is out of tange
-	*/
+	/// Say whether an offset is out of tange
 	bool overshoot(size_t off = 0) const {
 		return off >= size();
 	}
 
-	//! Get the character indexed an offset. Not range-checked
+	/// Get the character indexed by an offset. Not range-checked
 	char at(size_t off) const {
 		return _text[off];
 	}
 
-	//! Get a reference to the character an offset. Not range-checked.
+	/// Get a reference to the character an offset. Not range-checked.
 	char & at(size_t off) {
 		return _text[off];
 	}
-	//! Get the character at an offset. Not range checked.
+	/// Get the character at an offset. Not range checked.
 	char operator[](size_t off) const {
 		return at(off);
 	}
 
-	//! Get a reference to the character at an offset. Not range checked.
+	/// Get a reference to the character at an offset. Not range checked.
 	char & operator[](size_t offset) {
 		return at(offset);
 	}
 
-	//! Empty the buffer.
+	/// Empty the `parse_buffer`.
 	void clear() {
 		_text.clear();
 	}
 
-	/*! \brief Say whether there is a newline sequence at an offset.
-
-		\param offset An offset into the buffer
-
-		\return 0 to indicate the there is no newline sequence at
-		\c `offset`; otherwise the length of the newline sequence at `offset`
-	*/
+	/** \brief Say whether there is a newline sequence at an offset.
+     *
+	 *	\param offset An offset into the `parse_buffer`
+     *
+	 *	\return 0 to indicate the there is no newline sequence at
+	 *	`offset`; otherwise the length of the newline sequence at `offset`
+	 */
 	unsigned eol(size_t offset) const {
 		return ::eol(_text,offset);
 	}
 
-	/*! \brief Extend the string, perhaps.
-
-		\return The number of characters by which the string is
-		extended.
-
-		The virtual member function it may either do nothing or it may attempt
-		to extend the string by appending characters from some opaque source.
-	*/
+	/** \brief Extend the string, perhaps.
+     *
+	 *	\return The number of characters by which the string is
+	 *	extended.
+     *
+	 *	The virtual member function may either do nothing or it may attempt
+	 *	to extend the string by appending characters from some opaque source.
+	 */
 	virtual size_t extend() {
 		return 0;
 	}
 
-	/*! \brief Test whether an extension of the string is pending at an offset..
-
-		\param off The offset at which to test.
-
-		The virtual member function shall return a value to indicate
-		whether a sequence of characters from the `off` betokens
-		a logical extension of the string already in the buffer.
-
-		\return 0 if no extension is betokened. Otherwise the length
-		of the character sequence that betokens and extension.
-
-	*/
+	/** \brief Test whether an extension of the string is pending at an offset.
+     *
+	 *	\param off The offset at which to test.
+     *
+	 *	The virtual member function shall return a value to indicate
+	 *	whether a sequence of characters at offset `off` betokens
+	 *	a logical extension of the string already in the buffer.
+     *
+	 *	\return 0 if no extension is betokened. Otherwise the length
+	 *	of the character sequence that betokens an extension.
+	 */
 	virtual size_t extension_pending(size_t off) const {
 		return 0;
 	}
 
-	/*! \brief Extend the string, perhaps.
-
-		\param skip The number of characters currently ahead of the cursor
-			that constitute a sequence betokening an extension. This
-			should be the value returned immediately beforehand by
-			\c extension_pending()
-
-		\return The net number of characters by which the string is
-		extended.
-
-		The virtual member function shall do nothing if \c skip is 0.
-		Otherwise it may either do nothing or it may attempt to extend the
-		string by appending characters from some opaque source, possibly
-		replacing up to \c skip characters that are ahead of the cursor.
-	*/
+	/** \brief Extend the string, perhaps.
+     *
+	 *	\param skip The number of characters currently ahead of the cursor
+	 *		that constitute a sequence betokening an extension. This
+	 *		should be the value returned immediately beforehand by
+	 *		\c extension_pending()
+     *
+	 *	\return The net number of characters by which the string is
+	 *	extended.
+     *
+	 *	The virtual member function shall do nothing if `skip` is 0.
+	 *	Otherwise it may either do nothing or it may attempt to extend the
+	 *	string by appending characters from some opaque source, possibly
+	 *	replacing up to `skip` characters that are ahead of the cursor.
+	 */
 	virtual size_t extend(size_t skip) {
 		return 0;
 	}
 
 protected:
 
+    /// The data
 	std::string _text;
 
 };

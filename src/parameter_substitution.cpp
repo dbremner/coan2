@@ -243,7 +243,7 @@ std::string format::legible() const
 	return parameter_substitution::format::legible(_fmt);
 }
 
-} // namespace paremeter_substitution.
+} // namespace parameter_substitution.
 
 
 // EOF
