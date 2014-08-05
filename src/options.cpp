@@ -36,9 +36,9 @@
  *                                                                         *
  **************************************************************************/
 
-/*! \file options.cpp
-    This file implements class \c options
-*/
+/** \file options.cpp
+ *  This file implements `struct options`
+ */
 
 #include "platform.h"
 #include "options.h"
