@@ -41,38 +41,32 @@
 #include <stdexcept>
 #include <algorithm>
 
-/*! \file path.h
-    This file defines class `path`.
-*/
+/** \file path.h
+ *   This file defines `struct path`.
+ */
 
-/*! \brief Encapsulates a path.
-
-    Class `path` controls a string representing an absolute or
-    relative pathname and provides queries and operations on it.
-
-    A `path` contains a `cursor` that can be used to maintain
-    and modify an index into the elements of the path.
-
-    \tparam Delim   The character that delimits elements of a path.
-*/
+/** \brief Encapsulates a filesystem path.
+ *
+ *   `struct path` controls a string representing an absolute or
+ *   relative pathname and provides queries and operations on it.
+ *
+ *   A `path` contains a cursor that can be used to maintain
+ *   and modify an index into the elements of the path.
+ *
+ *   \tparam  Delim  The character that delimits elements of a path.
+ */
 template<char Delim>
 struct path {
 
-	path()
-		: _first(0),_last(0) {}
+	path() = default;
 
-	/*! \brief Explicitly construct a path object from a string.
-
-	    \param  path  A string representation of a path.
-
-	    The path's `cursor` is initialized to 0
-	*/
+	/// Explicitly construct a `path` from a string.
 	explicit path(std::string const & path)
 		:   _path(path) {
 		analyse();
 	}
 
-	//! Assign from a string.
+	/// Assign from a string.
 	path & operator=(std::string const & str) {
 		cut();
 		_path = str;
@@ -81,52 +75,53 @@ struct path {
 		return *this;
 	}
 
-	//! Equality operator.
+	/// Equality
 	bool operator==(path const & other) const {
 		return _path == other._path;
 	}
 
-	//! Inequality operator.
+	/// Inequality
 	bool operator!=(path const & other) const {
 		return !(_path == other._path);
 	}
 
-	//! Less-than operator.
+	/// Less-than operator.
 	bool operator<(path const & other) const {
 		return _path < other._path;
 	}
 
-	/*! \brief Get the number of elements in the path
-
-	    \return The number of elements in the the path.
-
-	    The returned value is the number of `Delim`
-	    characters in the path, even if there is a trailing
-	    `Delim`.
-	*/
+	/** \brief Get the number of elements in the `path`
+     *
+	 *   \return The number of elements in the `path`.
+     *
+	 *   The returned value is the number of `Delim`
+	 *   characters in the `path`, even if there is a trailing
+	 *   `Delim`.
+	 */
 	size_t elements() const {
 		return _elements.size();
 	}
 
-	//! Get the path as a string.
+	/// Get the `path` as a string.
 	std::string const & str() const {
 		return _path;
 	}
 
-	//! Get the length of the `path`.
+	/// Get the length of the `path`.
 	size_t length() const {
 		return _path.length();
 	}
 
-	/*! \brief Return a path element by index.
-	    \param which Index to the requested element
-	    \return The indexed path element as a string.
-	        If `index` is out of range an `std::range_error`
-			exception is thrown.
-	*/
+	/** \brief Return a path element by index.
+	 *  \param which Index to the requested element
+	 *  \return The indexed path element as a string.
+	 *
+	 *  If `index` is out of range an `std::out_of_range`
+	 *  exception is thrown.
+	 */
 	std::string element(size_t which) const {
 		if (which >= elements()) {
-			throw std::range_error("Out of range in path::element(size_t)");
+			throw std::out_of_range("Out of range in path::element(size_t)");
 		}
 		element_pos const & element = _elements[which];
 		return element.second == 0 ?
@@ -134,38 +129,38 @@ struct path {
 		       _path.substr(element.first,element.second);
 	}
 
-	//! Get the path element at the cursor.
+	/// Get the path element at the cursor.
 	std::string cur_element() const {
 		return element(posn());
 	}
 
-	//! The subscript operator is equivalent to `element(which)`
+	/// The subscript operator is equivalent to `element(which)`
 	std::string operator[](size_t which) const {
 		return element(which);
 	}
 
-	/*! \brief Say whether the path consists of an initial subsequence
-		of the elements of another.
-
-		\param  other The `path` to be compared with `*this`.
-		\return True if this path consists of an initial subsequence
-		of the elements of `other`.
-	*/
+	/** \brief Say whether the path consists of an initial subsequence
+	 *	of the elements of another.
+     *
+	 *	\param  other The `path` to be compared with `*this`.
+	 *	\return True if this path consists of an initial subsequence
+	 *	of the elements of `other`.
+	 */
 	bool is_prefix_of(path const & other) const {
 		path common = common_prefix(*this,other);
 		return *this == common;
 	}
 
-	/*! \brief Get a sub-sequence of the path's elements as a string.
-	    \param  start   Index of the first element of the requested
-	            sub-sequence.
-	    \param  len Number of elements in the requested subsequence.
-
-	    \return The requested sub-sequence as a string. If `start` is
-	        out of range an empty string is returned. If there are fewer
-	        than `len` elements at `start` then all remaining are
-	        returned.
-	*/
+	/** \brief Get a sub-sequence of the path's elements as a string.
+	 *  \param  start   Index of the first element of the requested
+	 *           sub-sequence.
+	 *  \param  len Number of elements in the requested subsequence.
+     *
+	 *  \return The requested sub-sequence as a string. If `start` is
+	 *  out of range an empty string is returned. If there are fewer
+	 *  than `len` elements at `start` then all remaining are
+	 *  returned.
+	 */
 	std::string
 	segment(size_t start = 0, size_t len = std::string::npos) const {
 		element_pos section = get_section(start,len);
@@ -173,13 +168,13 @@ struct path {
 		       _path.substr(section.first,section.second) : std::string();
 	}
 
-	/*! \brief Append a string to the path.
-
-	    \param  str The string to append.
-
-	    A trailing `Delim` character is appended if not already present,
-		then `str`. `str` is not tested non-empty or for a leading `Delim`.
-	*/
+	/** \brief Append a string to the path.
+     *
+	 *  \param  str The string to append.
+     *
+	 *  A trailing `Delim` character is appended if not already present,
+	 *	then `str`. `str` is not tested non-empty or for a leading `Delim`.
+	 */
 	void append(std::string const & str) {
 		if (length() && _last != Delim) {
 			_path += Delim;
@@ -188,13 +183,13 @@ struct path {
 		analyse();
 	}
 
-	/*! \brief Prepend a string to the path.
-
-	    \param  str The string to prepend.
-
-	    A leading `Delim` char is prepended if not already present,
-		then `str`. `str` is not tested non-empty or for a trailing `Delim`.
-	*/
+	/** \brief Prepend a string to the path.
+     *
+	 *  \param  str The string to prepend.
+     *
+	 *  A leading `Delim` char is prepended if not already present,
+	 *	then `str`. `str` is not tested non-empty or for a trailing `Delim`.
+	 */
 	void prepend(std::string const & str) {
 		if (_first != Delim) {
 			_path.insert(0,1,Delim);
@@ -203,53 +198,53 @@ struct path {
 		analyse();
 	}
 
-	/*! \brief Get the concatenation of the path with a string.
-
-	    \param  str The string to be appended.
-	    \return A new path that results from appending `str` to a copy
-	    of `*this` with an intervening `Delim`.
-
-		The new path inherits the cursor of `*this`
-	*/
+	/** \brief Get the concatenation of the path with a string.
+     *
+	 *  \param  str The string to be appended.
+	 *  \return A new path that results from appending `str` to a copy
+	 *  of `*this` with an intervening `Delim`.
+     *
+	 *	The new path inherits the cursor of `*this`
+	 */
 	path operator+(std::string const & str) const {
 		path p(*this);
 		p.append(str);
 		return p;
 	}
 
-	/*! \brief Get the concatenation of the path with another.
-
-	    \param  rhs The path to be appended.
-	    \return A new path that results from appending `rhs` to a copy
-	    of `*this` with an intervening `Delim`.
-
-	    The new path inherits the cursor of *this
-	*/
+	/** \brief Get the concatenation of the path with another.
+     *
+	 *  \param  rhs The path to be appended.
+	 *  \return A new path that results from appending `rhs` to a copy
+	 *   of `*this` with an intervening `Delim`.
+     *
+	 *  The new path inherits the cursor of *this
+	 */
 	path operator+(path const & rhs) const {
 		return *this + rhs.str();
 	}
 
-	//! `operator+=(str)` is equivalent to `append(str)`
+	/// `operator+=(str)` is equivalent to `append(str)`
 	path & operator+=(std::string const & str) {
 		append(str);
 		return *this;
 	}
 
-	//! `operator+=(path)` is equivalent to `append(path)`
+	/// `operator+=(path)` is equivalent to `append(path)`
 	path & operator+=(path const & rhs) {
 		append(rhs.str());
 		return *this;
 	}
 
-	/*! \brief Insert a string into the path.
-	    \param  after The index of the element after which to insert.
-	    \param  str The string to insert.
-
-	    If `after` < `elements() - 1`, then `str` is inserted
-	    following element `after` and delimited from the next
-	    element by a `Delim` character. Otherwise the member
-	    function is equivalent to `append(str)`.
-	*/
+	/** \brief Insert a string into the path.
+	 *  \param  after The index of the element after which to insert.
+	 *  \param  str The string to insert.
+     *
+	 *  If `after` < `elements() - 1`, then `str` is inserted
+	 *  following element `after` and delimited from the next
+	 *  element by a `Delim` character. Otherwise the member
+	 *  function is equivalent to `append(str)`.
+	 */
 	void insert(size_t after,std::string const & str) {
 		if (after < elements() - 1) {
 			element_pos element = _elements[after];
@@ -261,14 +256,14 @@ struct path {
 		}
 	}
 
-	/*! \brief Remove a segment from the path.
-	    \param  start   The index of the first element to remove.
-	    \param  len     The number of elements to remove.
-
-	    If `start` is out of range then nothing is done. If there
-	    are fewer than `len` elements at `start` then all remaining
-	    are removed.
-	*/
+	/** \brief Remove a segment from the path.
+	 *  \param  start   The index of the first element to remove.
+	 *  \param  len     The number of elements to remove.
+     *
+	 *  If `start` is out of range then nothing is done. If there
+	 *  are fewer than `len` elements at `start` then all remaining
+	 *  are removed.
+	 */
 	void cut(size_t start = 0, size_t len = std::string::npos) {
 		element_pos section = get_section(start,len);
 		if (section.first != std::string::npos) {
@@ -282,23 +277,24 @@ struct path {
 		}
 	}
 
-	/*! \brief Append a string to a `path` and cursor to the new last element.
-	    \param  str The string to append.
-
-	    The member function is like `append` but also updates
-	    the cursor to the new final element.
-
-	*/
+	/** \brief Append a string to a `path` and cursor to the new last element.
+	 *   \param  str The string to append.
+     *
+	 *   The member function is like `append` but also updates
+	 *   the cursor to the new final element.
+     *
+	 */
 	void push_back(std::string const & str) {
 		append(str);
 		posn() = elements() - 1;
 	}
 
-	/*! \brief Remove the last element of the path and decrement the cursor.
-
-	    If the `path` is not empty, the final element is deleted and
-	    the cursor is decremented to the new final element.
-	*/
+	/** \brief Remove the last element of the path and cursor to the new
+     *      last element.
+     *
+	 *   If the `path` is not empty, the final element is deleted and
+	 *   the cursor is updated to the new final element.
+	 */
 	void pop_back() {
 		size_t parts = elements();
 		if (parts) {
@@ -310,11 +306,11 @@ struct path {
 		posn() = parts ? parts - 1 : 0;
 	}
 
-	/*! \brief Correct anomalies in the path.
-
-	    All sequences of > 1 `Delim` are reduced to 1 and any trailing
-	    `Delim` is removed.
-	*/
+	/** \brief Correct anomalies in the path.
+     *
+	 *  All sequences of > 1 `Delim` are reduced to 1 and any trailing
+	 *  `Delim` is removed.
+	 */
 	void rectify() {
 		std::string match(2,Delim);
 		for (size_t posn ; (posn = _path.find(match)) != std::string::npos; ) {
@@ -328,17 +324,17 @@ struct path {
 	}
 
 	///@{
-	/*! \brief Get a [const] reference to the path's cursor.
-
-	    \return A [const] reference to the cursor.
-
-	    The \c cursor can be used to maintain and modify an
-	    index into the path's elements.
-
-	    No operation on a path except assignment modifies its
-	    cursor, even if the operation leaves the cursor out of
-	    range.
-	*/
+	/** \brief Get a [const] reference to the path's cursor.
+     *
+	 *  \return A [const] reference to the cursor.
+     *
+	 *  The \c cursor can be used to maintain and modify an
+	 *   index into the path's elements.
+     *
+	 *  No operation on a path except assignment modifies its
+	 *  cursor, even if the operation leaves the cursor out of
+	 *  range.
+	 */
 	int & posn() {
 		return _cursor;
 	}
@@ -347,13 +343,13 @@ struct path {
 	}
 	///@}
 
-	/*! \brief Get the common initial prefix of two paths
-
-	    \param  lhs The first path to compare
-	    \param  rhs The second path to compare
-	    \return A `path` comprising the common initial elements of
-	        `lhs` and `rhs`.
-	*/
+	/** \brief Get the common initial prefix of two paths
+     *
+	 *  \param  lhs The first path to compare
+	 *  \param  rhs The second path to compare
+	 *  \return A `path` comprising the common initial elements of
+	 *       `lhs` and `rhs`.
+	 */
 	static path common_prefix(path const & lhs, path const & rhs) {
 		size_t count = std::min(lhs.elements(),rhs.elements());
 		path p;
@@ -367,14 +363,14 @@ struct path {
 
 private:
 
-	/*! \brief Type of an element or section locator in a `path`.
+	/** \brief Type of an element or section locator in a `path`.
+     *
+	 *   The type of an element or section locator in a `path`,
+	 *   consisting of the index and length of the element.
+	 */
+	using element_pos = std::pair<size_t,size_t>;
 
-	    The type of an element or section locator in a `path`,
-	    consisting of the index and length of the element.
-	*/
-	typedef std::pair<size_t,size_t> element_pos;
-
-	//! Analyse the `path` to determine its composition.
+	/// Analyse the `path` to determine its composition.
 	void analyse() {
 		_elements.resize(0);
 		size_t start = 0;
@@ -394,13 +390,14 @@ private:
 		}
 	}
 
-	/*! \brief Get the location of a section of the `path`.
-	    \param  start   The index of the first element of the required section.
-	    \param  len     The number of elements in the required section. Defaults
-	            to `std::string::npos` to request all elements from `start`.
-	    \return An `element_pos` that delimits the required section.
-	*/
-	element_pos get_section(size_t start, size_t len = std::string::npos) const {
+	/** \brief Get the location of a section of the `path`.
+	 *  \param  start   The index of the first element of the required section.
+	 *  \param  len     The number of elements in the required section. Defaults
+	 *           to `std::string::npos` to request all elements from `start`.
+	 *  \return An `element_pos` that delimits the required section.
+	 */
+	element_pos
+	get_section(size_t start, size_t len = std::string::npos) const {
 		if (len && start < elements()) {
 			len = std::min(len,_path.length() - start);
 			element_pos const & first = _elements[start];
@@ -415,15 +412,15 @@ private:
 		return element_pos(std::string::npos,std::string::npos);
 	}
 
-	//! The string representation of the `path`.
+	/// The string representation of the `path`.
 	std::string _path;
-	//! The structure of the path as a sequence of `element_pos`.
+	/// The structure of the path as a sequence of `element_pos`.
 	std::vector<element_pos> _elements;
-	//! The cursor of the path.
+	/// The cursor of the path.
 	int _cursor = 0;
-	//! The first character of the `path`.
+	/// The first character of the `path`.
 	char _first = 0;
-	//! The last character of the `path`.
+	/// The last character of the `path`.
 	char _last = 0;
 };
 
