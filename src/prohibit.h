@@ -37,14 +37,15 @@
 
 #include "platform.h"
 
-/*! \file prohibit.h
-	This file defines classes:
-	- no_copy_init
-	- no_assign
-	- no_copy
+/** \file prohibit.h
+ *	This file defines classes:
+ *  - no_default_ctor
+ *	- no_copy_init
+ *	- no_assign
+ *	- no_copy
 */
 
-//! A utility class to prevent default construction of containing class
+/// A utility class to prevent default construction of containing class
 struct no_default_ctor
 {
 	no_default_ctor() = delete;
@@ -52,7 +53,7 @@ struct no_default_ctor
 	explicit no_default_ctor(T&&){}
 };
 
-//! A utility class to prevent copy construction of containing class
+/// A utility class to prevent copy construction of containing class
 struct no_copy_init
 {
 	no_copy_init() = default;
@@ -60,7 +61,7 @@ struct no_copy_init
 	no_copy_init(no_copy_init &&) = delete;
 };
 
-//! A utility class to prevent assignment of containing class
+/// A utility class to prevent assignment of containing class
 struct no_assign
 {
 	no_assign() = default;
@@ -70,7 +71,7 @@ struct no_assign
 	no_assign & operator=(no_assign &&) = delete;
 };
 
-//! A utility class to prevent copying of containing class
+/// A utility class to prevent copying of containing class
 struct no_copy
 {
 	no_copy() = default;
