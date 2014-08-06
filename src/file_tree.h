@@ -296,6 +296,7 @@ struct file_tree
 					for (std::string entry;
 					     dir && (!(entry = dir.next()).empty()); ) {
 						abs_path.push_back(entry);
+						abs_path.to_end();
 						new_files += terminal_insert(abs_path,filter);
 						abs_path.pop_back();
 					}

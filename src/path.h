@@ -175,12 +175,23 @@ struct path {
 	 *  A trailing `Delim` character is appended if not already present,
 	 *	then `str`. `str` is not tested non-empty or for a leading `Delim`.
 	 */
-	void append(std::string const & str) {
+	void push_back(std::string const & str) {
 		if (length() && _last != Delim) {
 			_path += Delim;
 		}
 		_path +=  str;
 		analyse();
+	}
+
+	/// \brief Remove the last element of the path, if any.
+	void pop_back() {
+		size_t parts = elements();
+		if (parts) {
+			size_t cut = _elements[parts - 1].first;
+			cut -= parts-- > 1;
+			_path.erase(cut);
+			analyse();
+		}
 	}
 
 	/** \brief Prepend a string to the path.
@@ -190,13 +201,26 @@ struct path {
 	 *  A leading `Delim` char is prepended if not already present,
 	 *	then `str`. `str` is not tested non-empty or for a trailing `Delim`.
 	 */
-	void prepend(std::string const & str) {
+	void push_front(std::string const & str) {
 		if (_first != Delim) {
 			_path.insert(0,1,Delim);
 		}
 		_path.insert(0,str);
 		analyse();
 	}
+
+	/// \brief Remove the first element of the path, if any.
+	void pop_front() {
+		size_t parts = elements();
+		if (parts) {
+			size_t start = _elements[0].first;
+			size_t len = _elements[0].second;
+			len += parts-- > 1;
+			_path.erase(start,len);
+			analyse();
+		}
+	}
+
 
 	/** \brief Get the concatenation of the path with a string.
      *
@@ -224,15 +248,15 @@ struct path {
 		return *this + rhs.str();
 	}
 
-	/// `operator+=(str)` is equivalent to `append(str)`
+	/// `operator+=(str)` is equivalent to `push_back(str)`
 	path & operator+=(std::string const & str) {
-		append(str);
+		push_back(str);
 		return *this;
 	}
 
-	/// `operator+=(path)` is equivalent to `append(path)`
+	/// `operator+=(path)` is equivalent to `push_back(path.str())`
 	path & operator+=(path const & rhs) {
-		append(rhs.str());
+		push_back(rhs.str());
 		return *this;
 	}
 
@@ -252,7 +276,7 @@ struct path {
 			_path.insert(after,str + Delim);
 			analyse();
 		} else {
-			append(str);
+			push_back(str);
 		}
 	}
 
@@ -275,35 +299,6 @@ struct path {
 			_path.erase(section.first,section.second);
 			analyse();
 		}
-	}
-
-	/** \brief Append a string to a `path` and cursor to the new last element.
-	 *   \param  str The string to append.
-     *
-	 *   The member function is like `append` but also updates
-	 *   the cursor to the new final element.
-     *
-	 */
-	void push_back(std::string const & str) {
-		append(str);
-		posn() = elements() - 1;
-	}
-
-	/** \brief Remove the last element of the path and cursor to the new
-     *      last element.
-     *
-	 *   If the `path` is not empty, the final element is deleted and
-	 *   the cursor is updated to the new final element.
-	 */
-	void pop_back() {
-		size_t parts = elements();
-		if (parts) {
-			size_t cut = _elements[parts - 1].first;
-			cut -= parts-- > 1;
-			_path.erase(cut);
-			analyse();
-		}
-		posn() = parts ? parts - 1 : 0;
 	}
 
 	/** \brief Correct anomalies in the path.
@@ -342,6 +337,13 @@ struct path {
 		return _cursor;
 	}
 	///@}
+
+	/// Set the cursor to index the final element, or to 0 if the `path`
+	/// is empty, returning the new position.
+	int to_end() {
+		_cursor = elements() ? elements() - 1 : 0;
+		return _cursor;
+	}
 
 	/** \brief Get the common initial prefix of two paths
      *
@@ -387,6 +389,9 @@ private:
 			_last = _path[_path.length() - 1];
 		} else {
 			_first = _last = 0;
+		}
+		if (_cursor >= elements()) {
+            to_end();
 		}
 	}
 

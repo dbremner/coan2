@@ -74,11 +74,13 @@ void file_tree::traverser::operator()(entry const & entry)
 	}
 	if (entry.second->is_file()) {
 		_cur_path.push_back(entry.first);
+		_cur_path.to_end();
 		at_file(_cur_path.str());
 		_cur_path.pop_back();
 	} else {
 		_cur_dir = entry.second.get();
 		_cur_path.push_back(entry.first);
+		_cur_path.to_end();
 		enter_dir(_cur_path.str());
 	}
 }
