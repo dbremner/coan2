@@ -47,7 +47,7 @@
 /** \brief `struct dataset` encapsulates the tree of input files to be processed
  *   by coan.
  */
-struct dataset {
+struct dataset : private no_copy {
 
 	/** \brief Encapsulates the selection of files for processing
      *
@@ -98,9 +98,6 @@ struct dataset {
 
 		/// Process a file in the dataset.
 		void at_file(std::string const & filename);
-
-		/// No copying
-		no_copy _no_copy;
 
 	private:
 		/// The number of files reached.

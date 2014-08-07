@@ -53,7 +53,7 @@ namespace win
 /** \brief `struct win::directory` encapsulates a MS-Windows specific
  *   directory functionality.
  */
-struct directory : common::directory {
+struct directory : common::directory, private no_copy {
 	/** \brief Explicitly construct given a path
 	 *   \param path The pathname of the directory.
 	 */
@@ -119,9 +119,6 @@ struct directory : common::directory {
 		}
 		return _obj_info.cFileName;
 	}
-
-	/// No copying
-	no_copy _no_copy;
 
 private:
 

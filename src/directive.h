@@ -53,7 +53,7 @@
 /** \brief `template struct directive_base` is a base for specializations of
  *   `template struct directive<Type>`
  */
-struct directive_base
+struct directive_base : private no_copy
 {
 	/** \brief Evaluate a directive
 	 *  \param  keyword The keyword indicating the directive type.
@@ -106,9 +106,6 @@ protected:
 	 */
 	static line_type
 	eval_ifdef_or_ifndef(directive_type type, chewer<parse_buffer> & chew);
-
-	/// No copying
-	no_copy _no_copy;
 
 private:
 
@@ -176,9 +173,6 @@ struct directive : directive_base
 	void set_reported(bool reported = true) {
 		_loc->second = reported;
 	}
-
-	/// No copying
-	no_copy _no_copy;
 
 protected:
 

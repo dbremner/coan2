@@ -56,7 +56,7 @@
     notionally united at a root node that does not represent any
     file-system object, but just affords entry to the set.
 */
-struct file_tree
+struct file_tree : private no_copy
 {
 	struct traverser;
 
@@ -113,9 +113,6 @@ struct file_tree
 		unsigned insert(path_t & abs_path, Filter & filter) {
 			return intermediate_insert(abs_path,filter);
 		}
-
-		/// No copying
-		no_copy _no_copy;
 
 	private:
 
@@ -355,7 +352,7 @@ public:
 	 *  - At a file
 	 *  - At leaving a directory.
 	 */
-	struct traverser {
+	struct traverser : private no_copy {
 
 		traverser() = default;
 
@@ -384,8 +381,6 @@ public:
 
 	protected:
 
-		/// No copying
-		no_copy _no_copy;
 		/** \brief Pointer the node representing the latest directory that
 		 *   traversal has reached.
 		 */
@@ -454,9 +449,6 @@ public:
 	void add(InIter start, InIter end, Filter & filter) {
 		for (   ; start != end; add(*start++,filter)) {}
 	}
-
-	/// No copying
-	no_copy _no_copy;
 
 private:
 

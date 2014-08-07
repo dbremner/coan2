@@ -45,14 +45,6 @@
  *	- no_copy
 */
 
-/// A utility class to prevent default construction of containing class
-struct no_default_ctor
-{
-	no_default_ctor() = delete;
-	template<typename T>
-	explicit no_default_ctor(T&&){}
-};
-
 /// A utility class to prevent copy construction of containing class
 struct no_copy_init
 {
@@ -72,11 +64,9 @@ struct no_assign
 };
 
 /// A utility class to prevent copying of containing class
-struct no_copy
+struct no_copy : no_copy_init, no_assign
 {
 	no_copy() = default;
-	no_copy_init _no_copy_init;
-	no_assign _no_assign;
 };
 
 #endif //EOF

@@ -45,14 +45,16 @@
  */
 
 /// \brief `struct hash_include` encapsulates an `#include` directive.
-struct hash_include {
+struct hash_include : private no_copy {
+
+    hash_include() = delete;
 
 	/** \brief Explicitly construct from the argument of an
 	 *   `#include`  directive.
 	 *   \param  arg The body of the `#include` directive
 	 */
 	explicit hash_include(std::string const & arg)
-	: 	_no_default_ctor(nullptr),_directive(arg) {}
+	: _directive(arg) {}
 
 	/** \brief Explicitly construct from the argument of an
 	 *   `#include`  directive.
@@ -61,7 +63,7 @@ struct hash_include {
 	 *  positioned to the first offset not consumed.
      */
 	explicit hash_include(chewer<parse_buffer> & chew)
-	:  	_no_default_ctor(nullptr),_directive(read(chew)) {}
+	: _directive(read(chew)) {}
 
 
 	/** \brief Say whether the body of an `#include` directive is
@@ -114,11 +116,6 @@ struct hash_include {
 
 	/// Report the `#include` directive.
 	void report();
-
-	/// No default construction
-	no_default_ctor _no_default_ctor;
-	/// No copying
-	no_copy _no_copy;
 
 private:
 

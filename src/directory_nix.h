@@ -52,7 +52,7 @@ namespace nix
 /** \brief Class `nix::directory` encapsulates linux/unix-specific directory
  *   functionality.
  */
-struct directory : common::directory {
+struct directory : common::directory, private no_copy {
 	/** \brief Explicitly construct a directory given a path.
 	 *   \param path The pathname of the directory.
 	 */
@@ -103,9 +103,6 @@ struct directory : common::directory {
 		}
 		return _entry.d_name;
 	}
-
-	/// No copying
-	no_copy _no_copy;
 
 private:
 
