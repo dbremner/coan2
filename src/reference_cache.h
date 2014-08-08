@@ -41,18 +41,24 @@
 #include <string>
 #include <map>
 
-/*! \file reference_cache.h
-    This file defines class `reference_cache`.
-*/
+/** \file reference_cache.h
+ *   This file defines `struct reference_cache`.
+ */
 
-/*! \brief Class `reference_cache` encapsulates a cache of the
-	the expansions and evaluations of symbol references.
-*/
+/** \brief `struct reference_cache` encapsulates a cache of the
+ *	the expansions and evaluations of symbol references.
+ */
 struct reference_cache
 {
+    /// Encapsulates an entry in the reference cache
 	struct entry
 	{
-		//! Construct
+		/** Constructor
+		 *  \param expansion The expansion of the reference
+		 *  \param eval The evaluation of the reference
+		 *  \param reported Has the reference been reported?
+		 *  \param Is the expansion complete (or imcomplete because too big)
+		 */
 		entry(
 			std::string const & expansion,
 			evaluation const & eval,
@@ -61,77 +67,83 @@ struct reference_cache
 		: 	_expansion(expansion),_eval(eval),_reported(reported),
 			_complete(complete){}
 
-		//! Get the expansion of the cached reference
+		/// Get the expansion of the cached reference
 		std::string const & expansion() const {
 			return _expansion;
 		}
 
 		///@{
-		//! Get a [const] reference to the evaluation of the cached reference
+		/// Get a [const] reference to the evaluation of the cached reference
 		evaluation const & eval() const {
 			return _eval;
 		}
-		//! Get the evaluation of the cached reference
 		evaluation & eval() {
 			return _eval;
 		}
 		///@}
 
-		//! Has the cached reference been reported
+		/// Has the cached reference been reported
 		bool reported() const {
 			return _reported;
 		}
 
-		//! Mark the entry as reported, or not.
+		/// Mark the entry as reported, or not.
 		void set_reported(bool value = true) {
 			_reported = value;
 		}
 
-		//! Is the cached reference fully expanded?
+		/// Is the cached reference fully expanded?
 		bool complete() const {
 			return _complete;
 		}
 
-		//! Mark the entry as fully expanded, or not.
+		/// Mark the entry as fully expanded, or not.
 		void set_complete(bool value = true) {
 			_complete = value;
 		}
 
 	private:
-		//! The expansion of the cached reference
+		/// The expansion of the cached reference
 		std::string _expansion;
-		//! The evaluation of the cached reference
+		/// The evaluation of the cached reference
 		evaluation _eval;
-		//! Has the reference been reported.
+		/// Has the reference been reported.
 		bool _reported;
-		//! Is the cached expansion exhaustive?
+		/// Is the cached expansion complete?
 		bool _complete;
 	};
 
-	typedef std::map<std::string,entry> map;
-	typedef map::value_type value_type;
-	typedef map::iterator iterator;
-	typedef map::const_iterator const_iterator;
-	typedef std::pair<iterator,bool> insert_result;
+	using map = std::map<std::string,entry>;
+	using value_type = map::value_type;
+	using iterator = map::iterator;
+	using const_iterator = map::const_iterator;
+	using insert_result = std::pair<iterator,bool>;
 
-	//! Insert a `value_type` into the cache
+	/** \brief Insert a `value_type` into the cache
+	 *  \param v The `value_type` to insert
+	 *  \param hint A hint-iterator as per `std::map::insert`
+	 */
 	static iterator insert(value_type const & v, iterator hint) {
 		return get_map().insert(hint,v);
 	}
 
 
-	//! Insert an `entry` by key into cache
+	/** \brief Insert an `entry` by key into cache
+	 *  \param key The key of the entry
+	 *  \param e The entry to be inserted.
+	 *  \param hint A hint-iterator as per `std::map::insert`
+	 */
 	static iterator
 	insert(std::string const & key, entry const & e, iterator hint) {
 		return insert(value_type(key,e),hint);
 	}
 
-	//! Get an iteraror to the lower bound of a key in the cache.
+	/// Get an iteraror to the lower bound of a key in the cache.
 	static iterator lower_bound(std::string const & key) {
 		return get_map().lower_bound(key);
 	}
 
-	//! Delete all cached references of a given symbol.
+	/// Delete all cached references of a given symbol.
 	static void erase_symbol(std::string const & id){
 		auto i = get_map().lower_bound(id);
 		while (i != get_map().end()) {
@@ -145,12 +157,12 @@ struct reference_cache
 		}
 	}
 
-	//! Empty the cache
+	/// Empty the cache
 	static void clear() {
 		get_map().clear();
 	}
 
-	//! Say whether an iterator points to the end of the cache.
+	/// Say whether an iterator points to the end of the cache.
 	template<class Iter>
 	static bool at_end(Iter i) {
 		return i == get_map().end();
@@ -158,7 +170,7 @@ struct reference_cache
 
 private:
 
-	//! The cache map.
+	/// The cache map.
 	static map & get_map() {
 		static map the_map;
 		return the_map;
