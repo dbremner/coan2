@@ -35,8 +35,8 @@
 #include "canonical.h"
 
 /** \file argument_list.cpp
-    This file implements class `argument_list`.
-*/
+ *   This file implements `struct argument_list`.
+ */
 
 using namespace std;
 

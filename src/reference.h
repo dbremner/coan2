@@ -45,28 +45,32 @@
 #include <string>
 
 
-/*! \file reference.h
-    This file defines class `reference`.
-*/
+/** \file reference.h
+ *   This file defines `struct reference`.
+ */
 
 // Forward decl
 struct symbol;
 
-//! Class `reference` encapsulates a reference of a symbol.
+/** Class `reference` encapsulates a reference of a symbol,
+ *
+ *  A reference is a use of the symbol, possibly with macro
+ *  arguments.
+ */
 struct reference
 {
 	using insert_result = reference_cache::insert_result;
 
-	/*! \brief Construct given a symbol locator
-
-		\param loc Locator of the referenced symbol
-		\param invoker Pointer to the symbol reference, if any,
-			in whose resolution the symbol is referenced,
-
-		This constructor represents a simple reference to the
-		a symbol, optionallly in the context
-		of resolving the reference `invoker`
-	*/
+	/** \brief Construct given a symbol locator
+     *
+	 *	\param loc Locator of the referenced symbol
+	 *	\param invoker Pointer to the symbol reference, if any,
+	 *		in whose resolution the symbol is referenced,
+     *
+	 *	This constructor represents a simple reference to the
+	 *	a symbol, optionallly in the context
+	 *	of resolving the reference's `invoker`
+	 */
 	explicit
 	reference(symbol::locator loc, reference const * invoker = nullptr)
 	: 	_referee(loc),
@@ -75,9 +79,9 @@ struct reference
 		_key(_referee.id() + _args.str()){}
 
 
-	/*! \brief Construct given a symbol locator `argument_list`
-		and optional parent reference.
-	*/
+	/** \brief Construct given a symbol locator `argument_list`
+	 *	and optional parent reference.
+	 */
 	reference(
 		symbol::locator loc,
 		argument_list const & args,
@@ -89,13 +93,17 @@ struct reference
 		}
 
 
-	/*! \brief Construct given a symbol locator, `chewer`
-		and optional parent reference.
-
-		\param `loc` Locator of the referenced symbol.
-		\param `chew` A chewer from which the arguments are read.
-
-	*/
+	/** \brief Construct given a symbol locator, a `chewer<CharSeq>`,
+	 *	and optional parent reference.
+     *
+     *  \tparam CharSeq A charcter-sequence type
+	 *	\param `loc` Locator of the referenced symbol.
+     *  \param chew  On entry, a `chewer<CharSeq>` positioned at the offset in the
+     *      associated `CharSeq` from which to scan for an argument list.
+     *      On return is positioned at the first offset not consumed.
+	 *	\param invoker Pointer to the symbol reference, if any,
+	 *		in whose resolution the symbol is referenced,
+	 */
 	template<class CharSeq>
 	reference(
 		symbol::locator loc,
@@ -110,22 +118,23 @@ struct reference
 
 	virtual ~reference() = default;
 
-	/*! \brief Equality.
-
-		References are equal iff they are references of the
-		the same symbol with the same arguments.
-	*/
+	/** \brief Equality.
+     *
+	 *	References are equal iff they are references of the
+	 *	the same symbol with the same arguments.
+	 */
 	bool operator==(reference const & other) const {
 		return _referee.id() == other._referee.id() &&
 			_args == other._args;
 	}
 
+    /// Inequality
 	bool operator!=(reference const & other) const {
 		return !(*this == other);
 	}
 
 	///@{
-	//! Get a [const] the state of the referenced symbol
+	/// Get a [const] the state of the referenced symbol
 	symbol::locator const & callee() const {
 		return _referee;
 	}
@@ -134,13 +143,13 @@ struct reference
 	}
 	///@}
 
-	//! Get the name of the symbol referenced.
+	/// Get the name of the symbol referenced.
 	std::string const & id() const {
 		return _referee.id();
 	}
 
     ///@{
-	//! Get a [const] reference to the `argument_list`
+	/// Get a [const] reference to the `argument_list` of the reference
 	argument_list const & args() const {
 		return _args;
 	}
@@ -154,29 +163,22 @@ struct reference
 		return _key;
 	}
 
-#if 0 //IMK
-	//! Get the length of this reference.
-	size_t length() const {
-		return invocation().size();
-	}
-#endif
-
-	//! Get the expansion of the reference
+	/// Get the expansion of the reference
 	std::string const & expansion() {
 		return lookup().first->second.expansion();
 	}
 
-	//! Get the evaluation of the expansion
+	/// Get the evaluation of the expansion
 	evaluation const & eval() {
 		return lookup().first->second.eval();
 	}
 
-	//! Say whether this reference has been reported.
+	/// Say whether this reference has been reported.
 	bool reported() {
 		return lookup().first->second.reported();
 	}
 
-	//! Report this reference appropriately.
+	/// Report this reference appropriately.
 	void report() {
 		if (reportable()) {
 			do_report();
@@ -185,64 +187,65 @@ struct reference
 
 protected:
 
-	//! Say whether we are to explain this reference
+	/// Say whether we are to explain this reference
 	bool explain() const {
 		return _referee->configured() && explaining();
 	}
 
-	/*! \brief Say whether this reference is to be explained or
-		is descended from one being explained.
-	*/
+	/** \brief Say whether this reference is to be explained or
+	 *	is descended from one being explained.
+	 */
 	bool explaining() const;
 
-	//! Say whether this reference is eligible for reporting
+	/// Say whether this reference is eligible for reporting
 	bool reportable() const;
 
-	//! Do reporting of the reference if reportable
+	/// Do reporting of the reference if reportable
 	void do_report();
 
 
-	//! Get a lower bound to this reference in the reference cache.
+	/// Get a lower bound to this reference in the reference cache.
 	reference_cache::iterator lower_bound() const {
 		return reference_cache::lower_bound(_key);
 	}
 
-	/*! \brief Attempt to cache the reference
+	/** \brief Lookup the reference in the cache.
+     *
+     *  If the reference is not found in the cache it is
+     *  inserted now.
+	 *	\return A `reference_cache::insert_result` whose
+	 *	first element is an iterator to the cache record of
+	 *	this reference and whose second boolean element
+	 *	is true if the reference was inserted and false if
+	 *	there was already a cached record of this reference.
+	 */
+	reference_cache::insert_result lookup();
 
-		\return A `reference_cache::insert_result` whose
-		first element is an iterator to the cache record of
-		this reference and whose second boolean element
-		is true if the reference was inserted and false if
-		there was already a cached record of this reference.
-	*/
-	reference_cache::insert_result
-	lookup();
-
-	//! Return a cache entry for this reference
+	/// Return a cache entry for this reference
 	reference_cache::value_type digest();
 
-	/*! \brief Expand the reference
-
-		\param explain True if the `--explain` option is operative.
-	*/
+	/** \brief Expand the reference
+     *
+	 *	\param explain True if the `--explain` option is operative.
+    */
 	reference_cache::entry expand(bool explain);
 
-	/*! Diagnose a syntactically invalid reference
-
-		\return An `evaluation` that is set insoluble
-		if the reference is syntactically invalid.
-	*/
+	/** Diagnose a syntactically invalid reference
+     *
+	 *	\return An `evaluation` that is set insoluble
+	 *	if the reference is syntactically invalid.
+	 */
 	evaluation validate() const;
 
-	//! The `symbol_state` of the referenced symbol
+	/// The `symbol_state` of the referenced symbol
 	symbol::locator _referee;
-	//! The `argument_list` of the reference
+	/// The `argument_list` of the reference
 	argument_list _args;
-	/*! \brief Pointer to the reference that invokes this one, if any,
-		else null.
-	*/
+	/** \brief Pointer to the reference that invokes this one, if any,
+	 *	else null.
+	 */
 	reference const * _invoker;
-	//! Key to this reference in the reference cache
+	/// Key to this reference in the reference cache
 	std::string _key;
 };
 

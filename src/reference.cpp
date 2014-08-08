@@ -34,6 +34,10 @@
  *                                                                         *
  **************************************************************************/
 
+/** \file reference.cpp
+ *   This file implements `struct reference`.
+ */
+
 #include "platform.h"
 #include "reference.h"
 #include "expansion_base.h"
