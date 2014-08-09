@@ -39,18 +39,19 @@
 #include <type_traits>
 #include <cstddef>
 
-
-//IMK See if real returns can be dropped.
+/** \file traits.h
+ *	This file defines meta functions for testing type-traits
+ */
 
 namespace traits {
 
 using std::is_same;
 using std::declval;
 
-/*! \brief `template struct traits::has_value_type_of<T,V>`
-    exports a static const boolean member `value` that is true
-    iff `T` publicly defines type `value_type` as `V`
-*/
+/** \brief `template struct traits::has_value_type_of<T,V>`
+ *   exports a static const boolean member `value` that is true
+ *   iff `T` publicly defines type `value_type` as `V`
+ */
 template<typename T, typename V>
 struct has_value_type_of
 {
@@ -65,10 +66,10 @@ struct has_value_type_of
 };
 
 
-/*! \brief `template struct traits::has_size_method<T>`
-    exports a static const boolean member `value` that is true
-    iff the method `size_t T::size() const` exists.
-*/
+/** \brief `template struct traits::has_size_method<T>`
+ *  exports a static const boolean member `value` that is true
+ *  iff the method `size_t T::size() const` exists.
+ */
 template<typename T>
 struct has_size_method
 {
@@ -83,10 +84,10 @@ struct has_size_method
     static const bool value = test<T>(nullptr);
 };
 
-/*! \brief `template struct traits::has_size_index_operator<T>`
-    exports a static const boolean member `value` that is true
-    iff the method `T::value_type & T::operator[](size_t)` exists.
-*/
+/** \brief `template struct traits::has_size_index_operator<T>`
+ *  exports a static const boolean member `value` that is true
+ *  iff the method `T::value_type & T::operator[](size_t)` exists.
+ */
 template< typename T>
 struct has_index_operator
 {
@@ -105,10 +106,10 @@ struct has_index_operator
     static const bool value = test<T>(nullptr);
 };
 
-/*! \brief `template struct traits::has_data_method<T>`
-    exports a static const boolean member `value` that is true
-    iff the method `T::value_type const * T::data()` exists.
-*/
+/** \brief `template struct traits::has_data_method<T>`
+ *  exports a static const boolean member `value` that is true
+ *  iff the method `T::value_type const * T::data()` exists.
+ */
 template< typename T>
 struct has_data_method
 {
@@ -126,10 +127,10 @@ struct has_data_method
     static const bool value = test<T>(nullptr);
 };
 
-/*! \brief `template struct traits::has_extend_method<T>`
-    exports a static const boolean member `value` that is true
-    iff the method `size_t T::extend()` exists.
-*/
+/** \brief `template struct traits::has_extend_method<T>`
+ *  exports a static const boolean member `value` that is true
+ *  iff the method `size_t T::extend()` exists.
+ */
 template< typename T>
 struct has_extend_method
 {
@@ -147,12 +148,11 @@ struct has_extend_method
 
 };
 
-/*! \brief `template struct traits::is_random_access_char_sequence<T>`
-    exports a static const boolean member `value` that is true
-    iff T has a `value_type` = `char` and methods `size_t T::size() const`,
-    `char const *T::data() const` and `char & T::operator[](size_t)`
-*/
-
+/** \brief `template struct traits::is_random_access_char_sequence<T>`
+ *  exports a static const boolean member `value` that is true
+ *  iff T has a `value_type` = `char` and methods `size_t T::size() const`,
+ *  `char const *T::data() const` and `char & T::operator[](size_t)`
+ */
 template<typename T>
 struct is_random_access_char_sequence
 {
