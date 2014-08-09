@@ -38,8 +38,8 @@
  **************************************************************************/
 #include "platform.h"
 #include <vector>
+#include <string>
 #include <stdexcept>
-#include <algorithm>
 
 /** \file path.h
  *   This file defines `struct path`.

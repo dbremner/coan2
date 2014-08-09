@@ -36,11 +36,7 @@
 
 #include "parameter_substitution.h"
 #include "diagnostic.h"
-#include "formal_parameter_list.h"
-#include "reference.h"
 #include "symbol.h"
-#include "canonical.h"
-#include <vector>
 
 /** \file parameter_substitution.cpp
  *   This file implements the members of `namespace parameter_substitution`.

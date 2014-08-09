@@ -43,16 +43,11 @@
 
 #include "line_despatch.h"
 #include "citable.h"
-#include "options.h"
 #include "io.h"
-#include "chew.h"
 #include "contradiction.h"
 #include "if_control.h"
 #include "canonical.h"
 #include "directive.h"
-#include <iostream>
-#include <cassert>
-#include <cstring>
 
 /** \file line_despatch.cpp
  *  This file implements `struct line_despatch`

@@ -36,7 +36,6 @@
  *   DAMAGE.                                                               *
  *                                                                         *
  **************************************************************************/
-#include "platform.h"
 #include <string>
 
 /** \file filesys.h

@@ -43,8 +43,8 @@
  *   DAMAGE.                                                               *
  *                                                                         *
  **************************************************************************/
-#include "platform.h"
-#include "line_despatch.h"
+#include "line_type.h"
+#include <cstddef>
 
 /** \file if_control.h
  *   This file defines `struct if_control`

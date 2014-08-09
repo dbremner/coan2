@@ -39,7 +39,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "platform.h"
 #include "filesys.h"
 #include <string>
 #include <cassert>

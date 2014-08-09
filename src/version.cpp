@@ -34,6 +34,7 @@
  *                                                                         *
  **************************************************************************/
 
+#include "platform.h"
 #include "version.h"
 #include "options.h"
 #include <iostream>

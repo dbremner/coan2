@@ -38,18 +38,16 @@
  *   This file implements `struct reference`.
  */
 
-#include "platform.h"
 #include "reference.h"
 #include "expansion_base.h"
-#include "line_despatch.h"
 #include "options.h"
 #include "io.h"
-#include "symbol.h"
 #include "expression_parser.h"
 #include "diagnostic.h"
 #include "citable.h"
+#include "options.h"
+#include "line_despatch.h"
 #include <iostream>
-#include <algorithm>
 
 using namespace std;
 

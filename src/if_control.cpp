@@ -43,6 +43,7 @@
 
 #include "if_control.h"
 #include "diagnostic.h"
+#include "line_despatch.h"
 #include "chew.h"
 #include "io.h"
 

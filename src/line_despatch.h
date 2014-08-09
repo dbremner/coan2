@@ -44,7 +44,7 @@
  *                                                                         *
  **************************************************************************/
 
-#include "platform.h"
+#include "line_type.h"
 #include "parsed_line.h"
 #include <string>
 #include <memory>
@@ -52,36 +52,6 @@
 /** \file line_despatch.h
  *   This defines `struct line_despatch`
  */
-
-/// Enumeration of types of input lines
-enum line_type {
-    /// An `#if` that we can't resolve
-    LT_IF,
-    /// A true `#if`
-    LT_TRUE,
-    /// A false `#if`
-    LT_FALSE,
-    /// An `#elif` that we can't resolve
-    LT_ELIF,
-    /// A true `#elif`
-    LT_ELTRUE,
-    /// A false `#elif`
-    LT_ELFALSE,
-    /// An `#else` that we can't resolve
-    LT_ELSE,
-    /// An `#endif`
-    LT_ENDIF,
-    /// A non-directive line
-    LT_PLAIN,
-    /// End of file
-    LT_EOF,
-    /// A directive line of no more specific type than that is to be dropped
-    LT_DIRECTIVE_DROP,
-    /// A directive line of no more specific type that is to be kept
-    LT_DIRECTIVE_KEEP,
-    /// Sentinel
-    LT_SENTINEL
-};
 
 /** \brief Manages printing, discarding and replacement of lines.
  *

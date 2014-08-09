@@ -40,32 +40,14 @@
 
 #include "parsed_line.h"
 #include "io.h"
-#include "directive.h"
-#include "symbol.h"
 #include "lexicon.h"
 #include "if_control.h"
+#include "line_despatch.h"
 #include "options.h"
 #include "diagnostic.h"
 #include "citable.h"
-#include "canonical.h"
-#include <istream>
 
 using namespace std;
-
-parsed_line::parsed_line(istream * in, ostream *out)
-:	_extensions(0),
-	_lineno(0),
-	_in(in),
-	_out(out),
-	_keyword_posn(0),
-	_keyword_len(0),
-	_dtype(HASH_UNKNOWN),
-	_reportable(false),
-	_dropping(false),
-	_simplified(false),
-	_drop_run_length(0),
-	_indent(0){}
-
 
 size_t parsed_line::extend()
 {

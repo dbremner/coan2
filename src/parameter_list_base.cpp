@@ -31,15 +31,9 @@
  *   DAMAGE.                                                               *
  *                                                                         *
  **************************************************************************/
-#include "platform.h"
 #include "parameter_list_base.h"
-#include "chew.h"
-#include "canonical.h"
-#include "symbol.h"
-#include "diagnostic.h"
 #include <algorithm>
 #include <cassert>
-#include <cstring>
 
 /** \file parameter_list_base.cpp
  *   This file implements `struct innards::parameter_list_base`

@@ -39,14 +39,10 @@
 
 #include "identifier.h"
 #include "formal_parameter_list.h"
-#include "evaluation.h"
-#include "reference_cache.h"
-#include "line_despatch.h"
+#include "line_type.h"
 #include "parameter_substitution.h"
 #include <string>
-#include <memory>
 #include <set>
-#include <vector>
 #include <map>
 
 

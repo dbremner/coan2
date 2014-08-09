@@ -40,7 +40,6 @@
  *  This file implements `struct options`
  */
 
-#include "platform.h"
 #include "options.h"
 #include "symbol.h"
 #include "get_options.h"
@@ -48,6 +47,7 @@
 #include "diagnostic.h"
 #include "io.h"
 #include "dataset.h"
+#include "line_despatch.h"
 #include "help.h"
 #include "version.h"
 #include <fstream>

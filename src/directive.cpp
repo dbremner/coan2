@@ -43,6 +43,7 @@
 #include "if_control.h"
 #include "contradiction.h"
 #include "canonical.h"
+#include "symbol.h"
 #include <iostream>
 
 /** \file directive.cpp

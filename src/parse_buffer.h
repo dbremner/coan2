@@ -38,7 +38,6 @@
  **************************************************************************/
 
 #include <string>
-#include <cstddef>
 #include "eol.h"
 
 /** \file base_parse_buffer

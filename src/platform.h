@@ -103,29 +103,6 @@
 		#pragma warning(disable : 4800)
 		// Disable VC++ warning unary minus applied to unsigned type.
 		#pragma warning(disable : 4146)
-			/// Do we have c++11 feature `auto foo = bar()'?
-		#define CXX11_HAVE_DECL_AUTO 1
-		/// Do we have c++11 feature ` = default' ?
-		#define CXX11_HAVE_DECL_DEFAULT 0
-		/// Do we have c++11 feature ` = delete' ?
-		#define CXX11_HAVE_DECL_DELETE 0
-		/// Non-public defaulted member functions are supported
-		#define CXX11_HAVE_NON_PUBLIC_DEFAULT_DECL 1
-		/// Do we have c++11 feature default template arguments for functions?
-		#define CXX11_HAVE_FUNC_DEFAULT_TEMPLATE_ARGS 0
-		/// Do we have c++11 feature uniform initializers?
-		#define CXX11_HAVE_UNIFORM_INITIALIZATION 0
-		#if _MSC_VER >= 1800
-			/// Do we have c++11 membver std::string::back?
-			#define CXX11_HAVE_STRING_BACK 1
-			/// Do we have c++11 container member emplace_back()?
-			#define CXX11_HAVE_EMPLACE_BACK 1
-		#else
-			/// Do we have c++11 container member emplace_back()?
-			#define CXX11_HAVE_EMPLACE_BACK 0
-			/// Do we have c++11 membver std::string::back?
-			#define CXX11_HAVE_STRING_BACK 0
-		#endif
 	#endif
 #endif
 
@@ -133,68 +110,12 @@
 	#if (__clang_major__ < 3) || (__clang_major__ == 3 && \
 			__clang_minor__ < 1)
 		#error Sorry, you need clang 3.1 or later to build coan
-	#else
-        /// Do we have c++11 feature `auto foo = bar()'?
-		#define CXX11_HAVE_DECL_AUTO 1
-		/// Do we have c++11 feature ` = default' ?
-		#define CXX11_HAVE_DECL_DEFAULT 1
-		/// Do we have c++11 feature ` = delete' ?
-		#define CXX11_HAVE_DECL_DELETE 1
-		/// Do we have c++11 feature uniform initializers?
-		#define CXX11_HAVE_UNIFORM_INITIALIZATION 1
-        /// Non-public defaulted member functions are supported
-		#define CXX11_HAVE_NON_PUBLIC_DEFAULT_DECL 1
-		/// Do we have c++11 feature default template arguments for functions?
-		#define CXX11_HAVE_FUNC_DEFAULT_TEMPLATE_ARGS 1
-		/// Do we have c++11 member std::string::back?
-		#define CXX11_HAVE_STRING_BACK 1
-		/// Do we have c++11 container member emplace_back()?
-		#define CXX11_HAVE_EMPLACE_BACK 1
 	#endif
 #endif
 
 #if defined(__GNUC__) && !defined(__clang__)
 	#if (__GNUC__ < 4) || (__GNUC__ == 4 && __GNUC_MINOR__ < 3)
 		#error Sorry, you need GCC 4.3 or later to build coan
-	#elif (__GNUC__ >= 4)
-		#if (__GNUC_MINOR__ > 3)
-			/// Do we have c++11 feature `auto foo = bar()'?
-			#define CXX11_HAVE_DECL_AUTO 1
-			/// Do we have c++11 feature ` = default' ?
-			#define CXX11_HAVE_DECL_DEFAULT 1
-			/// Do we have c++11 feature ` = delete' ?
-			#define CXX11_HAVE_DECL_DELETE 1
-			/// Do we have c++11 feature uniform initializers?
-			#define CXX11_HAVE_UNIFORM_INITIALIZATION 1
-			/// Do we have c++11 container member emplace_back()?
-			#define CXX11_HAVE_EMPLACE_BACK 1
-		#else
-			/// Do we have c++11 feature `auto foo = bar()'?
-			#define CXX11_HAVE_DECL_AUTO 0
-			/// Do we have c++11 feature ` = default' ?
-			#define CXX11_HAVE_DECL_DEFAULT 0
-			/// Do we have c++11 feature ` = delete' ?
-			#define CXX11_HAVE_DECL_DELETE 0
-			/// Do we have c++11 feature uniform initializers?
-			#define CXX11_HAVE_UNIFORM_INITIALIZATION 0
-			/// Do we have c++11 container member emplace_back()?
-			#define CXX11_HAVE_EMPLACE_BACK 0
-		#endif
-		#if (__GNUC_MINOR__ > 5)
-			/// Do we have std::string::back?
-			#define CXX11_HAVE_STRING_BACK 1
-			/// Non-public defaulted member functions are supported
-			#define CXX11_HAVE_NON_PUBLIC_DEFAULT_DECL 1
-		#else
-			/// Non-public defaulted member functions are not supported
-			#define CXX11_HAVE_NON_PUBLIC_DEFAULT_DECL 0
-			/// Do we have std::string::back?
-			#define CXX11_HAVE_STRING_BACK 0
-		#endif
-		/** \brief Do we have c++11 feature default template arguments
-		 *	for functions?
-		 */
-		#define CXX11_HAVE_FUNC_DEFAULT_TEMPLATE_ARGS 1
 	#endif // (__GNUC__ < 4) || (__GNUC__ == 4 && __GNUC_MINOR__ < 3)
 #endif //  __GNUC__ && !__clang__
 

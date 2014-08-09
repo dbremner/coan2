@@ -37,6 +37,7 @@
 #include "diagnostic.h"
 #include "dataset.h"
 #include "if_control.h"
+#include "line_despatch.h"
 #include "options.h"
 #include "io.h"
 #include <iostream>

@@ -42,8 +42,6 @@
  */
 #include "parse_buffer.h"
 #include "directive_type.h"
-#include "options.h"
-
 
 /** `struct parsed_line` is the coan parser's
  *	representation of a parsed line of input read from a file.
@@ -55,7 +53,9 @@ struct parsed_line : parse_buffer
 	using base_type = parse_buffer;
 
 	/// Construct given pointers to input and output streams.
-	explicit parsed_line(std::istream * in, std::ostream * out);
+	explicit parsed_line(std::istream * in, std::ostream * out)
+    :	_in(in),
+        _out(out){}
 
 	~parsed_line() override {}
 
@@ -220,29 +220,29 @@ protected:
 	void set_reportable();
 
 	/// The number of linefeeds embedded in the line
-	unsigned _extensions;
+	unsigned _extensions = 0;
 	/// The greatest source line number spanned by this line
-	unsigned _lineno;
+	unsigned _lineno = 0;
 	/// The input stream from which this line is read
 	std::istream * _in;
 	/// The output stream to which this line is written
 	std::ostream * _out;
 	/// Offset to directive keyword, if any.
-	size_t	_keyword_posn;
+	size_t	_keyword_posn = 0;
 	/// Length of directive keyword, if any
-	size_t _keyword_len;
+	size_t _keyword_len = 0;
 	/// The directive type of this line.
-	directive_type _dtype;
+	directive_type _dtype = HASH_UNKNOWN;
 	/// Is this line reportable?
-	bool _reportable;
+	bool _reportable = false;
 	/// Are we dropping this line
-	bool _dropping;
+	bool _dropping = false;
 	/// Has the line been simplified?
-	bool _simplified;
+	bool _simplified = false;
 	/// Count of contiguous lines that are dropped together.
 	unsigned _drop_run_length = 0;
 	/// Amount by which the line is indented
-	unsigned _indent;
+	unsigned _indent = 0;
 };
 
 #endif //EOF

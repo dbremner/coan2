@@ -34,23 +34,16 @@
  *                                                                         *
  **************************************************************************/
 
-#include "platform.h"
-#include "symbol.h"
 #include "symbol.h"
 #include "line_despatch.h"
-#include "expression_parser.h"
 #include "diagnostic.h"
-#include "io.h"
-#include "citable.h"
 #include "reference.h"
-#include "options.h"
 #include "canonical.h"
 #include "contradiction.h"
 #include "if_control.h"
 #include <algorithm>
-#include <iostream>
 #include <cstring>
-#include <climits>
+#include <cassert>
 
 using namespace std;
 
@@ -157,15 +150,8 @@ void symbol::set_selection(char const *optarg)
 
 
 void symbol::report_premiere() {
-#if CXX11_HAVE_DECL_AUTO
 	auto first = _contributors.begin();
 	auto const last = _contributors.end();
-#else
-	std::vector<symbol *>::iterator first =
-		_contributors.begin();
-	std::vector<symbol *>::iterator const last =
-		_contributors.end();
-#endif
 	for (	;first != last; ++first) {
 		(*first)->report_premiere();
 

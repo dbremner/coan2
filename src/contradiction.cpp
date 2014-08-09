@@ -40,6 +40,7 @@
 #include "diagnostic.h"
 #include "io.h"
 #include "if_control.h"
+#include "line_despatch.h"
 #include "canonical.h"
 
 /** \file contradiction.cpp

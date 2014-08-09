@@ -41,16 +41,12 @@
 #include "symbol.h"
 #include "argument_list.h"
 #include "reference_cache.h"
-#include "chew.h"
 #include <string>
 
 
 /** \file reference.h
  *   This file defines `struct reference`.
  */
-
-// Forward decl
-struct symbol;
 
 /** Class `reference` encapsulates a reference of a symbol,
  *

@@ -40,6 +40,8 @@
 #include "integer_constant.h"
 #include "canonical.h"
 #include "reference.h"
+#include "options.h"
+#include "line_despatch.h"
 
 using namespace std;
 

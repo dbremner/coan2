@@ -37,7 +37,7 @@
  **************************************************************************/
 #include "io.h"
 #include "options.h"
-#include "dataset.h"
+#include "path.h"
 #include "directive.h"
 #include "diagnostic.h"
 #include "symbol.h"

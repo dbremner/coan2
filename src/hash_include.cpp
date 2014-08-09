@@ -33,15 +33,13 @@
  *   DAMAGE.                                                               *
  *                                                                         *
  **************************************************************************/
-#include "platform.h"
 #include "hash_include.h"
 #include "diagnostic.h"
 #include "citable.h"
 #include "options.h"
 #include "io.h"
-#include "chew.h"
 #include "canonical.h"
-#include "symbol.h"
+#include "reference.h"
 #include <iostream>
 
 /** \file hash_include.cpp

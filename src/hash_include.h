@@ -44,6 +44,8 @@
  *	This file defines `struct hash_include`
  */
 
+struct reference;
+
 /// \brief `struct hash_include` encapsulates an `#include` directive.
 struct hash_include : private no_copy {
 

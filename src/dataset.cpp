@@ -39,7 +39,9 @@
 #include "chew.h"
 #include "io.h"
 #include "diagnostic.h"
+#include "line_despatch.h"
 #include <iostream>
+#include <algorithm>
 
 /** \file dataset.cpp
  *   This file implements `struct dataset`

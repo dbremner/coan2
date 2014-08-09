@@ -35,8 +35,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "platform.h"
-
 /** \file prohibit.h
  *	This file defines classes:
  *  - no_default_ctor
