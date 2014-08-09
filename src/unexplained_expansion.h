@@ -39,30 +39,30 @@
 
 #include "expansion_base.h"
 
-/*! \file unexplained_expansion.h
-    This file defines class `unexplained_expansion`.
-*/
+/** \file unexplained_expansion.h
+ *   This file defines `struct unexplained_expansion`.
+ */
 
-/*! \brief Class `unexplained_expansion_base` encapsulates
-	macro-expansion of a reference where the `--explain`
-	option is inoperative.
+/** \brief `struct unexplained_expansion` encapsulates
+ *  macro-expansion of a reference where the `--explain`
+ *  option is inoperative.
 */
 struct unexplained_expansion : expansion_base
 {
-	//! Construct from a reference
+	/// Construct from a reference
 	explicit unexplained_expansion(reference const & ref)
 	: expansion_base(ref){};
 
 	~unexplained_expansion() override = default;
 
-	/*! Perform the unexplained expansion of the reference, returning the number
-		of edits applied.
-	*/
+	/** Perform the unexplained expansion of the reference, returning the number
+	 *	of edits applied.
+	 */
 	unsigned expand() override;
 
 protected:
 
-	//! Expand a string, returning the number of edits applied
+	/// Expand a string, returning the number of edits applied
 	unsigned expand(std::string & str) override;
 };
 

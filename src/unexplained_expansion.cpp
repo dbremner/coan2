@@ -35,6 +35,10 @@
  **************************************************************************/
 #include "unexplained_expansion.h"
 
+/** \file unexplained_expansion.cpp
+ *   This file implements `struct unexplained_expansion`.
+ */
+
 using namespace std;
 
 unsigned unexplained_expansion::expand()
