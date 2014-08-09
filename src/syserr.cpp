@@ -34,15 +34,15 @@
  *                                                                         *
  **************************************************************************/
 
-#include "platform.h" 
+#include "platform.h"
 #include "syserr.h"
 
-/*! \file syserr.h
-	This file implements free function `system_error_message`
-*/
+/** \file syserr.h
+ *	This file implements free function `system_error_message`
+ */
 
 using namespace std;
- 
+
 template<char Delim>
 string system_error_message(unsigned errnum);
 

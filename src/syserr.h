@@ -39,14 +39,14 @@
 
 #include <string>
 
-/*! \file syserr.h
-	This file defines free functions `system_error_message`
-*/
+/** \file syserr.h
+ *	This file defines the free function `system_error_message`
+ */
 
-/*! \brief Get the system error message for a system error number.
-	\param  errnum The system error number for which the message is required.
-	\return The system error message associated with \c errnum.
-*/
+/** \brief Get the system error message for a system error number.
+ *	\param  errnum The system error number for which the message is required.
+ *	\return The system error message associated with `errnum`.
+ */
 std::string system_error_message(unsigned errnum);
 
 #endif //EOF
