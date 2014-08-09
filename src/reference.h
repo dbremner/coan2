@@ -100,7 +100,7 @@ struct reference
 	 *	\param `loc` Locator of the referenced symbol.
      *  \param chew  On entry, a `chewer<CharSeq>` positioned at the offset in the
      *      associated `CharSeq` from which to scan for an argument list.
-     *      On return is positioned at the first offset not consumed.
+     *      On return `chew` is positioned at the first offset not consumed.
 	 *	\param invoker Pointer to the symbol reference, if any,
 	 *		in whose resolution the symbol is referenced,
 	 */

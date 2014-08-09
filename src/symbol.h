@@ -49,77 +49,86 @@
 #include <map>
 
 
-/*! \file symbol.h
-
-	This file defines class `symbol`
-*/
+/** \file symbol.h
+ *
+ *	This file defines `struct symbol`
+ */
 
 // Forward decl
 struct reference;
 
-//! `class symbol` encapsulates the symbol's state
-
+/// `struct symbol` encapsulates a preprocessor symbol's state
 struct symbol
 {
 	friend reference;
 
-	//! Symbolic constants denoting the provenance of a symbol.
+	/// Symbolic constants denoting the provenance of a symbol.
 	enum class provenance {
-		//! The symbol is not configured
+		/// The symbol is not configured
 		unconfigured,
-		//! The symbol is globally configured by a commandline option
+		/// The symbol is globally configured by a commandline option
 		global,
-		//! The symbol is transiently configured by an in-source directive
+		/// The symbol is transiently configured by an in-source directive
 		transient
 	};
 
 	using symbol_table = std::map<std::string,symbol>;
 	using table_entry = symbol_table::value_type;
 
+    /// `struct symbol::locator` encapsulates a symbol table entry.
 	struct locator
 	{
-		//! The default constructor locates the null symbol
+		/// The default constructor locates the null symbol
 		locator();
 
-		//! Construct from a symbol table iterator.
+		/// Construct from a symbol table iterator.
 		explicit locator(symbol_table::iterator iter)
 		: _loc(iter) {}
 
-		//! Construct a from a name.
+		/// Construct a from a name.
 		explicit locator(std::string const & id);
 
-		/*! \brief Construct given name and provenance.
-			\param  id The symbol identifier.
-			\param  source The `provenance` of the symbol.
-		*/
+		/** \brief Construct given a name and a provenance.
+		 *	\param  id The symbol identifier.
+		 *	\param  source The `provenance` of the symbol.
+		 */
 		locator(std::string const & id,
 			   provenance source)
 		: 	_loc(insert(id,source)) {}
 
-		//! Construct given a chewer
+		/** \brief Construct given a `chewer<CharSeq>`
+		 *
+		 *  \tparam CharSeq A character-sequence type
+         *  \param chew On entry, a `chewer<Charseq>` positioned at the offset
+         *  in the associated `CharSeq` from which to scan for an identifier.
+         *  On return`chew` is positioned to the first offset not consumed.
+         *
+         *  If no identifier is scanned the null locator results.
+         *
+		 */
 		template<class CharSeq>
 		explicit locator(chewer<CharSeq> & chew);
 
-		//! Equality operator
+		/// Equality
 		bool operator==(locator other) const {
 			return _loc == other._loc;
 		}
 
-		//! In equality operator
+		/// Inequality
 		bool operator!=(locator & other) const {
 			return !operator==(other);
 		}
 
-		//! Say whether this locator is null.
+		/// Say whether this locator is null.
 		bool null() const;
 
-		//! Cast to boolean = !null()
-		operator bool() const {
+		/// Explicit cast to boolean = !null()
+		explicit operator bool() const {
 			return !null();
 		}
 
 		///@{
-		//! Defeference
+		/// Defeference
 		symbol & operator*() {
 			return _loc->second;
 		}
@@ -138,7 +147,7 @@ struct symbol
 		}
 		///@}
 
-		//! Get the name of the symbol
+		/// Get the name of the symbol
 		std::string const & id() const {
 			return _loc->first;
 		}
@@ -148,58 +157,63 @@ struct symbol
 		symbol_table::iterator _loc;
 	};
 
-
-	//! Equality operator
+	/// Equality
 	bool operator==(symbol const & other) const {
 		return id() == other.id();
 	}
 
-	//! Get the name of the symbol.
-	std::string const & id() const {
-		return _loc.id();
-	}
-
-	//! Get the provenance of the symbol
-	provenance origin() const {
-		return _provenance;
-	}
-
-	//! Set the symbol's provenance
-	void originate(provenance origin) {
-		_provenance = origin;
-	}
-
-	/*! \brief Get the source line-number at which this symbol was last defined
-	    or undefined.
-	*/
-	unsigned line() const {
-		return _line;
-	}
-
-	//! Get a pointer to the symbol's definition; null if undefined
-	std::shared_ptr<std::string const> defn() const {
-		return _defn;
-	}
-
-	//! Get a pointer to the symbol's substitution format; null if none
-	std::shared_ptr<parameter_substitution::format const> format() const {
-		return _format;
-	}
-
-	//! Inequality operator
+	/// Inequality
 	bool operator!=(symbol const & other) const {
 		return !operator==(other);
 	}
 
-	//! Is the symbol defined
+	/// Get the name of the symbol.
+	std::string const & id() const {
+		return _loc.id();
+	}
+
+	/// Get the provenance of the symbol
+	provenance origin() const {
+		return _provenance;
+	}
+
+	/// Set the symbol's provenance
+	void originate(provenance origin) {
+		_provenance = origin;
+	}
+
+	/** \brief Get the source line-number at which this symbol was last defined
+	 *   or undefined.
+	 */
+	unsigned line() const {
+		return _line;
+	}
+
+	/// Get a pointer to the symbol's definition; null if undefined
+	std::shared_ptr<std::string const> defn() const {
+		return _defn;
+	}
+
+	/** \brief Get a pointer to the symbol's substitution format; null if none
+     *
+	 *  The substitution format is coan's internal representation of the
+	 *  manner in which macro arguments are to be interpolated into the
+	 *  symbol's definition, if any.
+	 *
+	 */
+	std::shared_ptr<parameter_substitution::format const> format() const {
+		return _format;
+	}
+
+	/// Is the symbol defined
 	bool defined() const {
 		return _defn.get();
 	}
 
-	//! Set the definition of the owning symbol.
+	/// Set the definition of the symbol.
 	void set_definition(std::string const & defn);
 
-	//! Set a macro parameter list in a symbol's `state`.
+	/// Set a macro parameter list for the symbol
 	void set_parameters(formal_parameter_list const & params) {
 		_params = params;
 		if (_defn && !_defn->empty()) {
@@ -209,319 +223,341 @@ struct symbol
 		}
 	}
 
-	//! Impute `n` parameters of the symbol
+	/// Impute `n` parameters of the symbol
 	void set_parameters(size_t n) {
 		_params = formal_parameter_list(n);
 	}
 
-	/*! \brief Define the owning symbol
-		\param defn The definition of the symbol
-		\param params The parameter list of the symbol
-
-		The symbol is assigned the new definition and parameter list,
-		the resulting expansion and evaluation are resolved and cached
-		and the symbol is left dirty.
-	*/
+	/** \brief Define symbol
+	 *	\param defn The definition of the symbol
+	 *	\param params The parameter list of the symbol
+     *
+	 *	The symbol is assigned the new definition and parameter list,
+	 *	the resulting expansion and evaluation are resolved and cached
+	 *	and the symbol is left `dirty`, i.e. other cached references
+	 *  of this symbol become invalid.
+	 */
 	void define(std::string const & defn, formal_parameter_list const & params);
 
-	//! Remove any macro parameter list
+	/// Remove any macro parameter list
 	void clear_parameters() {
 		_params = formal_parameter_list();
 	}
 
-	//! Undefine the owning symbol.
+	/// Undefine thesymbol.
 	void undef();
 
-	//! Report a reference to this symbol
+	/// Report a reference to this symbol
 	void report() const;
 
-	//! Say whether the symbol is configured.
+	/// Say whether the symbol is configured.
 	bool configured() const {
 		return _provenance == provenance::global ||
 			   _provenance == provenance::transient;
 	}
 
-	//! Say whether the symbol is deselected.
+	/// Say whether the symbol is deselected per the `--select` option.
 	bool deselected() const {
 		return _deselected;
 	}
 
-	//! Say whether the symbol has been invoked.
+	/** \brief Say whether the symbol has been invoked.
+	 *
+	 *  I.e. has a reference to the symbol been encountered.
+	 */
 	bool invoked() const {
 		return _invoked;
 	}
 
-	//! Say whether the symbol's definition is infinitely regressive
+	/// Say whether the symbol's definition is infinitely regressive
 	bool self_referential() const {
 		return _snapshot == int(pseudo_snapshot::infinite);
 	}
 
-	/*! \brief Say whether cached references of this symbol
-		are out of date, due to configuration changes of
-		contributing symbols
-	*/
+	/** \brief Say whether cached references of this symbol
+	 *	are out of date, due to configuration changes of this
+	 *  symbol or contributing symbols
+	 */
 	bool dirty() const {
 		return !self_referential() && (!clean() || _snapshot < snapshot_max());
 	}
 
-	//! Say whether the symbol's state has been determined.
+	/// Say whether the symbol's state has been determined.
 	bool clean() const {
 		return _snapshot > int(pseudo_snapshot::pristine);
 	}
 
-	//! Say whether a determination the symbol's state is in progress.
+	/// Say whether a determination the symbol's state is in progress.
 	bool in_progress() const {
 		return _snapshot == int(pseudo_snapshot::define_in_progress) ||
 			_snapshot == int(pseudo_snapshot::undef_in_progress);
 	}
 
-	//! Get the symbol's reference signature as string.
+	/** \brief Get the symbol's reference signature as string.
+	 *
+	 *  The reference signature is the symbol name suffixed
+	 *  with its formal parameter list, if any.
+	 */
 	std::string signature() const {
 		return id() + _params.str();
 	}
 
-	//! Get the symbol's parameters
+	/// Get the symbol's formal parameter list
 	formal_parameter_list const & parameters() const {
 		return _params;
 	}
 
-	//! Say whether a string is a parameter of the symbol
+	/// Say whether a string is a parameter of the symbol
 	size_t which_parameter(std::string const & str) const {
 		return _params.which(str);
 	}
 
-	//! Say whether this symbol is a variadic macro.
+	/// Say whether this symbol is a variadic macro.
 	bool variadic() const {
 		return _params.variadic();
 	}
 
-	/*! \brief Analyse and handle a `-D` option for this symbol.
-
-	    \param chew On entry, a `chewer` referencing the text offset from which
-			to scan. On return receives a `chewer` referencing the first
-			offset not consumed. The option is of the form
-			`-DSYM[(PARMS)[=VAL]` or `--define SYM[(PARMS)][=VAL]`.
-			`chew` shall point just past `SYM`.
-
-	    The option is analysed for well-formedness and for consistency and
-	    non-redundancy in the current configuration. Errors are diagnosed.
-	    If there are none the global configuration is updated if required.
+	/** \brief Analyse and handle a `-D` option for this symbol.
+     *
+	 *  \param chew On entry, a `chewer<std::string>` positioned at the offset
+     *      in the associated string from which to scan for a commandline
+     *      definition. On return `chew` is positioned at the first offset
+     *      not consumed. The commandline option is of the form
+	 *      `-DSYM[(PARMS)[=VAL]` or `--define SYM[(PARMS)][=VAL]` and
+	 *		`chew` shall finish just past `SYM`.
+     *
+	 *  The commandline option is analysed for well-formedness, consistency and
+	 *  non-redundancy in the current configuration. Errors are diagnosed.
+	 *  If there are none the global configuration is updated if required.
 	 */
 	void digest_global_define(chewer<std::string> & chew);
 
-	/*! \brief Analyse and handle an in-source `#define` directive for this
-	    symbol.
-
-	    \param   params The macro parameter list of the symbol.
-	    \param	definition	The proposed definition of the symbol.
-	    \return A `line_type` determined by the analysis, denoting
-	    the action to be taken on the directive.
-
-	    The proposed defintion is analysed for consistency and
-	    non-redundancy in the current configuration. Errors are diagnosed.
-	    If there are none the transient configuration is updated if required.
+	/** \brief Analyse and handle an in-source `#define` directive for this
+	 *   symbol.
+     *
+	 *  \param   params The macro parameter list of the symbol.
+	 *  \param	definition	The proposed definition of the symbol.
+	 *  \return A `line_type` determined by the analysis, denoting
+	 *  the action to be taken on the directive.
+     *
+	 *  The proposed defintion is analysed for consistency and
+	 *  non-redundancy in the current configuration. Errors are diagnosed.
+	 *  If there are none the transient configuration is updated if required.
 	 */
 	line_type
 	digest_transient_define(formal_parameter_list const & params,
 	                        std::string const & definition);
 
-	/*! \brief Analyse and handle a `-U` option for this symbol.
-
-	    \param	chew On entry, a `chewer` referencing the text offset from which
-			to scan. On return receives a `chewer` referencing the first
-			offset not consumed. The option is of the form `-USYM`. `chew` shall
-	    point just past `SYM`.
-
-	    The option is analysed for well-formedness and for consistency and
-	    non-redundancy in the current configuration. Errors are diagnosed.
-	    If there are none the global configuration is updated if required.
+	/** \brief Analyse and handle a `-U` option for this symbol.
+     *
+	 *  \param	chew On entry, a `chewer<std::string>` positioned at the text
+	 *  offset from which to scan for a commabndline un-define. On return
+	 *  `chew` is positioned at the the first offset not consumed.
+	 *  The commandline option is of the form `-USYM` and `chew` shall
+	 *  finish just past `SYM`.
+     *
+	 *  The option is analysed for well-formedness, consistency and
+	 *  non-redundancy in the current configuration. Errors are diagnosed.
+	 *  If there are none the global configuration is updated if required.
 	 */
 	void digest_global_undef(chewer<std::string> & chew);
 
-	/*! \brief Analyse and handle an in-source `#undef` directive for this
-	    symbol.
-
-	    \return A `line_type` denoting the action to be taken with the
-	        directive.
-	    The directive is analysed for well-formedness and for consistency
-	    non-redundancy in the current configuration. Errors that are diagnosed.
-	    If there are none the transient configuration is updated if required.
+	/** \brief Analyse and handle an in-source `#undef` directive for this
+	 *   symbol.
+     *
+	 *  \return A `line_type` denoting the action to be taken with the
+	 *  directive.
+	 *
+	 *  The directive is analysed for well-formedness and for consistency
+	 *  non-redundancy in the current configuration. Errors that are diagnosed.
+	 *  If there are none the transient configuration is updated if required.
 	 */
 	line_type digest_transient_undef();
 
-	//! Get the number of symbols with a given provenance.
+	/// Get the number of symbols with a given provenance.
 	static size_t count(provenance source);
 
-	//! Get the number of symbols in the symbol table
+	/// Get the number of symbols in the symbol table
 	static size_t count() {
 		return _sym_tab_.size() - 1;
 	}
 
-	/*! \brief Read an identifier from an `chewer`
-
-	    \param chew On entry, a `chewer` referencing the text offset from which
-			to scan. On return receives a `chewer` referencing the first
-			offset not consumed.
-
-	    \return The parsed identifier.
-	*/
+	/** \brief Read an identifier from an `chewer<CharSeq>`
+     *
+     *  \tparam CharSeq A charcter-sequence type
+     *  \param chew  On entry, a `chewer<CharSeq>` positioned at the offset in the
+     *      associated `CharSeq` from which to scan for an identifier.
+     *      On return `chew` is positioned at the first offset not consumed.
+     *
+	 *   \return The parsed identifier.
+     */
 	template<class CharSeq>
 	static std::string read_id(chewer<CharSeq> & chew);
 
 
-	/*! \brief Lookup a symbol by name in the symbol table.
-
-	    \param  id    The name of the symbol sought.
-	    \return A symbol. If no symbol named `id` is found then
-	        the Null symbol is returned.
-	*/
+	/*! \brief Lookup an identifier in the symbol table.
+     *
+	 *  \param  id  The identfier to be sought.
+	 *  \return A `locator`. If no symbol named `id` is found then
+	 *       the mull `locator` is returned.
+	 */
 	static locator lookup(std::string const & id) {
 		symbol_table::iterator result = table().find(id);
 		return result == table().end() ?
 		       locator() : locator(result);
 	}
 
-	/*! \brief Scan for a symbol name from a text pointer.
-	    \param  chew On entry, a `chewer` referencing the text offset from which
-			to scan. On return receives a `chewer` referencing the first
-			offset not consumed.
-	*/
+	/** \brief Scan for an identifier from a `chewer<CharSeq>`
+     *  \tparam CharSeq A charcter-sequence type
+     *  \param chew  On entry, a `chewer<CharSeq>` positioned at the offset in the
+     *      associated `CharSeq` from which to scan for an identifier.
+     *      On return `chew` is positioned at the first offset not consumed.
+     */
 	template<class CharSeq>
 	static void scan_name(chewer<CharSeq> & chew);
 
-	//IMK Fix xomments.
-	/*! \brief Find the first occurrence of a symbol name
-		within a terminal segment of a `parse_buffer`
-
-	    \param id The name of the symbol to be searched for.
-	    \param chew  On entry, a `chewer` positioned in a
-			`parse_buffer` at the start of the segment to search.
-			On return is positioned just passed the
-			first occurrence found of `id`, or at the end of
-			the `parse_buffer`.
-		\return The offset in the `parse_buffer`
-			of the first occurrence found of `id`, if any, else
-			`string::npos`
-
-		The member function does not ensure that a detected
-		occurrence of `id` is not a terminal portion of
-
-
-	*/
+	/** \brief Find the first occurrence of an identifier
+	 *	within a terminal segment a `CharSeq`
+     *
+     *  \tparam CharSeq A charcter-sequence type
+     *
+     *  \param id The identifier to be searched for.
+	 *  \param chew  On entry, a `chewer<CharSeq>` positioned at the offset
+	 *      in the associated `CharSeq` from which to scan. On return
+	 *  `chew` is positioned just passed the
+     *  first occurrence found of `id`, or at the end of the `CharSeq`
+     *  if none.
+     *
+     *  \return The offset in the `CharSeq` of the first occurrence found of
+     *  `id`, if any, else `string::npos`
+     *
+	 */
 	template<class CharSeq>
 	static size_t
 	find_first_in(std::string const & id, chewer<CharSeq> & chew);
 
-	/*! \brief Search a terminal portion of a `parse_buffer`
-		for any identifier.
-
-	    Search a terminal portion of a `parse_buffer` to find the first
-		syntactic occurrence of an identifier (parsed greedily)
-
-	    \param  chew  A `chewer` positioned on entry in the
-			`parse_buffer` search. On return, is positioned for
-			continuing the search beyond the first identifier detected, if any.
-
-		\param off On return, receives the offset in the `parse_buffer`
-		of the first identifier detected, if any, else is unchanged.
-
-	    \return The identifier detected, if any, else any empty string.
-	*/
+	/** \brief Search a terminal portion of a `CharSeq`
+     * for any identifier.
+     *
+	 *  Search a terminal portion of a `CharSeq` to find the first
+	 *	syntactic occurrence of an identifier (parsed greedily)
+	 *
+     *  \tparam CharSeq A charcter-sequence type
+     *
+	 *  \param chew  On entry, a `chewer<CharSeq>` positioned at the offset
+	 *      in the associated `CharSeq` from which to scan. On return
+	 *  `chew` is positioned just passed the
+     *  first syntactic occurrence found of identifier`, or at the end of the
+     *  `CharSeq` if none.
+     *
+     *  \param off On return, receives the offset in the `CharSeq`
+     * of the first identifier detected, if any, else is unchanged.
+     *
+	 *   \return The identifier detected, if any, else any empty string.
+	 */
 	template<class CharSeq>
 	static std::string find_id_in(chewer<CharSeq> & chew, size_t & off);
 
-	/*! \brief Search a terminal portion of a `parse_buffer`
-		for any known symbol name.
-
-	    Search a terminal portion of a `parse_buffer` to find the first
-		syntactic occurrence of the name of any known symbol.
-
-	    \param  chew  A `chewer` positioned on entry in the
-			`parse_buffer` search. On return, is positioned for
-			continuing the search beyond the first name detected, if any.
-
-		\param off On return, receives the offset in the `parse_buffer`
-		of the first name detected, if any, else is unchanged.
-
-	    \return Locator known symbol detected, if any, else the null locator.
-	*/
+	/** \brief Search a terminal portion of a `CharSeq`
+     *  for any known symbol name.
+     *
+     * Search a terminal portion of a `parse_buffer` to find the first
+     * syntactic occurrence of the name of any symbol in the symbol table.
+     *
+     *  \tparam CharSeq A charcter-sequence type
+     *
+	 *  \param chew  On entry, a `chewer<CharSeq>` positioned at the offset
+	 *      in the associated `CharSeq` from which to scan. On return
+	 *  `chew` is positioned just passed the
+     *  first occurrence found of he name of any known symbol, or at the end of
+     *  the `CharSeq` if none.
+     *
+	 *	\param off On return, receives the offset in the `CharSeq`
+	 *	of the first known symbol name detected, if any, else is unchanged.
+     *
+     *  \return The `locator` of the known symbol detected, if any, else the
+     *  null `locator`.
+     */
 	template<class CharSeq>
 	static locator find_any_in(chewer<CharSeq> & chew, size_t & off);
 
-	//! Say whether a character can be the first of a symbol name.
+	/// Say whether a character can be the first of a symbol name.
 	static bool is_start_char(char ch) {
 		return isalpha(ch) || ch == '_';
 	}
 
-	//! Say whether a character can occur in symbol name.
-
+	/// Say whether a character can occur in symbol name.
 	static bool is_valid_char(char ch) {
 		return isalnum(ch) || ch == '_';
 	}
 
-
-	//! Set the list of symbol masks for symbol reporting.
+	/// Set the list of symbol masks for symbol reporting, as
+	/// specified by the `--select` option.
 	static void set_selection(char const *optarg);
 
-	//! Delete all transient symbols from the symbol table
+	/// Delete all transient symbols from the symbol table
 	static void per_file_init();
 
-	//! Report the global configuration, according to options.
+	/// Report the global configuration, according to options.
 	static void report_global_config();
 
 private:
 
-	//! Pseudo snapshot numbers for symbols in indeterminate states
+	/// Pseudo snapshot numbers for symbols in indeterminate states
 	enum class pseudo_snapshot {
-		//! Symbol has merely be constructed
+		/// Symbol has merely be constructed
 		pristine = -1,
-		//! Symbol is in the process of being defined
+		/// Symbol is in the process of being defined
 		define_in_progress = -2,
-		//! Symbol is in the process of being undefined.
+		/// Symbol is in the process of being undefined.
 		undef_in_progress = -3,
-		//! References of the symbol are by definition insoluble.
+		/// References of the symbol are by definition insoluble.
 		infinite = -4
 
 	};
 
-	//! Prime the symbol with a pseudo snapshot
+	/// Prime the symbol with a pseudo snapshot
 	void set_pseudo_snapshot(pseudo_snapshot n = pseudo_snapshot::pristine) {
 		_snapshot = int(n);
 	}
 
-	/*! \brief Report a symbol as resolved from the global
-		configuration. The method invokes itself recursively
-		on all the symbol's contributors and then reports
-		the symbol itself.
-	*/
+	/** \brief Report a symbol as resolved from the global
+	 *	configuration. The method invokes itself recursively
+	 *	on all the symbol's contributors and then reports
+	 *	the symbol itself.
+	 */
 	void report_premiere();
 
-	//! Mark the symbol as invoked, or not
+	/// Mark the symbol as invoked, or not
 	void set_invoked(bool value = true) {
 		_invoked = value;
 	}
 
-	/*! \brief Record the symbol's definition as referring to another
-		another symbol, and recursively as referring to those
-		referred to by the other.
-	*/
+	/** \brief Record the symbol's definition as referring to another
+	 *	another symbol, and recursively as referring to those
+	 *	referred to by the other.
+	 */
 	void subscribe_to(locator other);
 
-	/*! Say whether the symbol's definition refers to another
-		another symbol, directly or indirectly.
-	*/
+	/** \brief Say whether the symbol's definition refers to another
+	 *	another symbol, directly or indirectly.
+	 */
 	bool subscribes_to(locator other) const;
 
-	//! Acquire all the symbol's contributors
+	/** \brief Acquire all the symbol's contributors.
+	 *
+	 *  The symbol discovers all other symbols that
+	 *  contribute to its definition.
+	 */
 	void subscribe();
 
-	//! Forget all contributions to this symbol by others
+	/// Forget all the symbol's contributors
 	void unsubscribe();
 
-	/*! \brief Assign the symbol state the current sequential snapshot number,
-		signifying that it is up-to-date, and increment the current
-		snapshot number.
-	*/
+	/** \brief Assign the symbol state the current sequential snapshot number,
+	 *	signifying that it is up-to-date, and increment the current
+	 *	snapshot number.
+	 */
 	void make_clean() {
 		_snapshot = _current_snapshot_++;
 		if (_provenance == provenance::global) {
@@ -529,71 +565,70 @@ private:
 		}
 	}
 
-	/*! \brief Assign the symbol state a pseudo snapshot number,
-		signifying that it is out of date, and recursively to
-		all its subscribers
-	*/
+	/** \brief Assign the symbol state a pseudo snapshot number,
+	 *	signifying that it is out of date, and recursively to
+	 *	all its subscribers
+	 */
 	void make_dirty(pseudo_snapshot n = pseudo_snapshot::pristine);
 
-	/*! \brief Assign the symbol state a pseudo snapshot number,
-		signifying that its definition involves and infinite
-		regress, and recursively to all its subscribers
-	*/
+	/** \brief Assign the symbol state a pseudo snapshot number,
+	 *	signifying that its definition involves an infinite
+	 *	regress, and recursively to all its subscribers
+	 */
 	void make_self_referential() {
 		make_dirty(pseudo_snapshot::infinite);
 	}
 
-	/*! \brief Diagnose the case in which defining or undefining the symbol
-		retrospectively changes the expansion of a previously defined
-		symbol.
-	*/
+	/** \brief Diagnose the case in which defining or undefining the symbol
+	 *	retrospectively changes the expansion of a previously defined
+	 *	symbol.
+	 */
 	void diagnose_retrospective_redefinition() const;
 
-	/*! \brief Get the maximum sequential snapshot number in the set of this
-		symbol and the recursive closure of its contributors
-
-	*/
+	/** \brief Get the maximum sequential snapshot number in the
+	 *  the recursive closure of this symbol its contributors
+	 */
 	int snapshot_max() const;
 
-	//! Say whether a symbol name matches a selection pattern for reporting.
+	/// Say whether a symbol name matches a selection pattern for reporting.
 	static bool selected(std::string const & id);
 
-	/*! \brief Say whether a symbol name is excluded from reporting by the
-		`--select` option.
-	*/
+	/** \brief Say whether a symbol name is excluded from reporting by the
+	 *	`--select` option.
+	 */
 	static bool deselected(std::string const & id);
 
-	/*! \brief Add a symbol name pattern for reporting.
-
-		\param pattern A symbol name pattern to select symbols for reporting
-
-		If `pattern` terminates with '*' then any symbol that initially
-		matches the preceding portion of `pattern` will be reported.
-
-		\return True if the pattern was added, false if it was
-			already present.
-	*/
+	/** \brief Add a symbol name pattern for reporting.
+     *
+	 *	\param pattern A symbol name pattern to select symbols for reporting
+     *
+	 *	If `pattern` terminates with '*' then any symbol that initially
+	 *	matches the preceding portion of `pattern` will be reported.
+     *
+	 *	\return True if the pattern was added, false if it was
+	 *		already present.
+	 */
 	static bool add_pattern(std::string const & pattern)  {
 		return _selected_symbols_set_.insert(pattern).second;
 	}
 
-	//! Say whether a symbol name matches a *-terminated wildcard prefix
+	/// Say whether a symbol name matches a *-terminated wildcard prefix
 	static bool
 	wildcard_match(std::string const & wildcard, std::string const & name);
 
-	//! Get a reference to the symbol table
+	/// Get a reference to the symbol table
 	static symbol_table & table() {
 		return symbol::_sym_tab_;
 	}
 
-	/*! \brief Insert the symbol into the symbol table with a specified
-	    provenance.
-	    \param  id The name of the symbol to insert.
-	    \param  source The `provenance` of the symbol.
-		\param hint An iterator that is an upper bound hint to the
-			insertion position.
-	    \return An iterator to the inserted symbol.
-	*/
+	/** \brief Insert the symbol into the symbol table with a specified
+	 *   provenance.
+	 *  \param  id The name of the symbol to insert.
+	 *  \param  source The `provenance` of the symbol.
+	 *  \param hint An iterator that is an upper bound hint to the
+	 *		insertion position.
+	 *  \return An iterator to the inserted symbol.
+	 */
 	static symbol_table::iterator
 	insert(
 		std::string const & id,
@@ -607,63 +642,58 @@ private:
 		return where;
 	}
 
-	/*! \brief Explicitly construct given a `provenance`.
-		\param source   The `provenance` of the symbol to construct.
-	*/
-	symbol(provenance source)
+	/** \brief Explicitly construct given a `provenance`.
+	 *	\param source   The `provenance` of the symbol to construct.
+	 */
+	explicit symbol(provenance source)
 	: 	_provenance(source),
 		_line(0),
 		_deselected(false),
 		_invoked(false),
 		_snapshot(int(pseudo_snapshot::pristine)){}
 
-
-
-	//! Locator of this symbol in the symbol table.
+	/// Locator of this symbol in the symbol table.
 	locator _loc;
-	//! Pointer to the symbol's definition, if any
+	/// Pointer to the symbol's definition, if any
 	std::shared_ptr<std::string> _defn;
-	//! List of the symbol's macro arguments, if any
+	/// List of the symbol's macro arguments, if any
 	formal_parameter_list _params;
-	//! The provenance of the symbol
+	/// The provenance of the symbol
 	provenance _provenance;
-	//! Source line-number where symbol last defined or undefined, or 0.
+	/// Source line-number where symbol last defined or undefined, or 0.
 	unsigned _line;
-	//! Is the symbol deselected?
+	/// Is the symbol deselected?
 	bool _deselected;
-	//! Has the symbol been invoked?
+	/// Has the symbol been invoked?
 	bool _invoked;
-	/*! Pointer to the parameter substitution format of the symbol,
-		null if none.
-	*/
+	/** Pointer to the parameter substitution format of the symbol,
+	 *	null if none.
+	 */
 	std::shared_ptr<parameter_substitution::format> _format;
-	/*! Sequential snapshot number of this symbol. Is set = the
-		global sequential snapshot counter each time a reference
-		of the symbol is resolved.
-	*/
+	/** Sequential snapshot number of this symbol. Is set = the
+	 *	global sequential snapshot counter each time a reference
+	 *	of the symbol is resolved.
+	 */
 	mutable int _snapshot;
-	/*! List of unique pointers to states of the symbols that
-		appear in the definition of the owning symbol
-	*/
+	/** List of locators of the symbols that
+	 *	appear in the definition of this symbol
+	 */
 	std::vector<symbol::locator> _contributors;
-	/*! List of unique pointers to states of the symbols that
-		to which this one contributes
-	*/
+	/// List of locators of the symbols to which this one contributes
 	std::vector<symbol::locator> _subscribers;
-	/*! Boolean vector flagging the parameters whose arguments shall not
-		be macro expanded because subject to token ops.
-	*/
+	/** Boolean vector flagging the parameters whose arguments shall not
+	 *	be macro expanded because theya are subject to token ops.
+	 */
 	std::vector<bool> _no_expand_pararms;
-
-	//! The current sequential snapshot number
+	/// The current sequential snapshot number
 	static int _current_snapshot_;
-	//! The last snapshot number consumed by the global configuration.
+	/// The last snapshot number consumed by the global configuration.
 	static int _last_global_snapshot_;
-	//! The set of symbols selected for reporting, if any
+	/// The set of symbols selected for reporting, if any
 	static std::set<std::string> _selected_symbols_set_;
-	//! The symbol table.
+	/// The symbol table.
 	static symbol_table _sym_tab_;
-	//! The table entry of the null symbol
+	/// The table entry of the null symbol
 	static table_entry _null_;
 };
 
