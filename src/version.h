@@ -37,11 +37,11 @@
  *                                                                         *
  **************************************************************************/
 
-/*! \file version.h
-    This file defines free function `version`
-*/
+/** \file version.h
+ *   This file defines free function `version`
+ */
 
-//!	Write version information about the program on `cout`.
+///	Write version information about the program on `cout`.
 void version();
 
 #endif // EOF

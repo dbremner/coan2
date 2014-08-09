@@ -33,21 +33,21 @@
  *   DAMAGE.                                                               *
  *                                                                         *
  **************************************************************************/
- 
+
 #include "version.h"
 #include "options.h"
 #include <iostream>
 #include <cstdlib>
 
-/*! \file version.cpp
-    This file implements free function `version`
-*/
+/** \file version.cpp
+ *   This file implements free function `version`
+ */
 
 #ifndef PACKAGE_VERSION
 #ifdef NIX
 #error PACKAGE_VERSION not defined.
 #endif
-#define PACKAGE_VERSION "5.2"
+#define PACKAGE_VERSION "6.0"
 #endif
 
 using namespace std;
@@ -59,5 +59,5 @@ void version()
 	     __TIME__ << ')' << '\n';
 	exit(EXIT_SUCCESS);
 }
- 
+
 // EOF
