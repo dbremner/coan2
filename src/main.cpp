@@ -40,6 +40,7 @@
 #include "io.h"
 #include "help.h"
 #include "dataset.h"
+#include "diagnostic.h"
 #include <iostream>
 
 using namespace std;

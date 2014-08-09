@@ -33,6 +33,11 @@
  **************************************************************************/
 
 #include "file_tree.h"
+#include "dataset.h"
+#include "diagnostic.h"
+#include "directory.h"
+#include "syserr.h"
+#include <cassert>
 
 /** \file file_tree.cpp
  *   This file implements the class `file_tree`
@@ -103,6 +108,87 @@ file_tree::node::ancestral_candidate_for_real_path(path_t const & cur_path,
 	}
 	return nullptr;
 }
+
+template<typename Filter>
+unsigned
+file_tree::node::intermediate_insert(path_t & abs_path, Filter & filter)
+{
+    unsigned new_files = 0;
+    std::string key = abs_path.cur_element();
+    node * found = find(key);
+    if (!found) {
+        node_ptr candidate(new node(this));
+        abs_path.posn() += (abs_path.posn() < int(abs_path.elements()));
+        unsigned more_files =
+            candidate->terminal_insert(abs_path,filter);
+        if (more_files) {
+            insert(key,candidate);
+            new_files += more_files;
+        }
+    } else if (++abs_path.posn() < int(abs_path.elements())) {
+        new_files += found->intermediate_insert(abs_path,filter);
+    }
+    return new_files;
+}
+
+template
+unsigned
+file_tree::node::intermediate_insert(
+    path_t & abs_path, dataset::selector & filter);
+
+template<typename Filter>
+unsigned file_tree::node::terminal_insert(path_t & abs_path, Filter & filter)
+{
+    unsigned new_files = 0;
+    if (abs_path.posn() < int(abs_path.elements())) {
+        std::string key = abs_path.cur_element();
+        node_ptr candidate(new node(this));
+        ++abs_path.posn();
+        unsigned more_files =
+            candidate->terminal_insert(abs_path,filter);
+        if (more_files) {
+            new_files += more_files;
+            insert(key,candidate);
+        }
+    } else {
+        fs::obj_type_t obj_type = fs::obj_type(abs_path.str());
+        if (fs::is_slink((obj_type))) {
+            path_t real_path(fs::real_path(abs_path.str()));
+            if (!ancestral_candidate_for_real_path(abs_path,real_path)) {
+                root()->insert(real_path,filter);
+            }
+        } else if (fs::is_file(obj_type)) {
+            new_files += filter(abs_path.str());
+        } else if (fs::is_dir(obj_type)) {
+            directory dir(abs_path.str());
+            for (std::string entry;
+                 dir && (!(entry = dir.next()).empty()); ) {
+                abs_path.push_back(entry);
+                abs_path.to_end();
+                new_files += terminal_insert(abs_path,filter);
+                abs_path.pop_back();
+            }
+            if (!dir) {
+                if (!dir.open()) {
+                    abend_cant_open_dir() <<
+                          "Can't open directory \"" << abs_path.str() <<
+                          "\" for reading: " <<
+                          system_error_message(dir.last_error())
+                          << emit();
+                } else {
+                    abend_cant_read_dir() <<
+                      "Read error on directory \"" << abs_path.str() <<
+                      "\": " <<
+                      system_error_message(dir.last_error()) << emit();
+                }
+            }
+        } else {
+            assert(false);
+        }
+    }
+    return new_files;
+}
+
 
 #ifdef FILETREE_DEBUG
 #include <iostream>

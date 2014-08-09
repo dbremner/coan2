@@ -45,6 +45,7 @@
 #include "symbol.h"
 #include "get_options.h"
 #include "contradiction.h"
+#include "diagnostic.h"
 #include "io.h"
 #include "dataset.h"
 #include "help.h"

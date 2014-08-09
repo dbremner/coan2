@@ -38,13 +38,9 @@
  **************************************************************************/
 #include "prohibit.h"
 #include "path.h"
-#include "directory.h"
-#include "diagnostic.h"
-#include "syserr.h"
 #include "filesys.h"
 #include <memory>
 #include <map>
-#include <cassert>
 
 /** \file file_tree.h
  *   This file defines `struct file_tree`.
@@ -228,24 +224,7 @@ struct file_tree : private no_copy
 		 *  \return The number of files inserted.
 		 */
 		template<typename Filter>
-		unsigned intermediate_insert(path_t & abs_path, Filter & filter) {
-			unsigned new_files = 0;
-			std::string key = abs_path.cur_element();
-			node * found = find(key);
-			if (!found) {
-				node_ptr candidate(new node(this));
-				abs_path.posn() += (abs_path.posn() < int(abs_path.elements()));
-				unsigned more_files =
-				    candidate->terminal_insert(abs_path,filter);
-				if (more_files) {
-					insert(key,candidate);
-					new_files += more_files;
-				}
-			} else if (++abs_path.posn() < int(abs_path.elements())) {
-				new_files += found->intermediate_insert(abs_path,filter);
-			}
-			return new_files;
-		}
+		unsigned intermediate_insert(path_t & abs_path, Filter & filter);
 
 		/** \brief Recursively insert files within a path into the `node`.
          *
@@ -267,56 +246,7 @@ struct file_tree : private no_copy
 		 *   \return The number of files inserted.
 		 */
 		template<typename Filter>
-		unsigned terminal_insert(path_t & abs_path, Filter & filter) {
-			unsigned new_files = 0;
-			if (abs_path.posn() < int(abs_path.elements())) {
-				std::string key = abs_path.cur_element();
-				node_ptr candidate(new node(this));
-				++abs_path.posn();
-				unsigned more_files =
-				    candidate->terminal_insert(abs_path,filter);
-				if (more_files) {
-					new_files += more_files;
-					insert(key,candidate);
-				}
-			} else {
-				fs::obj_type_t obj_type = fs::obj_type(abs_path.str());
-				if (fs::is_slink((obj_type))) {
-					path_t real_path(fs::real_path(abs_path.str()));
-					if (!ancestral_candidate_for_real_path(abs_path,real_path)) {
-						root()->insert(real_path,filter);
-					}
-				} else if (fs::is_file(obj_type)) {
-					new_files += filter(abs_path.str());
-				} else if (fs::is_dir(obj_type)) {
-					directory dir(abs_path.str());
-					for (std::string entry;
-					     dir && (!(entry = dir.next()).empty()); ) {
-						abs_path.push_back(entry);
-						abs_path.to_end();
-						new_files += terminal_insert(abs_path,filter);
-						abs_path.pop_back();
-					}
-					if (!dir) {
-						if (!dir.open()) {
-							abend_cant_open_dir() <<
-								  "Can't open directory \"" << abs_path.str() <<
-								  "\" for reading: " <<
-								  system_error_message(dir.last_error())
-								  << emit();
-						} else {
-							abend_cant_read_dir() <<
-							  "Read error on directory \"" << abs_path.str() <<
-							  "\": " <<
-							  system_error_message(dir.last_error()) << emit();
-						}
-					}
-				} else {
-					assert(false);
-				}
-			}
-			return new_files;
-		}
+		unsigned terminal_insert(path_t & abs_path, Filter & filter);
 
 		/** \brief Insert a child to this `node` with a given key.
          *

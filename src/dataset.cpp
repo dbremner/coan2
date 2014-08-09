@@ -38,6 +38,7 @@
 #include "if_control.h"
 #include "chew.h"
 #include "io.h"
+#include "diagnostic.h"
 #include <iostream>
 
 /** \file dataset.cpp

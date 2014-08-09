@@ -39,6 +39,7 @@
 #include "options.h"
 #include "dataset.h"
 #include "directive.h"
+#include "diagnostic.h"
 #include "symbol.h"
 #include <fstream>
 #include <iostream>
