@@ -568,21 +568,6 @@ template
 string symbol::read_id(chewer<parse_buffer> &);
 
 template<class CharSeq>
-void symbol::scan_name(chewer<CharSeq> & chew)
-{
-    static_assert(traits::is_random_access_char_sequence<CharSeq>::value,">:[");
-	if (symbol::is_start_char(*chew)) {
-		for (chew(+1,continuation);
-			symbol::is_valid_char(*chew); chew(+1,continuation)) {}
-	}
-}
-
-template
-void symbol::scan_name(chewer<string> &);
-template
-void symbol::scan_name(chewer<parse_buffer> &);
-
-template<class CharSeq>
 size_t
 symbol::find_first_in(
 	string const & id,

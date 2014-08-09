@@ -569,6 +569,16 @@ private:
     }
 
     template<class Mode>
+    void_if<Mode,chew_mode::identifier> consume() {
+       consume<chew_mode::continuation>();
+       if (!overshoot() && (isalpha(curch()) || curch() == '_')) {
+           for (++_cur; !overshoot() && (isalnum(curch()) || curch() == '_');
+                ++_cur,consume<chew_mode::continuation>()){}
+        }
+    }
+
+
+    template<class Mode>
     void_if<Mode,chew_mode::punctuation> consume() {
         consume<chew_mode::continuation>();
         for (	;!overshoot() && ispunct(curch()) &&

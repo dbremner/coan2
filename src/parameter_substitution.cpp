@@ -175,7 +175,7 @@ void format::build_format(symbol & sym)
 			_stringify_offs.push_back(mark - diff);
 			continue;
 		}
-		symbol::scan_name(chew);
+		chew(identifier);
 		if (size_t(chew) == mark) {
             _fmt += *chew;
             ++chew;

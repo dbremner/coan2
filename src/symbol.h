@@ -407,6 +407,7 @@ struct symbol
 		       locator() : locator(result);
 	}
 
+#if 0 //IMK
 	/** \brief Scan for an identifier from a `chewer<CharSeq>`
      *  \tparam CharSeq A charcter-sequence type
      *  \param chew  On entry, a `chewer<CharSeq>` positioned at the offset in the
@@ -415,6 +416,7 @@ struct symbol
      */
 	template<class CharSeq>
 	static void scan_name(chewer<CharSeq> & chew);
+#endif
 
 	/** \brief Find the first occurrence of an identifier
 	 *	within a terminal segment a `CharSeq`
