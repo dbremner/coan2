@@ -37,6 +37,7 @@
  *                                                                         *
  **************************************************************************/
 
+#include "identifier.h"
 #include "formal_parameter_list.h"
 #include "evaluation.h"
 #include "reference_cache.h"
@@ -382,19 +383,6 @@ struct symbol
 		return _sym_tab_.size() - 1;
 	}
 
-	/** \brief Read an identifier from an `chewer<CharSeq>`
-     *
-     *  \tparam CharSeq A charcter-sequence type
-     *  \param chew  On entry, a `chewer<CharSeq>` positioned at the offset in the
-     *      associated `CharSeq` from which to scan for an identifier.
-     *      On return `chew` is positioned at the first offset not consumed.
-     *
-	 *   \return The parsed identifier.
-     */
-	template<class CharSeq>
-	static std::string read_id(chewer<CharSeq> & chew);
-
-
 	/*! \brief Lookup an identifier in the symbol table.
      *
 	 *  \param  id  The identfier to be sought.
@@ -406,59 +394,6 @@ struct symbol
 		return result == table().end() ?
 		       locator() : locator(result);
 	}
-
-#if 0 //IMK
-	/** \brief Scan for an identifier from a `chewer<CharSeq>`
-     *  \tparam CharSeq A charcter-sequence type
-     *  \param chew  On entry, a `chewer<CharSeq>` positioned at the offset in the
-     *      associated `CharSeq` from which to scan for an identifier.
-     *      On return `chew` is positioned at the first offset not consumed.
-     */
-	template<class CharSeq>
-	static void scan_name(chewer<CharSeq> & chew);
-#endif
-
-	/** \brief Find the first occurrence of an identifier
-	 *	within a terminal segment a `CharSeq`
-     *
-     *  \tparam CharSeq A charcter-sequence type
-     *
-     *  \param id The identifier to be searched for.
-	 *  \param chew  On entry, a `chewer<CharSeq>` positioned at the offset
-	 *      in the associated `CharSeq` from which to scan. On return
-	 *  `chew` is positioned just passed the
-     *  first occurrence found of `id`, or at the end of the `CharSeq`
-     *  if none.
-     *
-     *  \return The offset in the `CharSeq` of the first occurrence found of
-     *  `id`, if any, else `string::npos`
-     *
-	 */
-	template<class CharSeq>
-	static size_t
-	find_first_in(std::string const & id, chewer<CharSeq> & chew);
-
-	/** \brief Search a terminal portion of a `CharSeq`
-     * for any identifier.
-     *
-	 *  Search a terminal portion of a `CharSeq` to find the first
-	 *	syntactic occurrence of an identifier (parsed greedily)
-	 *
-     *  \tparam CharSeq A charcter-sequence type
-     *
-	 *  \param chew  On entry, a `chewer<CharSeq>` positioned at the offset
-	 *      in the associated `CharSeq` from which to scan. On return
-	 *  `chew` is positioned just passed the
-     *  first syntactic occurrence found of identifier`, or at the end of the
-     *  `CharSeq` if none.
-     *
-     *  \param off On return, receives the offset in the `CharSeq`
-     * of the first identifier detected, if any, else is unchanged.
-     *
-	 *   \return The identifier detected, if any, else any empty string.
-	 */
-	template<class CharSeq>
-	static std::string find_id_in(chewer<CharSeq> & chew, size_t & off);
 
 	/** \brief Search a terminal portion of a `CharSeq`
      *  for any known symbol name.
@@ -482,16 +417,6 @@ struct symbol
      */
 	template<class CharSeq>
 	static locator find_any_in(chewer<CharSeq> & chew, size_t & off);
-
-	/// Say whether a character can be the first of a symbol name.
-	static bool is_start_char(char ch) {
-		return isalpha(ch) || ch == '_';
-	}
-
-	/// Say whether a character can occur in symbol name.
-	static bool is_valid_char(char ch) {
-		return isalnum(ch) || ch == '_';
-	}
 
 	/// Set the list of symbol masks for symbol reporting, as
 	/// specified by the `--select` option.
@@ -711,7 +636,7 @@ inline symbol::locator::locator(std::string const & id)
 
 template<class CharSeq>
 symbol::locator::locator(chewer<CharSeq> & chew) {
-	std::string id = read_id(chew);
+	std::string id = identifier::read(chew);
 	_loc = symbol::table().lower_bound(id);
 	if (_loc == symbol::table().end() || _loc->first != id) {
 		_loc = symbol::insert(id,symbol::provenance::unconfigured,_loc);

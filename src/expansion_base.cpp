@@ -119,7 +119,7 @@ unsigned expansion_base::edit_buf(
 {
     unsigned edits = 0;
 	chewer<string> chew(chew_mode::plaintext,str,off);
-	for (	;(off = symbol::find_first_in(e.id(),chew)) != string::npos;
+	for (	;(off = identifier::find_first_in(e.id(),chew)) != string::npos;
 				chew.sync()) {
 		argument_list args(chew);
 		if (e.args().str() == args.str()) {

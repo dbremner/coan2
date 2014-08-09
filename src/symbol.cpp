@@ -216,7 +216,7 @@ void symbol::subscribe_to(locator other)
 	if (other->subscribes_to(_loc)) {
 		make_self_referential();
 		other->make_self_referential();
-		return; //IMK try removing.
+		return;
 	}
 	if (find(_contributors.begin(),_contributors.end(),other) ==
 			_contributors.end()) {
@@ -243,7 +243,7 @@ void symbol::subscribe()
 	chewer<string> chew(chew_mode::plaintext,*_defn);
 	string id;
 	size_t off = 0;
-	while(((id = symbol::find_id_in(chew,off)),!id.empty())) {
+	while(((id = identifier::find_any_in(chew,off)),!id.empty())) {
 		locator loc(id);
 		subscribe_to(loc);
 		argument_list args(chew);
@@ -318,7 +318,7 @@ void symbol::report() const
 			chewer<string> chew(chew_mode::plaintext,*_defn);
 			string const & id = (*i)->id();
 			vector<argument_list> args_seen;
-			while ((off = symbol::find_first_in(id,chew)) != string::npos) {
+			while ((off = identifier::find_first_in(id,chew)) != string::npos) {
 				argument_list args(chew);
 				if (find(args_seen.begin(),args_seen.end(),args)
 						== args_seen.end()) {
@@ -550,73 +550,11 @@ symbol::digest_transient_undef()
 }
 
 template<class CharSeq>
-string symbol::read_id(chewer<CharSeq> & chew)
-{
-    static_assert(traits::is_random_access_char_sequence<CharSeq>::value,">:[");
-	string symname = canonical<symbol>(chew);
-	if (!symname.length()) {
-		error_not_identifier() <<
-			   "Identifier needed instead of \""
-			   << chew.buf().substr(size_t(chew)) << '\"' << emit();
-	}
-	return symname;
-}
-
-template
-string symbol::read_id(chewer<string> &);
-template
-string symbol::read_id(chewer<parse_buffer> &);
-
-template<class CharSeq>
-size_t
-symbol::find_first_in(
-	string const & id,
-	chewer<CharSeq> & chew)
-{
-    static_assert(traits::is_random_access_char_sequence<CharSeq>::value,">:[");
-	size_t len = id.length();
-	char prior = 0;
-	for(chew(literal_space); chew;
-			prior = *chew,chew(+1,literal_space)) {
-		if (!strncmp(&*chew,id.data(),len)) {
-			size_t where = size_t(chew);
-			chew += len;
-			if (!is_valid_char(prior) &&
-				(!chew || !is_valid_char(*chew))) {
-				return where;
-			}
-			--chew;
-		}
-	}
-	return string::npos;
-}
-
-template
-size_t symbol::find_first_in(string const &, chewer<string> &);
-template
-size_t symbol::find_first_in(string const &, chewer<parse_buffer> &);
-
-template<class CharSeq>
-string symbol::find_id_in(chewer<CharSeq> & chew, size_t & off)
-{
-    static_assert(traits::is_random_access_char_sequence<CharSeq>::value,">:[");
-	for(chew(literal_space); chew; chew(+1,literal_space)) {
-		if (is_start_char(*chew)) {
-			off = size_t(chew);
-			string name(1,*chew);
-			for (++chew; chew && is_valid_char(*chew); name += *chew,++chew) {}
-			return name;
-		}
-	}
-	return string();
-}
-
-template<class CharSeq>
 symbol::locator symbol::find_any_in(chewer<CharSeq> & chew, size_t & off)
 {
     static_assert(traits::is_random_access_char_sequence<CharSeq>::value,">:[");
 	string id;
-	while((id = find_id_in(chew,off)),!id.empty()) {
+	while((id = identifier::find_any_in(chew,off)),!id.empty()) {
 		locator sloc = lookup(id);
 		if (sloc) {
 			return sloc;

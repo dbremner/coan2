@@ -71,7 +71,7 @@ enum class text_type
 	raw_string_literal,
 	header_name,
 	code,
-	identifier,
+	name,
 	literal_space,
 	punctuation,
 	number_space,
@@ -146,10 +146,10 @@ struct code
 };
 
 /// A tag class for selecting a chew mode
-struct identifier
+struct name
 {
-	static text_type const id = text_type::identifier;
-	identifier() {}
+	static text_type const id = text_type::name;
+	name() {}
 };
 
 /// A tag class for selecting a chew mode
@@ -210,8 +210,8 @@ chew_mode::raw_string_literal const raw_string_literal;
 chew_mode::header_name const header_name;
 /// An exemplar `chew_mode::code`
 chew_mode::code const code;
-/// An exemplar `chew_mode::identifier`
-chew_mode::identifier const identifier;
+/// An exemplar `chew_mode::name`
+chew_mode::name const name;
 /// An exemplar `chew_mode::literal_space`
 chew_mode::literal_space const literal_space;
 /// An exemplar `chew_mode::punctuation`
@@ -569,7 +569,7 @@ private:
     }
 
     template<class Mode>
-    void_if<Mode,chew_mode::identifier> consume() {
+    void_if<Mode,chew_mode::name> consume() {
        consume<chew_mode::continuation>();
        if (!overshoot() && (isalpha(curch()) || curch() == '_')) {
            for (++_cur; !overshoot() && (isalnum(curch()) || curch() == '_');

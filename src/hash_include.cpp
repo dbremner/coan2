@@ -65,8 +65,8 @@ bool hash_include::valid() const
 string hash_include::read(chewer<parse_buffer> & chew)
 {
 	string arg;
-	if (symbol::is_start_char(*chew)) {
-		string id = symbol::read_id(chew);
+	if (identifier::is_start_char(*chew)) {
+		string id = identifier::read(chew);
 		symbol::locator sloc(id);
 		_ref.reset(new reference(sloc,chew));
 		arg = _ref->invocation();

@@ -103,7 +103,7 @@ ptrdiff_t format::adjust_for_token_paste_op(size_t pos)
 	size_t h_off;
 	if (specifier::get_ending_at(_fmt,pos,i_off,h_off) != string::npos) {
 		_fmt[h_off] = char(handling::substitute_arg);
-	} else if (!symbol::is_valid_char(_fmt[pos]) && _fmt[pos] != '#') {
+	} else if (!identifier::is_valid_char(_fmt[pos]) && _fmt[pos] != '#') {
 		throw error_bad_token_paste();
 	}
 	size_t start_cut = pos + 1;
@@ -114,7 +114,7 @@ ptrdiff_t format::adjust_for_token_paste_op(size_t pos)
 	}
 	if (specifier::get_at(_fmt,pos,i_off,h_off) != string::npos) {
 		_fmt[h_off] = char(handling::substitute_arg);
-	} else if (!symbol::is_valid_char(_fmt[pos]) && _fmt[pos] != '#') {
+	} else if (!identifier::is_valid_char(_fmt[pos]) && _fmt[pos] != '#') {
 		throw error_bad_token_paste();
 	}
 	size_t cut_len = pos - start_cut;
@@ -175,7 +175,7 @@ void format::build_format(symbol & sym)
 			_stringify_offs.push_back(mark - diff);
 			continue;
 		}
-		chew(identifier);
+		chew(name);
 		if (size_t(chew) == mark) {
             _fmt += *chew;
             ++chew;

@@ -346,7 +346,7 @@ expression_parser<CharSeq>::seek_rightmost_infix(
 			case 'a':
 				if (chew(+1,continuation) && *chew == 'n' &&
 					chew(+1,continuation) && *chew == 'd' &&
-					!(++chew && symbol::is_valid_char(*chew))) {
+					!(++chew && identifier::is_valid_char(*chew))) {
 					have_infix = true;
 					if (Precedence == boolean_and) {
 						op_start = op_off;
@@ -365,7 +365,7 @@ expression_parser<CharSeq>::seek_rightmost_infix(
 					if (chew(+1,continuation) && *chew == 'a' &&
 						chew(+1,continuation) && *chew == 'n' &&
 						chew(+1,continuation) && *chew == 'd' &&
-						!(++chew && symbol::is_valid_char(*chew))) {
+						!(++chew && identifier::is_valid_char(*chew))) {
 						have_infix = true;
 						if (Precedence == bit_and) {
 							op_start = op_off;
@@ -377,7 +377,7 @@ expression_parser<CharSeq>::seek_rightmost_infix(
 					chew = mark;
 					if (chew(+1,continuation) && *chew == 'o' &&
 						chew(+1,continuation) && *chew == 'r' &&
-						!(++chew && symbol::is_valid_char(*chew))) {
+						!(++chew && identifier::is_valid_char(*chew))) {
 						have_infix = true;
 						if (Precedence == bit_or) {
 							op_start = op_off;
@@ -391,7 +391,7 @@ expression_parser<CharSeq>::seek_rightmost_infix(
 				continue;
 			case 'o':
 				if (chew(+1,continuation) && *chew == 'r' &&
-					!(++chew && symbol::is_valid_char(*chew))) {
+					!(++chew && identifier::is_valid_char(*chew))) {
 					have_infix = true;
 					if (Precedence == boolean_or) {
 						op_start = op_off;
@@ -408,7 +408,7 @@ expression_parser<CharSeq>::seek_rightmost_infix(
 					chew(+1,continuation) && *chew == '_' &&
 					chew(+1,continuation) && *chew == 'e' &&
 					chew(+1,continuation) && *chew == 'q' &&
-					!(++chew && symbol::is_valid_char(*chew))) {
+					!(++chew && identifier::is_valid_char(*chew))) {
 					have_infix = true;
 					if (Precedence == neq) {
 						op_start = op_off;
@@ -422,7 +422,7 @@ expression_parser<CharSeq>::seek_rightmost_infix(
 			case 'x':
 				if (chew(+1,continuation) && *chew == 'o' &&
 					chew(+1,continuation) && *chew == 'r' &&
-					!(++chew && symbol::is_valid_char(*chew))) {
+					!(++chew && identifier::is_valid_char(*chew))) {
 					have_infix = true;
 					if (Precedence == bit_xor) {
 						op_start = op_off;
@@ -582,7 +582,7 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 			size_t mark = size_t(chew);
 			integer val = integer_constant::read_numeral(chew);
 			if (val.type() != INT_UNDEF) {
-				if (symbol::is_start_char(*chew)) {
+				if (identifier::is_start_char(*chew)) {
 					// Disallow UD-suffix in directive
 					chew = mark;
 				} else {
@@ -650,7 +650,7 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 			size_t mark = size_t(chew);
 			integer val = integer_constant::read_char(chew);
 			if (val.type() != INT_UNDEF) {
-				if (symbol::is_start_char(*chew)) {
+				if (identifier::is_start_char(*chew)) {
 					// Disallow UD-suffix in directive
 					chew = mark;
 				} else {
@@ -659,13 +659,13 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 				}
 				break;
 			}
-		} else if (symbol::is_start_char(*chew)) {
+		} else if (identifier::is_start_char(*chew)) {
 			size_t mark = size_t(chew);
 			if (*chew == 'L' || *chew == 'u' || *chew == 'U') {
 				/* Possible prefixed character constant*/
 				integer val = integer_constant::read_char(chew);
 				if (val.type() != INT_UNDEF) {
-					if (symbol::is_start_char(*chew)) {
+					if (identifier::is_start_char(*chew)) {
 						// Disallow UD-suffix in directive
 						chew = mark;
 					} else {
@@ -675,8 +675,8 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 					break;
 				}
 			}
-			if (symbol::is_start_char(*chew)) {
-				string id = symbol::read_id(chew);
+			if (identifier::is_start_char(*chew)) {
+				string id = identifier::read(chew);
 				symbol::locator sloc = symbol::lookup(id);
 				if (!sloc->configured()) {
 					sloc = symbol::locator(id);

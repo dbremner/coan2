@@ -35,7 +35,7 @@
  **************************************************************************/
 #include "canonical.h"
 #include "chew.h"
-#include "symbol.h"
+#include "identifier.h"
 #include "options.h"
 
 using namespace std;
@@ -54,10 +54,10 @@ template<class CharSeq>
 void canonical<symbol>::canonicalize(chewer<CharSeq> & chew)
 {
 	chew(continuation);
-	if (chew && symbol::is_start_char(*chew)) {
+	if (chew && identifier::is_start_char(*chew)) {
 		_canonical.append(1,*chew);
 		chew(+1,continuation);
-		for ( ; chew && symbol::is_valid_char(*chew);
+		for ( ; chew && identifier::is_valid_char(*chew);
 				chew(+1,continuation)) {
 			_canonical.append(1,*chew);
 		}
