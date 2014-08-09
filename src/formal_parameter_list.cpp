@@ -33,6 +33,7 @@
  **************************************************************************/
 #include "formal_parameter_list.h"
 #include "canonical.h"
+#include "parse_buffer.h"
 
 /** \file formal_parameter_list.cpp
  *   This file implements `struct formal_parameter_list`.

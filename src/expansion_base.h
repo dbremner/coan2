@@ -36,11 +36,8 @@
  *   DAMAGE.                                                               *
  *                                                                         *
  **************************************************************************/
-#include "parse_buffer.h"
 #include "reference.h"
-#include "chew.h"
 #include <string>
-#include <vector>
 #include <memory>
 
 /** \file expansion_base.h

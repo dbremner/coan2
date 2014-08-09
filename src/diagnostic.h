@@ -38,8 +38,6 @@
  **************************************************************************/
 
 #include "prohibit.h"
-#include "integer.h"
-#include "chew.h"
 #include "cloner.h"
 #include <sstream>
 #include <list>
@@ -84,7 +82,7 @@ struct emit {};
 struct defer {};
 
 /// A base class for diagnostic classes
-struct diagnostic_base {
+struct diagnostic_base : private no_assign {
 
 	using ptr = std::shared_ptr<diagnostic_base>;
 
@@ -332,9 +330,6 @@ protected:
 	static unsigned _error_directives_generated_;
 	/// Global count of operative `#error` directives output.
 	static unsigned _error_directives_operative_;
-
-	/// No assignment
-	no_assign _no_assign;
 
 private:
 

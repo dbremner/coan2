@@ -37,9 +37,7 @@
  *                                                                         *
  **************************************************************************/
 
-#include "platform.h"
 #include "chew.h"
-#include "parse_buffer.h"
 #include "traits.h"
 #include <string>
 

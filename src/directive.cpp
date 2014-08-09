@@ -39,12 +39,10 @@
 #include "diagnostic.h"
 #include "lexicon.h"
 #include "io.h"
-#include "chew.h"
 #include "hash_include.h"
 #include "if_control.h"
 #include "contradiction.h"
 #include "canonical.h"
-#include "symbol.h"
 #include <iostream>
 
 /** \file directive.cpp

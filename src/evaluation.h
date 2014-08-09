@@ -36,9 +36,7 @@
  *   DAMAGE.                                                               *
  *                                                                         *
  **************************************************************************/
-#include "platform.h"
 #include "integer.h"
-#include <string>
 
 /** \file evaluation.h
  *  This file defines `struct evaluation`.

@@ -33,6 +33,7 @@
  **************************************************************************/
 #include "argument_list.h"
 #include "canonical.h"
+#include "parse_buffer.h"
 
 /** \file argument_list.cpp
  *   This file implements `struct argument_list`.

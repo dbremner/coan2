@@ -16,6 +16,7 @@ coan_SOURCES = \
 	dataset.cpp \
 	diagnostic.cpp \
 	directive.cpp \
+	directory_common.cpp \
 	expansion_base.cpp \
 	explained_expansion.cpp \
 	expression_parser.cpp \

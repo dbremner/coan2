@@ -36,11 +36,12 @@
  *   DAMAGE.                                                               *
  *                                                                         *
  **************************************************************************/
-#include "filesys.h"
 
 /** \file directory_common.h
  *   This file defines `struct common::directory`
  */
+
+#include <string>
 
 /// Namespace containing OS-neutral directory functionality
 namespace common
@@ -80,8 +81,7 @@ protected:
 	/** \brief Explicitly construct a directory given a path.
 	 *   \param path The pathname of the \c directory
 	 */
-	explicit directory(std::string const & path)
-		: _abs_path(fs::real_path(path)),_last_error(0) {}
+	explicit directory(std::string const & path);
 
 	/** \brief Say whether a file leafname consists of 1 or 2 dots
 	 *   \param  leafname    The leafname to test.
@@ -98,7 +98,7 @@ protected:
 	/// The absolute pathname of the directory
 	std::string _abs_path;
 	/// The last error system code returned by a directory operation.
-	unsigned _last_error;
+	unsigned _last_error = 0;
 };
 
 

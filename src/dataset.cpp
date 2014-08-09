@@ -38,7 +38,6 @@
 #include "if_control.h"
 #include "chew.h"
 #include "io.h"
-#include <algorithm>
 #include <iostream>
 
 /** \file dataset.cpp

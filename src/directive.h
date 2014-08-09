@@ -37,9 +37,7 @@
  *                                                                         *
  **************************************************************************/
 
-#include "platform.h"
 #include "line_despatch.h"
-#include "directive_type.h"
 #include "chew.h"
 #include <map>
 #include <vector>

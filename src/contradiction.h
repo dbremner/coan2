@@ -39,7 +39,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "platform.h"
 #include "options.h"
 
 /*! \file contradiction.h

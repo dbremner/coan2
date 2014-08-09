@@ -40,7 +40,6 @@
 #include "prohibit.h"
 #include "eol.h"
 #include <type_traits>
-#include <cstddef>
 #include <cctype>
 
 /**
@@ -230,7 +229,7 @@ chew_mode::token_paste const token_paste;
  *  \tparam CharSeq A character-sequence type
  */
 template<class CharSeq>
-struct chewer
+struct chewer : private no_assign
 {
     static_assert(traits::is_random_access_char_sequence<CharSeq>::value,">:[");
 
@@ -471,9 +470,6 @@ struct chewer
 		scan<FirstMode,OtherModes...>();
 		return *this;
 	}
-
-	//! No assignment
-	no_assign _no_assign;
 
 private:
 

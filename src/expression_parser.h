@@ -36,10 +36,9 @@
  *   DAMAGE.                                                               *
  *                                                                         *
  **************************************************************************/
-#include "platform.h"
 #include "chew.h"
 #include "evaluation.h"
-#include "reference.h"
+#include <string>
 #include <vector>
 
 /** \file expression_parser.h
@@ -48,6 +47,7 @@
 
 // Forward decl
 struct diagnostic_base;
+struct reference;
 
 /** \brief Encapsulates parsing of preprocessor expressions.
  *

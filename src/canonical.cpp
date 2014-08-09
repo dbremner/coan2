@@ -34,9 +34,9 @@
  *                                                                         *
  **************************************************************************/
 #include "canonical.h"
-#include "chew.h"
 #include "identifier.h"
 #include "options.h"
+#include "parse_buffer.h"
 
 using namespace std;
 

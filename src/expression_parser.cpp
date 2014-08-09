@@ -36,15 +36,10 @@
 #include "expression_parser.h"
 #include "diagnostic.h"
 #include "citable.h"
-#include "symbol.h"
-#include "io.h"
-#include "chew.h"
-#include "options.h"
 #include "lexicon.h"
 #include "integer_constant.h"
 #include "canonical.h"
-#include "hash_include.h"
-#include <cstring>
+#include "reference.h"
 
 using namespace std;
 

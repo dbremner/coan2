@@ -36,12 +36,12 @@
  *   DAMAGE.                                                               *
  *                                                                         *
  **************************************************************************/
-#include "platform.h"
 #include "prohibit.h"
 #include "path.h"
 #include "directory.h"
 #include "diagnostic.h"
 #include "syserr.h"
+#include "filesys.h"
 #include <memory>
 #include <map>
 #include <cassert>
@@ -399,7 +399,7 @@ public:
 
 	/// Default constructor
 	file_tree()
-		: _root(node::child_list_ptr(new child_list)),_files(0) {}
+		: _root(node::child_list_ptr(new child_list)) {}
 
 	/// Get the number of files in the `file_tree`
 	unsigned files() const {
@@ -441,7 +441,7 @@ public:
 	 *  \param  filter An optional filter for selecting the files to be
 	 *       added.
      *
-	 *  All selcted files within the members of the argument sequence are
+	 *  All selected files within the members of the argument sequence are
 	 *  added to the `file_tree`.
      *
 	 */
@@ -463,7 +463,7 @@ private:
 	 *   This data member is updated by adding files to the tree so that
 	 *   the population of the tree may be queried without calculation.
 	 */
-	unsigned _files;
+	unsigned _files = 0;
 
 };
 
