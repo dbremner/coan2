@@ -36,6 +36,7 @@
 #include "expansion_base.h"
 #include "unexplained_expansion.h"
 #include "explained_expansion.h"
+#include "diagnostic.h"
 #include "reference.h"
 #include "citable.h"
 #include <string>
@@ -112,6 +113,20 @@ void expansion_base::set_expansion_flags()
 	}
 }
 
+void expansion_base::edit(	std::string & str,
+                size_t at, size_t len,
+                std::string const & replacement) {
+    size_t next_size = str.size() - len + replacement.size();
+    if (next_size > max_expansion_size()) {
+        auto gripe = warning_incomplete_expansion()
+                << "Macro expansion of \"" << this->reference::invocation()
+                << "\" stopped early. Will exceed max expansion size "
+                << max_expansion_size() << " bytes.";
+        throw gripe;
+    }
+    str.replace(at,len,replacement);
+}
+
 unsigned expansion_base::edit_buf(
 	string & str,
 	expansion_base const & e,
@@ -153,21 +168,30 @@ bool expansion_base::substitute()
     //IMK const chewer
     string & format = const_cast<string &>(callee()->format()->str());
 	chewer<string> chew(chew_mode::plaintext,format);
-	while (chew) {
-		size_t mark = size_t(chew);
-		chew(literal_space);
-		if (size_t(chew) > mark) {
-			s += format.substr(mark,size_t(chew) - mark);
-		}
-		specifier spec = specifier::read(chew);
-		if (spec) {
-			size_t param_i = spec.get_param_index();
-			s += args().at(param_i);
-		} else if (chew) {
-			s += *chew;
-			++chew;
-		}
-	}
+    while (chew) {
+        size_t mark = size_t(chew);
+        chew(literal_space);
+        if (size_t(chew) > mark) {
+            s += format.substr(mark,size_t(chew) - mark);
+        }
+        specifier spec = specifier::read(chew);
+        if (spec) {
+            size_t param_i = spec.get_param_index();
+            size_t next_size = s.size() + args().at(param_i).size();
+            if (next_size > max_expansion_size()) {
+                warning_incomplete_expansion()
+                << "Argument substitution in \"" << this->reference::invocation()
+                << "\" not done. Will exceed max expansion size "
+                << max_expansion_size() << " bytes.";
+                s = _value;
+                break;
+            }
+            s += args().at(param_i);
+        } else if (chew) {
+            s += *chew;
+            ++chew;
+        }
+    }
 	if (s != _value) {
 		_value = s;
 		return true;

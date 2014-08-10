@@ -86,6 +86,11 @@ struct expansion_base : reference
 	static std::unique_ptr<expansion_base>
 	factory(bool explain, reference const & ref);
 
+	/// Cut-off size for macro-expansions
+	static constexpr unsigned max_expansion_size() {
+	    return 4196;
+	}
+
 protected:
 
 	/** \brief Assign the expand-flags of the reference's arguments, if any,
@@ -112,11 +117,9 @@ protected:
 	 *	\param replacement String to replace the `len` characters
 	 *		at `at`
 	 */
-	static void edit(	std::string & str,
+	void edit(	std::string & str,
 					size_t at, size_t len,
-					std::string const & replacement) {
-        str.replace(at,len,replacement);
-	}
+					std::string const & replacement);
 
 
 	/** \brief Replace all remaining occurrences of a reference throughout a
@@ -127,7 +130,7 @@ protected:
      *	\param	off Offset into `str` at which to start replacement.
      *  \return The number of replacements made.
 	 */
-	static unsigned edit_buf(
+	unsigned edit_buf(
 		std::string & str,
 		expansion_base const & e,
 		size_t off = 0);

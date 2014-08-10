@@ -86,6 +86,24 @@ struct diagnostic_base : private no_assign {
 
 	using ptr = std::shared_ptr<diagnostic_base>;
 
+	/** \brief Constructor.
+     *
+	 *   \param severity_name Name of the severity level of the diagnostic
+	 *   \param  level   The severity level of the diagnostic
+	 *   \param  id      The causal identifier of the diagnostic
+	 *   \param  in_code_only True if the diagnostic is applicable only when
+	 *           parsing code.
+     *
+	 */
+	diagnostic_base(std::string const & severity_name,
+	                severity level, unsigned id,
+	                bool in_code_only = false);
+
+	/// Copy constructor.
+	diagnostic_base(diagnostic_base const & src)
+		: _gagged(src._gagged),_text(src._text.str()) {}
+
+
 	virtual ~diagnostic_base() = default;
 
 	/// Globally enqueue a copy of this `diagnostic_base` for deferred action.
@@ -267,28 +285,13 @@ struct diagnostic_base : private no_assign {
 
 protected:
 
-	/** \brief Constructor.
-     *
-	 *   \param severity_name Name of the severity level of the diagnostic
-	 *   \param  level   The severity level of the diagnostic
-	 *   \param  id      The causal identifier of the diagnostic
-	 *   \param  in_code_only True if the diagnostic is applicable only when
-	 *           parsing code.
-     *
-	 */
-	diagnostic_base(std::string const & severity_name,
-	                severity level, unsigned id,
-	                bool in_code_only = false);
-
-	/// Copy constructor.
-	diagnostic_base(diagnostic_base const & src)
-		: _gagged(src._gagged),_text(src._text.str()) {}
-
 	/// Increment global counts appropriately for the runtime type.
 	virtual void count() const {}
 
 	/// Clone the runtime object on the heap.
-	virtual diagnostic_base * clone() const = 0;
+	virtual diagnostic_base * clone() const {
+	    return new diagnostic_base(*this);
+	}
 
 	/// Emit the diagnostic
 	void despatch() const throw (unsigned);
