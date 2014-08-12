@@ -42,6 +42,7 @@
 #include "reference.h"
 #include "options.h"
 #include "line_despatch.h"
+#include "expansion_base.h"
 
 using namespace std;
 
@@ -700,11 +701,22 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 							<< "\" expands to nothing within expression";
 						defer_diagnostic(gripe);
 					} else if (result.insoluble()) {
-						error_non_term gripe;
-						gripe << '\"' << ref.invocation()
-							<< "\" expands to non-expression >>"
-							<< ref.expansion() << "<< within expression";
-						defer_diagnostic(gripe);
+					    if (ref.complete()) {
+                            error_non_term gripe;
+                            gripe << '\"' << ref.invocation()
+                                << "\" expands to non-expression >>"
+                                << ref.expansion() << "<< within expression";
+                            defer_diagnostic(gripe);
+					    } else {
+					        warning_incomplete_expansion gripe;
+                            gripe << "Macro expansion of \""
+                            << ref.invocation()
+                            << "\" stopped early. "
+                            "Will exceed max expansion size "
+                            << expansion_base::max_expansion_size()
+                            << " bytes";
+                            defer_diagnostic(gripe);
+					    }
 					}
 				}
 				break;

@@ -84,7 +84,7 @@ struct canonical : innards::canonical_base {
      * \tparam CharSeq A character-sequence type
      * \param seq A `CharSeq`
      */
-	template<class CharSeq> //IMK const chewer
+	template<class CharSeq>
 	explicit canonical(CharSeq & seq) {
 		canonicalize(seq);
 	}
@@ -95,7 +95,7 @@ struct canonical : innards::canonical_base {
      *  associated `CharSeq` at which canonicalization is to start. The
      *  canonical form of the remainder of the `CharSeq` is constructed.
      */
-	template<class CharSeq> //IMK const chewer
+	template<class CharSeq>
 	explicit canonical(chewer<CharSeq> & chew) {
         static_assert(traits::is_random_access_char_sequence<CharSeq>::value,
             ">:[");

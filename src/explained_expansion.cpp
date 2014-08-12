@@ -34,6 +34,7 @@
  *                                                                         *
  **************************************************************************/
 #include "explained_expansion.h"
+#include "diagnostic.h"
 #include <iostream>
 #include <iomanip>
 
@@ -110,10 +111,21 @@ unsigned explained_expansion::expand(string & str)
 			continue;
 		}
 		explained_expansion e(ref,this);
-		if (!e.expand()) {
-			continue;
+		try {
+            if (!e.expand()) {
+                continue;
 
-        }
+            }
+		}
+		catch(expansion_base const & eb) {
+            if (eb == e) {
+                warning_incomplete_expansion()
+                    << "Macro expansion of \"" << eb.reference::invocation()
+                    << "\" stopped early. Will exceed max expansion size "
+                    << max_expansion_size() << " bytes" << emit();
+                throw_self();
+            }
+		}
 		if (str.compare(off,e.value().size(),e.value()) == 0) {
             continue;
 		}
@@ -135,6 +147,7 @@ void explained_expansion::report_intermediate_value()
         cout << "Edit #" << setw(3) << setfill('0') << ++_step << ": >>"
             << (args_expansion_done() ? value() : invocation())
             << "<<" << endl;
+		_last_good_value = _value;
 	}
 }
 

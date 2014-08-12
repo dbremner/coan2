@@ -34,6 +34,7 @@
  *                                                                         *
  **************************************************************************/
 #include "unexplained_expansion.h"
+#include "diagnostic.h"
 
 /** \file unexplained_expansion.cpp
  *   This file implements `struct unexplained_expansion`.
@@ -77,18 +78,28 @@ unsigned unexplained_expansion::expand(string & str)
 			chew = off + sym->id().length();
 			continue;
 		}
+		_last_good_value = _value;
 		unexplained_expansion e(ref);
-		if (!e.expand()) {
-			continue;
+		try {
+            if (!e.expand()) {
+                continue;
+            }
+		}
+		catch(expansion_base const & eb) {
+            warning_incomplete_expansion()
+                << "Macro expansion of \"" << eb.reference::invocation()
+                << "\" stopped early. Will exceed max expansion size "
+                << max_expansion_size() << " bytes" << emit();
+            throw_self();
 		}
 		size_t len = size_t(chew) - off;
 		if (len && str.compare(off,len,e.value()) == 0) {
 			continue;
 		}
-		edit(str,off,size_t(chew) - off,e.value());
-		++edits;
-		edits += edit_buf(str,e,off + e.invocation().size());
-		edits += edit_trailing_args(e,_cur_arg + 1);
+        edit(str,off,size_t(chew) - off,e.value());
+        ++edits;
+        edits += edit_buf(str,e,off + e.invocation().size());
+        edits += edit_trailing_args(e,_cur_arg + 1);
 	}
 	return edits;
 }

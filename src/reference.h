@@ -174,6 +174,11 @@ struct reference
 		return lookup().first->second.reported();
 	}
 
+	/// Say whether this reference has been fully expanded.
+	bool complete() {
+		return lookup().first->second.complete();
+	}
+
 	/// Report this reference appropriately.
 	void report() {
 		if (reportable()) {

@@ -44,8 +44,8 @@
  *   This file defines `struct expansion_base`.
  */
 
-/** \brief ` struct expansion_base` is a base for classes that encapsulates
- *	a mode of macro-expansion of a reference.
+/** \brief ` struct expansion_base` is an abstract base for classes that
+ *  encapsulate a mode of macro-expansion of a reference.
  */
 struct expansion_base : reference
 {
@@ -58,10 +58,19 @@ struct expansion_base : reference
         return _value;
 	}
 
+	/// Get the last expanded value of the reference that was
+	/// completed before exceeding `max_expansion_size()`.
+	std::string const & last_good_value() const {
+        return _last_good_value;
+	}
+
 	/** \brief Perform the expansion of the reference returning the
      *   total number of edits applied
      */
 	virtual unsigned expand() = 0;
+
+	/// Throw the runtime object
+	virtual void throw_self() const = 0;
 
 	/** \brief Get a string representing the invocation of the reference
      *  with the current expansions of its arguments
@@ -165,8 +174,14 @@ protected:
 	 */
 	bool substitute();
 
+	/// Construct and throw a `warning_incomplete_expansion`
+	/// when macro expansion will exceed `max_expansion_size()`
+	//IMK void throw_incomplete_expansion();
+
 	/// The current expanded value
 	std::string _value;
+	/// The last value completed.
+	std::string _last_good_value;
 	/// Index of the first argument not yet fully expanded.
 	size_t _cur_arg = 0;
 };

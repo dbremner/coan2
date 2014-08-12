@@ -123,16 +123,14 @@ reference_cache::entry reference::expand(bool explain)
 		return reference_cache::entry(string(),eval);
 	}
 	unique_ptr<expansion_base> pe = expansion_base::factory(explain,*this);
-	bool complete = true;
 	try {
         pe->expand();
 	}
-	catch(warning_incomplete_expansion & gripe) {
-	    complete = false;
-	    gripe << emit();
+	catch(expansion_base const & eb) {
+	    eval.set_insoluble();
+	    return reference_cache::entry(pe->last_good_value(),eval,false,false);
 	}
-	return reference_cache::entry(
-		pe->value(),eval,false,complete);
+	return reference_cache::entry(pe->value(),eval,false,true);
 }
 
 

@@ -86,7 +86,7 @@ void expansion_base::set_expansion_flags()
 {
 
 	chewer<string> chew(chew_mode::plaintext,
-        const_cast<string &>(callee()->format()->str())); //IMK const chewer
+        const_cast<string &>(callee()->format()->str()));
 	for (chew(literal_space); chew; chew(literal_space)) {
 		specifier spec = specifier::read(chew);
 		if (spec) {
@@ -118,11 +118,7 @@ void expansion_base::edit(	std::string & str,
                 std::string const & replacement) {
     size_t next_size = str.size() - len + replacement.size();
     if (next_size > max_expansion_size()) {
-        auto gripe = warning_incomplete_expansion()
-                << "Macro expansion of \"" << this->reference::invocation()
-                << "\" stopped early. Will exceed max expansion size "
-                << max_expansion_size() << " bytes.";
-        throw gripe;
+        throw_self();
     }
     str.replace(at,len,replacement);
 }
@@ -165,7 +161,6 @@ unsigned expansion_base::edit_trailing_args(
 bool expansion_base::substitute()
 {
     string s;
-    //IMK const chewer
     string & format = const_cast<string &>(callee()->format()->str());
 	chewer<string> chew(chew_mode::plaintext,format);
     while (chew) {

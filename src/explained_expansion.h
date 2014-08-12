@@ -62,7 +62,12 @@ struct explained_expansion : expansion_base
 	/** \brief Perform the explained expansion of the reference, returning
      *  the numbe of edits applied.
 	 */
-	unsigned expand();
+	unsigned expand() override;
+
+    /// Throw *this
+	void throw_self() const override {
+	    throw *this;
+	}
 
 protected:
 

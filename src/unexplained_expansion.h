@@ -60,6 +60,11 @@ struct unexplained_expansion : expansion_base
 	 */
 	unsigned expand() override;
 
+    /// Throw *this
+	void throw_self() const override {
+	    throw *this;
+	}
+
 protected:
 
 	/// Expand a string, returning the number of edits applied
