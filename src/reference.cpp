@@ -97,7 +97,6 @@ reference_cache::value_type reference::digest()
 	}
 	reference_cache::entry resolved = expand(exp);
 	if (!resolved.eval().insoluble() && !resolved.eval().empty()) {
-        //IMK Const chewer
 		string & s = const_cast<string &>(resolved.expansion());
 		chewer<string> chew(chew_mode::plaintext,s);
 		chew(string_literal); // Expands as string literal?
@@ -128,7 +127,8 @@ reference_cache::entry reference::expand(bool explain)
 	}
 	catch(expansion_base const & eb) {
 	    eval.set_insoluble();
-	    return reference_cache::entry(pe->last_good_value(),eval,false,false);
+	    return reference_cache::entry(
+                            pe->reference::invocation(),eval,false,false);
 	}
 	return reference_cache::entry(pe->value(),eval,false,true);
 }
@@ -185,20 +185,16 @@ void reference::do_report()
 			} else {
 				if (_referee->self_referential()) {
 					cout << ": insoluble, because of infinite regress";
-				} else {
-					if (entry.complete()) {
-						cout << ": expands " << adverb
-						<< "as >>" + entry.expansion() + "<<";
-					} else {
-						cout << ": partially expanded " << adverb
-							<< "to >>"
-							<< entry.expansion() << "<<";
-					}
-					if (entry.eval().resolved()) {
-						cout << ": evaluates to "
-						<< citable(entry.eval().value());
-					}
-				}
+				} else if (entry.complete()) {
+                    cout << ": expands " << adverb
+                    << "as >>" + entry.expansion() + "<<";
+                    if (entry.eval().resolved()) {
+                        cout << ": evaluates to "
+                        << citable(entry.eval().value());
+                    }
+                } else {
+                    cout << ": insoluble, because macro expansion too large";
+                }
 			}
 		} else {
 			cout << ": insoluble";

@@ -121,7 +121,7 @@ unsigned explained_expansion::expand(string & str)
             if (eb == e) {
                 warning_incomplete_expansion()
                     << "Macro expansion of \"" << eb.reference::invocation()
-                    << "\" stopped early. Will exceed max expansion size "
+                    << "\" abandoned. Will exceed max expansion size "
                     << max_expansion_size() << " bytes" << emit();
                 throw_self();
             }
@@ -147,7 +147,6 @@ void explained_expansion::report_intermediate_value()
         cout << "Edit #" << setw(3) << setfill('0') << ++_step << ": >>"
             << (args_expansion_done() ? value() : invocation())
             << "<<" << endl;
-		_last_good_value = _value;
 	}
 }
 

@@ -58,12 +58,6 @@ struct expansion_base : reference
         return _value;
 	}
 
-	/// Get the last expanded value of the reference that was
-	/// completed before exceeding `max_expansion_size()`.
-	std::string const & last_good_value() const {
-        return _last_good_value;
-	}
-
 	/** \brief Perform the expansion of the reference returning the
      *   total number of edits applied
      */
@@ -126,10 +120,15 @@ protected:
 	 *	\param replacement String to replace the `len` characters
 	 *		at `at`
 	 */
-	void edit(	std::string & str,
-					size_t at, size_t len,
-					std::string const & replacement);
-
+    void edit(	std::string & str,
+                    size_t at, size_t len,
+                    std::string const & replacement) {
+        size_t next_size = str.size() - len + replacement.size();
+        if (next_size > max_expansion_size()) {
+            throw_self();
+        }
+        str.replace(at,len,replacement);
+    }
 
 	/** \brief Replace all remaining occurrences of a reference throughout a
      *  string.
@@ -174,14 +173,9 @@ protected:
 	 */
 	bool substitute();
 
-	/// Construct and throw a `warning_incomplete_expansion`
-	/// when macro expansion will exceed `max_expansion_size()`
-	//IMK void throw_incomplete_expansion();
 
 	/// The current expanded value
 	std::string _value;
-	/// The last value completed.
-	std::string _last_good_value;
 	/// Index of the first argument not yet fully expanded.
 	size_t _cur_arg = 0;
 };

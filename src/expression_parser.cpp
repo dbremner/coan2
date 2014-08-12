@@ -711,7 +711,7 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 					        warning_incomplete_expansion gripe;
                             gripe << "Macro expansion of \""
                             << ref.invocation()
-                            << "\" stopped early. "
+                            << "\" abandoned. "
                             "Will exceed max expansion size "
                             << expansion_base::max_expansion_size()
                             << " bytes";

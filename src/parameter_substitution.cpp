@@ -136,7 +136,7 @@ void format::do_token_paste_adjustments()
 
 void format::build_format(symbol & sym)
 {
-	string & s = const_cast<string &>(*sym.defn()); //IMK Const chewer
+	string & s = const_cast<string &>(*sym.defn());
 	formal_parameter_list const & params = sym.parameters();
 	chewer<string> chew(chew_mode::plaintext,s);
 	while (chew) {

@@ -78,7 +78,6 @@ unsigned unexplained_expansion::expand(string & str)
 			chew = off + sym->id().length();
 			continue;
 		}
-		_last_good_value = _value;
 		unexplained_expansion e(ref);
 		try {
             if (!e.expand()) {
@@ -88,7 +87,7 @@ unsigned unexplained_expansion::expand(string & str)
 		catch(expansion_base const & eb) {
             warning_incomplete_expansion()
                 << "Macro expansion of \"" << eb.reference::invocation()
-                << "\" stopped early. Will exceed max expansion size "
+                << "\" abandoned. Will exceed max expansion size "
                 << max_expansion_size() << " bytes" << emit();
             throw_self();
 		}
