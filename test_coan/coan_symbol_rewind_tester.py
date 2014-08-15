@@ -13,6 +13,8 @@ sys.path.append(os.path.join(top_srcdir,'python'))
 import coanlib
 from coanlib import *
 
+set_prog('coan_symbol_rewind_tester')
+
 parser = argparse.ArgumentParser(
 	prog=get_prog(),
     formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -22,7 +24,15 @@ parser = argparse.ArgumentParser(
 parser.add_argument('-b', '--bail', action='store_true',default=False,
     help='Bail at the first error. Default: Keep going through errors.')
     
-    
+parser.add_argument('-e', '--execdir', metavar='EXECDIR',default='src',
+    help='EXECDIR is the directory beneath '
+		'PKGDIR from which to run coan: Default \"src\"')
+		
+parser.add_argument('-p', '--pkgdir', metavar='PKGDIR',
+    help='PKGDIR is the coan package directory. '
+    'Default is value of environment variable COAN_PKGDIR is defined, '
+    'else \"..\"')
+		
 output_files = []
 replaced_files = []
 backed_up_files = []
@@ -30,6 +40,8 @@ testno = 1
 failures = 0
 args = vars(parser.parse_args())
 bail = args['bail']
+pkgdir = deduce_pkgdir(args)
+execdir = deduce_execdir(args)
 	
 def reference_run(testfiles):
 	''' Do a reference run, passing each input file individually
@@ -38,6 +50,8 @@ def reference_run(testfiles):
 	rc = run('python ' 
 	+ os.path.join(top_srcdir,'test_coan','coan_case_tester.py') \
 	+ ' --client=\'coan_symbol_rewind_tester\' '
+	+ ' --pkgdir=' + pkgdir
+	+ ' --execdir=' + execdir
 	+ ' ' + ' '.join(testfiles), timing = False) >> 8
 	if rc:
 		finis(rc)
@@ -53,8 +67,10 @@ def test_run(testfiles,monkey_args,expected_rc):
 	rc = run('python ' 
 	+ os.path.join(top_srcdir,'test_coan','coan_case_tester.py') \
 	+ ' --client=coan_symbol_rewind_tester'
+	+ ' --pkgdir=' + pkgdir
+	+ ' --execdir=' + execdir
 	+ ' --monkey=\"' + monkey_args + '\" --rc=' + str(expected_rc) + ' '
-	+ ' ' + ' '.join(testfiles), timing = False) >> 8
+	+ ' ' + ' '.join(testfiles), timing = False)
 	for file in testfiles:
 		backed_up_file = file + '.coan.test.bak'
 		if os.path.exists(backed_up_file):
@@ -111,24 +127,23 @@ def do_test(testfiles,monkey_args,expected_rc):
 	restore_backups()
 	del backed_up_files[:]
 	testno = testno + 1
-	failed = rc != 0 or mismatches != 0
-	failures = failures + int(rc)
+	failed = (rc != 0) or (mismatches != 0)
+	failures = failures + failed
 	if failures and bail:
 		finis(failures)
 
-set_prog('coan_symbol_rewind_tester')	
 testfiles = ['test_cases\\test0286.c','test_cases\\test0287.c'] \
 	if windows() else ['test_cases/test0286.c','test_cases/test0287.c']
 #monkey_args = 'source --no-inc -DFOO --replace --backup .coan.test.bak'
 monkey_args = 'source -DFOO --replace --backup .coan.test.bak'
-expected_rc = 17
+expected_rc = 19
 
 do_test(testfiles,monkey_args,expected_rc)
 
 testfiles = ['test_cases\\test0393.c','test_cases\\test0394.c'] \
 	if windows() else ['test_cases/test0393.c','test_cases/test0394.c']
 monkey_args = 'source -DFOO --replace --backup .coan.test.bak'
-expected_rc = 6
+expected_rc = 5
 
 do_test(testfiles,monkey_args,expected_rc)
 
