@@ -1827,3 +1827,8 @@ coan v6.0 Mike Kinghan 2014-08-15
 	New:
 		FEA0035: The alternative operator keywords, `and`, `or`, `not`, etc. are
 		now supported.
+		
+	New:
+		FEA0036: Coan now issues an informational diagnostic whenever a
+		`#define` or `#undef` retrospectively affects the meaning of previously
+		defined symbols. 
