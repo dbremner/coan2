@@ -5,6 +5,7 @@ copyright = 'Copyright (c) 2012-2013 Michael Kinghan'
 import string, sys, os.path, argparse, glob, shutil
 
 top_srcdir = os.getenv('COAN_PKGDIR')
+
 if not top_srcdir:
 	top_srcdir = os.pardir
 
@@ -12,9 +13,6 @@ sys.path.append(os.path.join(top_srcdir,'python'))
 
 from coanlib import *	
 from class_TestCase import TestCase
-#if sys.version_info < (2,7):
-#	sys.path.append(os.path.join(top_srcdir,'python','argparse-1.2.1'))
-#import argparse
 
 set_prog('coan_case_tester')
 
@@ -104,13 +102,15 @@ def get_wordsize():
 	return int(wordsize) * 8
 	
 args = vars(parser.parse_args())
+pkgdir = deduce_pkgdir(args)
+execdir = deduce_execdir(args)
+if not windows():
+	os.system('chmod -R +w ' + pkgdir)
 client = args['client']
 if (client):
 	set_prog(client)
 do_metrics()
 set_verbosity(args['verbosity'])
-pkgdir = deduce_pkgdir(args)
-execdir = deduce_execdir(args)
 testfiles = args['infile'];
 if len(testfiles) == 0:
 	pattern = os.path.join(pkgdir,'test_coan','test_cases','*.c')
@@ -136,9 +136,7 @@ archbits = get_wordsize()
 if not archbits:
 	bail('*** Cannot determine wordsize of this machine! ***')
 
-if not windows():
-	os.system('chmod -R +w ' + pkgdir)
-	
+
 if not monkey_args:
 	num_tests = len(testfiles)
 	for testfile in sorted(testfiles):

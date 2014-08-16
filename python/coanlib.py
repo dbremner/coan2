@@ -158,10 +158,10 @@ def fopen(file,mode):
 		bail('*** Unknown file open mode\'' + mode + '\' ***')   
 	try:
 		return open(file,mode)
-	except IOError:
+	except IOError as error:
 		modestr = 'reading' if mode == 'r' else 'writing'
 		bail('*** Cannot open file \"' + file + '\"' + " for " + \
-			modestr + ' ***')
+			modestr + ': ' + '{0}'.format(error) + ' ***')
 			
 def make_path(path):
 	''' 

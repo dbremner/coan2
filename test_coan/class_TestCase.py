@@ -33,7 +33,7 @@ class TestCase:
 		self.__stdout_file = ''
 		self.__stderr_file = ''
 		self.__skip = False
-		self.__cwd = os.getcwd()
+		self.__testdir = os.path.join(self.__pkgdir,'test_coan')
 		if self.__monkey_args:
 			self.__test_args = self.__monkey_args + ' --keepgoing'
 		if len(self.__test_files) and not self.__monkey_args:
@@ -255,7 +255,7 @@ class TestCase:
 	def __match_words(self,actual_word,expected_word):
 		if actual_word == expected_word:
 			return True
-		expected_word = string.replace(expected_word,'{CWD}',self.__cwd)
+		expected_word = string.replace(expected_word,'{CWD}',self.__testdir)
 		return True if actual_word == expected_word else False;
 	
 	# Private class members

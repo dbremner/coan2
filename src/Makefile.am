@@ -50,6 +50,7 @@ noinst_HEADERS = \
 	canonical.h \
 	chew.h \
 	citable.h \
+	cloner.h \
 	configure.h \
 	contradiction.h \
 	dataset.h \
@@ -78,6 +79,7 @@ noinst_HEADERS = \
 	io.h \
 	lexicon.h \
 	line_despatch.h \
+	line_type.h \
 	options.h \
 	parameter_list_base.h \
 	parameter_substitution.h \
