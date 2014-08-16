@@ -1678,78 +1678,152 @@ coan v5.2 Mike Kinghan 2013-09-07
 		DEF0111: UTF-8 encodings of 4 bytes were not identified.
 
     Fix: 
-		DEF0112: The output of the `symbols` command with option `--evalsyms` could
-        be corrupted by retention of logically deleted characters.
+		DEF0112: The output of the `symbols` command with option `--evalsyms` 
+		could be corrupted by retention of logically deleted characters.
 
     Fix: 
 		DEF0113: The `spin` command was broken on OS X due to a parochially Linux
-        assumption about the `errno` set by `mkdir()` failure for an already-existing
-        directory.
+        assumption about the `errno` set by `mkdir()` failure for an 
+        already-existing directory.
 
     Fix: 
-		DEF0114: With the `--replace` option a rewritten input file could have changed
-        permissions.
+		DEF0114: With the `--replace` option a rewritten input file could have 
+		changed permissions.
         
     Fix: 
 		DEF0115: Symbols could be prematurely marked up-to-date for resolution,
-		causing out-of-date resolved values to be reported with `symbols --evalsyms` or
-		new resolved values to go unreported with `--once`.
+		causing out-of-date resolved values to be reported with 
+		`symbols --evalsyms` or new resolved values to go unreported with 
+		`--once`.
 		
 	Fix:
-		DEF0116: Symbols were not reported for `symbols --evalsyms`
-		when encountered in the resolution of another symbol.
+		DEF0116: Symbols were not reported for `symbols --evalsyms` when 
+		encountered in the resolution of another symbol.
 
     New:
-        FEA0031: Added option `--explain` for the `sybols` command. In reporting the
-        resolved value of a symbol `sym`, coan will also recursively report the 
-        resolution of each symbol that is resolved in the course of resolving `sym`.
+        FEA0031: Added option `--explain` for the `sybols` command. In reporting
+        the resolved value of a symbol `sym`, coan will also recursively report 
+        the resolution of each symbol that is resolved in the course of 
+        resolving `sym`.
 
     New:
-        FEA0032: Added option `--select name1[*][,name2[*]...]` for the `symbols` command.
-        Restricts reported symbols to those that match one of the listed names or wildcard
-        name prefixes.
+        FEA0032: Added option `--select name1[*][,name2[*]...]` for the 
+        `symbols` command. Restricts reported symbols to those that match one 
+        of the listed names or wildcard name prefixes.
 
-coan v5.2.1 Mike Kinghan 2013-09-??
-
-    Fix:
-        DEF0117: Diagnostics that cited an input line in its supposedly original form
-            did not include any extensions of the line after a line-continuation.
+coan v6.0 Mike Kinghan 2014-08-15
 
     Fix:
-        DEF0118: The `--filter` option was broken for filenames that include multiple
-        '.', by seeking to match extensions from the first '.' in the leafname rather than the
-        last. Thus `--filter cpp` would fail to match a filename `a.b.cpp`.
+        DEF0117: Diagnostics that cited an input line in its supposedly original
+        form did not include any extensions of the line after a 
+        line-continuation.
+
+    Fix:
+        DEF0118: The `--filter` option was broken for filenames that include 
+        multiple '.', by seeking to match extensions from the first '.' in the 
+        leafname rather than the last. Thus `--filter cpp` would fail to match a
+        filename `a.b.cpp`.
 
     Fix: 
         DEF0119: The comma-operator was not accepted in preprocessor expressions.
+
+	Fix:
+		DEF0120: Macro expansion was broken when arguments shadow formal 
+		parameters. Macro-expansion has been re-written from scratch.
+
+	Fix:
+		DEF0121: False positives for circular symbol definitions. A function-like
+		macro that invoked with an argument that is another call to the same 
+		macro was falsely diagnosed as having a circular definition. 
+		Fixed in macro-expansion re-write.
+
+	Fix:
+		DEF0122: Ternary conditional expressions were not simplified when they 
+		could be.
+
+	Fix:
+		DEF0123: Ill-formed expressions provoked diagnostics only in the 
+		`source` command. The other the other commands correctly evaluated them
+		as insoluble but do not diagnose them.
+
+	Fix:
+		DEF0123: Diagnostics may truncate a cited input line. Diagnostics that 
+		cited an input line in its supposedly original form did not include any 
+		extensions of the line after a line-continuation.
+
+	Fix:
+		DEF0123: The associativity of arithmetic operators was wrongly 
+		right-to-left, not left-to-right, so an arithmetic expression in three 
+		or more unparenthisized operands of co-precedent operators was wrongly 
+		calculated, e.g. 2-21-21 as 2 instead of -40.
+
+	Fix:
+		DEF0124: Garbage in #if/​#elif not an error. Coan issues a warning if 
+		excess tokens follow a directive. Where the directive is #if or #elif 
+		the argument must be an expression, so an error should be diagnosed.
+
+	Fix: 
+		DEF0124: Macro calls to unconfigured symbols not diagnosed. A 
+		function-like macro call e.g. FOO(x) with FOO not a configured symbol 
+		was not diagnosed. The call was silently unresolved.
+
+	Fix:
+		DEF0125: Evaluation of a character literal was skipped when it was the 
+		very first token in a directive argument, e.g.
+
+			#define FOO 'x'
+			#if 'x' == FOO // 'x' not evaluated, expression is unresolved
+			
+	Fix:
+		DEF0126: C++11 character literal prefixes 'u' and 'U' were not recognized.
+		
+	Fix:
+		DEF0127: UCN character literals, e.g. '\u89AB,\U6789ABCD` were not 
+		recognized and cause a knock-on parsing bug by leaving the parser in a
+		false "in-quotation"-state after the end of the UCN literal.
+		
+	Fix:
+		DEF0128: Coan fails to allow the expansion of a macro argument to a 
+		system-include name or quoted string, thus faulting a valid macro call 
+		such a `HAS_INCLUDE(<string>)` or `HAS_INCLUDE("string")`
         		
 	New:
-		REW0018: `--explain` option reworked. The `--explain` option of the `symbols` is
-        re-thought to show much more clearly and concisely the derivation of each macro
-        expansion. It now reports the successive passes of macro replacement for the explained
-        invocation rather than recursively reporting the "most resolved form" 
-        of each macro invocation in the expained invocation.
+		REW0018: `--explain` option reworked. The `--explain` option of the 
+		`symbols` command is re-thought to show much more clearly and concisely 
+		the derivation of each macro expansion. It now reports successive steps 
+		of macro replacement for the explained invocation rather than 
+		recursively reporting the "most resolved form" of each macro invocation
+		in the expained invocation.
 
     New:
-        REW0019: Reporting for the `symbols` command now always reports the provenance
-        of a reported symbol: configured global, configured transient or unconfigured.
+        REW0019: Reporting for the `symbols` command now always reports the 
+        provenance of a reported symbol: configured global, configured transient
+        or unconfigured.
 
 	New:
-		REW0020: `The --once` option is removed and replaced by two new options `--once-only`
-        and `--once-per-file`. The former is equivalent to the old `--once`. The latter
-        each distinct reported item to be reported just once per input file.        
+		REW0020: `The --once` option is removed and replaced by two new options
+		`--once-only` and `--once-per-file`. The former is equivalent to the 
+		old `--once`. The latter causes each distinct reported item to be 
+		reported just once per input file.
+
+	New:
+		REW0021: Lexical scanning and expression parsing are re-written more 
+		efficiently, with the result that coan 6.0 processes files on average 
+		about twice as fast as coan 5.2        
 
     New:
-		FEA0033: The `--evalsyms` option of the `symbols` command is removed and replaced
-        with the `--expand` option. `--evalsyms` reported the "most resolved form" (MRF) of a
-        symbol invocation, which was of little investigative use. `--expand` reports the
-        full macro expansion of a symbol invocation, and the integer to which it evaluates,
-        if any.
+		FEA0033: The `--evalsyms` option of the `symbols` command is removed and
+		replaced with the `--expand` option. `--evalsyms` reported the 
+		"most resolved form" (MRF) of a symbol invocation, which was of little 
+		investigative use. `--expand` reports the full macro expansion of a 
+		symbol invocation, and the integer to which it evaluates, if any.
           
     New:
-        FEA0034: The new command `lines` is added, which causes coan to report `#line` 
-        directives. A corresponding option `--lns` is provided for the `symbols` command,
-        causing coan to consider only `#line` directives for reporting symbols.
+        FEA0034: The new command `lines` is added, which causes coan to report 
+        `#line`  directives. A corresponding option `--lns` is provided for the 
+        `symbols` command, causing coan to consider only `#line` directives for
+        reporting symbols.
 
-
-
+	New:
+		FEA0035: The alternative operator keywords, `and`, `or`, `not`, etc. are
+		now supported.

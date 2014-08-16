@@ -51,6 +51,9 @@ Makefile.in
 # Todo files
 todo.*
 
+# Logs
+*.log
+
 # Non-dist builds
 
 /non-dist-builds

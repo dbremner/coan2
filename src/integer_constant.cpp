@@ -464,7 +464,7 @@ integer integer_constant::read_char(chewer<CharSeq> & chew)
 		type_desc = "char16_t";
 		chew(+1,continuation);
 	} else if (*chew == 'U') {
-		max_val = numeric_limits<char16_t>::max();
+		max_val = numeric_limits<char32_t>::max();
 		type_desc = "char32_t";
 		chew(+1,continuation);
 	}
