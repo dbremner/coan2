@@ -1,7 +1,5 @@
 bin_PROGRAMS = coan
 
-AM_CXXFLAGS = -std=c++11 -O2
-
 # set the include path found by configure
 AM_CPPFLAGS = $(all_includes)
 
