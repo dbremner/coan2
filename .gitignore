@@ -54,6 +54,15 @@ todo.*
 # Logs
 *.log
 
+# Compiled python
+*.pyc
+
+# Autotools test suite
+*.trs
+
+# Temporary file
+*.tmp
+
 # Non-dist builds
 
 /non-dist-builds

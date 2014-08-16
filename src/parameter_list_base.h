@@ -38,6 +38,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <stdexcept>
 
 /** \file parameter_list_base.h
  *   This file defines `struct innards::parameter_list_base`
