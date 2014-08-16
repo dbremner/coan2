@@ -13,7 +13,7 @@ distclean: clean
 man:	coan.1.gz
  
 coan.1: man_pod.pl
-	rel_month='SEPTEMBER 2013' && \
+	rel_month='AUGUST 2014' && \
 	if [ ! -d html ]; then \
 		mkdir html; \
 	fi && \

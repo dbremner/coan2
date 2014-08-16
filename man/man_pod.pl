@@ -143,7 +143,7 @@ These options may be given with any command.
 
 =over
 
-=item B<f>I<argfile>, B<--file> I<argfile>
+=item B<-f>I<argfile>, B<--file> I<argfile>
 
 Read (more) arguments from file I<argfile>. Arguments may be written free-form, 
 separated by whitespace, in I<argfile>. These arguments will be parsed exactly 
@@ -428,7 +428,7 @@ In the case B<-U>I<symbol>, the expansion of I<symbol> is the numeral B<0> (sinc
 In the case B<-D>I<symbol>[B<(>I<param1>[B<,>I<param2>...]B<)>]=I<definition>, 
 the expansion of the reference is the string that results by, first, substituting
 the arguments of the references, if any, for the corresponding formal parameters 
-of the symbol in its definition and then recursively replacing each symbol references
+of the symbol in its definition and then recursively replacing each symbol reference
 in the result with its expansion. 
 
 If a symbol is not configured then its references are reported as B<insoluble>.
@@ -436,7 +436,7 @@ Likewise if it is configured but a reference has a circular expansion.
 
 =item B<--explain>
 
-Report the successive passes of macro expansion for each reported symbol reference. 
+Report the successive steps of macro expansion for each reported symbol reference. 
 Implies B<--expand> 
 
 =item B<--select> I<name1>[B<*>][,I<name2>[B<*>]...]
