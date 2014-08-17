@@ -57,8 +57,6 @@ struct explained_expansion : expansion_base
         explained_expansion * parent = nullptr)
     : 	expansion_base(ref),_parent(parent){}
 
-	~explained_expansion() override = default;
-
 	/** \brief Perform the explained expansion of the reference, returning
      *  the numbe of edits applied.
 	 */

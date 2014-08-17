@@ -51,7 +51,6 @@ struct expansion_base : reference
 {
 	/// Construct from a reference
 	explicit expansion_base(reference const & ref);
-	~expansion_base() override = default;
 
 	/// Get the current expanded value of the reference
 	std::string const & value() const {
