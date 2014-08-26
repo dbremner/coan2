@@ -1,30 +1,34 @@
-Release 5.2
+Release 6.0
 ===========
 
 New Features:
 -------------
 
-Added option `--explain` for the `sybols` command. In reporting the
-resolved value of a symbol `sym`, coan will also recursively report the 
-resolution of each symbol that is resolved in the course of resolving `sym`.
-
-Added option `--select name1[*][,name2[*]...]` for the `sybols` command.
-Restricts reported symbols to those that match one of the listed names or 
-wildcard name prefixes.
+See ChangeLog
 
 Fixes:
 ------
 
-All Sourcefourge bugs opened on 5.1.2, i.e.
+See ChangeLog
 
-#58 Indentation of directives collapsed.
-#59 UTF-8 encodings of 4 bytes are not identified
-#60 Non-printable characters in output of `symbols --evalsyms`
-#61 `spin` command broken on OS X.
-#62 `source --replace` changes input file permissions.
-#63 Reported values of symbols may be out of date.
-#64 Symbols not reported in macro definitions
+All Sourcefourge bugs opened on 5.2, i.e.
 
+81	Comma-operator not parsed in preprocessor expressions
+80	Macro expansion broken when arguments intersect parameters
+79	line-directives are not recognized	 
+77	False positives for circular symbol definitions 
+76	Ternary conditional expressions not simplified 
+75	Alternative operator representations not recognized 
+74	Ill-formed expressions not diagnosed by all commands 
+73	`--filter` option broken for filenames containing multiple dots
+72	Diagnostics may truncate a cited input line
+71	Wrong associativity of arithmetic operators 
+70	Garbage in #if/​#elif not an error 
+69	Macro calls to unconfigured symbols not diagnosed
+68	Character literal not parsed when first token of directive
+67	C++11 character-literal prefixes not recognized	v5.2
+66	UCN-form character literals not parsed.	v5.2 
+65	Valid macro calls misdiagnosed as garbage
 
 Installing
 ==========
@@ -56,4 +60,3 @@ There is a test suite in coan/test_coan. The test suite is executed by
 `make check'
 
 imk at burroingroingjoing dot com
-
