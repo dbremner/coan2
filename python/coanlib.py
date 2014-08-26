@@ -149,6 +149,11 @@ def __validate_verbosity(keyword):
 	if keyword not in __severities_by_word:
 		bail("Unknown severity keyword: \"" + keyword + "\"")
 		
+def __have_time():
+	''' Is $TIME set == 'yes'?'''
+	val = os.getenv('TIME')
+	return val is not None and val == 'yes'
+		
 def windows():
 	''' Say whether the host OS is Windows '''
 	return os.name == 'nt'
@@ -228,8 +233,9 @@ def slurp_lines(file):
 	fh.close()
 	return lines
 	
+	
 def run(cmd,
-	stdout_file = None,stderr_file = None,stdin_file = None, timing = True):
+	stdout_file = None,stderr_file = None,stdin_file = None, timing = __have_time()):
 	''' 
 	Run a command optionally specifying
 	files to capture stdout and stderr and whether timing is required
@@ -420,6 +426,8 @@ def measure_test_size():
 		
 def do_metrics():
 	''' Initailize coan test metrics '''
+	if not __have_time():
+		return
 	time_file = __get_time_file()
 	size_file = __get_test_size_file()
 	if time_file and size_file:

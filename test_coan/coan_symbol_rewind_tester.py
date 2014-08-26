@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 copyright = 'Copyright (c) 2012-2013 Michael Kinghan'
-import sys, os, argparse
+import sys, os
 
 top_srcdir = os.getenv('COAN_PKGDIR')
 if not top_srcdir:
@@ -10,6 +10,7 @@ if not top_srcdir:
 
 sys.path.append(os.path.join(top_srcdir,'python'))
 
+import argparse
 import coanlib
 from coanlib import *
 

@@ -44,11 +44,13 @@
 #include "line_despatch.h"
 #include "expansion_base.h"
 
-using namespace std;
-
 /** \file expression_parser.cpp
  *   This file implements `struct expression_parser`
  */
+
+/// \cond NO_DOXYGEN
+
+using namespace std;
 
 template<class CharSeq>
 evaluation
@@ -825,5 +827,7 @@ expression_parser<CharSeq>::expression_parser(
 	chewer<CharSeq> chew(!options::plaintext(),_seq,start);
 	parse(chew);
 }
+
+/// \endcond NO_DOXYGEN
 
 /* EOF*/

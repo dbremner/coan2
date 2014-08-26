@@ -52,6 +52,7 @@ struct symbol;
 /// A tag class for parameterizing template class `canonical<What>`
 struct macro_argument {};
 
+/// Encloses internals
 namespace innards {
 
 /// A base for classes representing canonical forms of various types.
@@ -113,12 +114,18 @@ private:
     template<class CharSeq>
 	void canonicalize(chewer<CharSeq> & chew);
 
+    /** \brief Canonicalize from a `CharSeq>`
+     * \tparam CharSeq A character-sequence type
+     * \param seq A `CharSeq` to be canonicalized.
+     */
 	template<class CharSeq>
 	void canonicalize(CharSeq & seq) {
 	    chewer<CharSeq> chew(cxx(),seq);
 	    canonicalize(chew);
 	}
 };
+
+/// \cond NO_DOXYGEN
 
 template<>
 template<class CharSeq>
@@ -190,5 +197,7 @@ void canonical<macro_argument>::canonicalize(chewer<CharSeq> & chew)
 		}
 	}
 }
+
+/// \endcond NO_DOXYGEN
 
 #endif /* EOF */

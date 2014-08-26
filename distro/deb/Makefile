@@ -23,8 +23,9 @@ $(src_dir): $(src_tarball)
 	sed -e '/$$(MAKE)$$/a\
 	\t$$(MAKE) check' -i rules && \
 	sed -e 's| (Closes: #nnnn)  <nnnn is the bug number of your ITP>||g' -i changelog && \
-	sed -e 's|<insert the upstream URL, if relevant>|www.strudl.org/coan|g' \
+	sed -e 's|<insert the upstream URL, if relevant>|http://http://coan2.sourceforge.net/|g' \
 	-e 's|Section: unknown|Section: devel|g' \
+	-e 's|Depends: |Depends: python, g++ (>= 4.7), |g' \
 	-e '/^Description: <insert up to 60 chars description>/d' \
 	-e '/^ <insert long description, indented with spaces>/d' -i control && \
 	printf "Description: C/C++ configuration analyser.\n\

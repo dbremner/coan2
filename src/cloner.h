@@ -47,11 +47,13 @@
 template<class B, class D>
 struct cloner : B
 {
+    /// Clone the base `B` object on the heap
     B *clone() const override {
         return new D(dynamic_cast<D const&>(*this));
     }
     ~cloner() override {}
-    // "All purpose constructor"
+
+    /// All purpose constructor
     template<typename... Args>
     explicit cloner(Args... args)
     : B(args...){}

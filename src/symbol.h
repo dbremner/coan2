@@ -57,6 +57,7 @@ struct reference;
 /// `struct symbol` encapsulates a preprocessor symbol's state
 struct symbol
 {
+    /// Friendship to `struct reference`
 	friend reference;
 
 	/// Symbolic constants denoting the provenance of a symbol.
@@ -69,7 +70,9 @@ struct symbol
 		transient
 	};
 
+    /// Type of map implementing the symbol tbale
 	using symbol_table = std::map<std::string,symbol>;
+	/// Type of entry in the symbol table
 	using table_entry = symbol_table::value_type;
 
     /// `struct symbol::locator` encapsulates a symbol table entry.
@@ -125,7 +128,7 @@ struct symbol
 		}
 
 		///@{
-		/// Defeference
+		/// \brief Defeference
 		symbol & operator*() {
 			return _loc->second;
 		}
@@ -135,7 +138,7 @@ struct symbol
 		///@}
 
 		///@{
-		/// Point
+		/// \brief Point
 		symbol * operator->() {
 			return &_loc->second;
 		}
@@ -151,6 +154,7 @@ struct symbol
 
 	private:
 
+        /// Locator of the symbol in the symbol table
 		symbol_table::iterator _loc;
 	};
 
@@ -192,6 +196,9 @@ struct symbol
 	}
 
 	/** \brief Get a pointer to the symbol's substitution format; null if none
+     *
+     *  \return A pointer to the substitution format of this symbol, if any,
+     *  else null.
      *
 	 *  The substitution format is coan's internal representation of the
 	 *  manner in which macro arguments are to be interpolated into the
@@ -260,6 +267,8 @@ struct symbol
 
 	/** \brief Say whether the symbol has been invoked.
 	 *
+	 *  \return True iff the symbol has been invoked.
+	 *
 	 *  I.e. has a reference to the symbol been encountered.
 	 */
 	bool invoked() const {
@@ -292,8 +301,7 @@ struct symbol
 
 	/** \brief Get the symbol's reference signature as string.
 	 *
-	 *  The reference signature is the symbol name suffixed
-	 *  with its formal parameter list, if any.
+	 *  \return The symbol name suffixed with its formal parameter list, if any.
 	 */
 	std::string signature() const {
 		return id() + _params.str();
@@ -397,25 +405,25 @@ struct symbol
      * Search a terminal portion of a `parse_buffer` to find the first
      * syntactic occurrence of the name of any symbol in the symbol table.
      *
-     *  \tparam CharSeq A charcter-sequence type
-     *
+     *  \tparam CharSeq A charcter-sequence type.
 	 *  \param chew  On entry, a `chewer<CharSeq>` positioned at the offset
 	 *      in the associated `CharSeq` from which to scan. On return
 	 *  `chew` is positioned just passed the
      *  first occurrence found of he name of any known symbol, or at the end of
      *  the `CharSeq` if none.
-     *
 	 *	\param off On return, receives the offset in the `CharSeq`
 	 *	of the first known symbol name detected, if any, else is unchanged.
-     *
      *  \return The `locator` of the known symbol detected, if any, else the
      *  null `locator`.
      */
 	template<class CharSeq>
 	static locator find_any_in(chewer<CharSeq> & chew, size_t & off);
 
-	/// Set the list of symbol masks for symbol reporting, as
-	/// specified by the `--select` option.
+	/** brief Set the list of symbol masks for symbol reporting, as
+	 * specified by the `--select` option.
+	 *
+	 *  \param optarg The argument of the `--select` option
+	 */
 	static void set_selection(char const *optarg);
 
 	/// Delete all transient symbols from the symbol table

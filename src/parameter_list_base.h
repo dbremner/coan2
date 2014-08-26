@@ -57,6 +57,8 @@ struct parameter_list_base {
 
 	/** \brief Constructor for `n` parameters
      *
+     *  \param n The number of parameters.
+     *
 	 *	If `n` > 0, the list of placeholder parameters `$1,...,$n`
 	 *	is constructed.
 	 */
@@ -140,8 +142,10 @@ struct parameter_list_base {
 
 
     ///@{
-    /** Get a [const] iterator to the start of the parameter list,
-     *   which is `std::vector<string>::iterator()` if `null()` is true
+    /** \brief Get a [const] iterator to the start of the parameter list.
+     *
+     *  \return An iterator to the start of the parameter list,
+     *  or `std::vector<string>::iterator()` if `null()` is true
      */
     std::vector<std::string>::iterator begin() {
         using namespace std;
@@ -155,8 +159,10 @@ struct parameter_list_base {
     ///@}
 
     ///@{
-    /** Get a [const] iterator to the end of the parameter list,
-     *   which is `std::vector<string>::iterator()` if `null()` is true
+    /** \brief Get a [const] iterator to the end of the parameter list.
+     *
+     *  \return An iterator to the end of the parameter list,
+     *  or `std::vector<string>::iterator()` if `null()` is true
      */
     std::vector<std::string>::iterator end() {
         using namespace std;
@@ -170,8 +176,11 @@ struct parameter_list_base {
     ///@}
 
     ///@{
-    /** Get a range-checked [const] reference to the nth parameter,
-     *   throwing `std::out_of_range` on out-of-range error
+    /** \brief Get a range-checked [const] reference to the nth parameter.
+     *
+     *  \param n Index of the requested parameter.
+     *  \return A [const] reference to the nth paremeter.
+     *  \throw `std::out_of_range` on out-of-range error
      */
     std::string const & at(size_t n) const {
         using namespace std;
@@ -191,8 +200,10 @@ struct parameter_list_base {
     ///@}
 
     ///@{
-    /** Get an un-range-checked [const] reference to the nth parameter,
-     *   throwing `std::out_of_range` on out-of-range error
+    /** \brief Get an un-range-checked [const] reference to the nth parameter.
+     *  \param n Index of the requested parameter.
+     *  \return A [const] reference to the parameter at index `n`.
+     *  \throw `std::out_of_range` on out-of-range error
      */
     std::string const & operator[](size_t n) const {
         return (*_params)[n];
@@ -221,11 +232,13 @@ struct parameter_list_base {
  	void read(chewer<CharSeq> & chew);
 
 	/** \brief Make a parameter list from a range of objects that are
-	 *	convertible to `std::string`
+	 *	convertible to `std::string`.
      *
-	 *	\tparam BiIter A bidorectional iterator
+	 *	\tparam BiIter A bidorectional iterator.
 	 *	\param first The start of the range of objects.
-	 *	\param last The end of the range of objects
+	 *	\param last The end of the range of objects.
+	 *  \return A string comprising the comma-punctuated list
+	 *  of [first,last), enclosed in parentheses.
 	 */
 	template<typename BiIter>
 	static std::string make(BiIter first, BiIter last) {

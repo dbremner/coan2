@@ -1,6 +1,112 @@
 <?php ?>
 
 <p></p>
+<p class="section">v6.0 Mike Kinghan 2014-08-25</p>
+<ul>
+<li><b>DEF0117:</b> Diagnostics that cited an input line in its supposedly 
+original form did not include any extensions of the line after a 
+line-continuation.
+</li>
+<li><b>DEF0118:</b> The <span class="code">--filter</span> option was broken for filenames that include 
+multiple '.', by seeking to match extensions from the first '.' in the leafname
+rather than the last. Thus <span class="code">--filter cpp</span> would fail to match a filename <span class="code">a.b.cpp</span>.
+</li>
+<li><b>DEF0119:</b> The comma-operator was not accepted in preprocessor expressions.
+</li>
+<li><b>DEF0120:</b> Macro expansion was broken when arguments shadow formal 
+parameters. Macro-expansion has been re-written from scratch.
+</li>
+<li><b>DEF0121:</b> False positives for circular symbol definitions. A function-like
+macro that invoked with an argument that is another call to the same macro was 
+falsely diagnosed as having a circular definition. Fixed in macro-expansion re-write.
+</li>
+<li><b>DEF0122:</b> Ternary conditional expressions were not simplified when they 
+could be.
+</li>
+<li><b>DEF0123:</b> Ill-formed expressions provoked diagnostics only in the 
+`source` command. The other the other commands correctly evaluated them
+as insoluble but do not diagnose them.
+</li>
+<li><b>DEF0124:</b> Diagnostics may truncate a cited input line. Diagnostics that 
+cited an input line in its supposedly original form did not include any 
+extensions of the line after a line-continuation.
+</li>
+<li><b>DEF0125:</b> The associativity of arithmetic operators was wrongly 
+right-to-left, not left-to-right, so an arithmetic expression in three 
+or more unparenthisized operands of co-precedent operators was wrongly 
+calculated, e.g. 2-21-21 as 2 instead of -40.
+</li>
+<li><b>DEF0126:</b> Garbage in <span class="code">#if/​#elif</span> not an error. Coan issues a warning if 
+excess tokens follow a directive. Where the directive is <span class="code">#if or #elif</span> 
+the argument must be an expression, so an error should be diagnosed.
+</li>
+<li><b>DEF0127:</b> Macro calls to unconfigured symbols not diagnosed. A 
+function-like macro call e.g. <span class="code">FOO(x)</span> with <span class="code">FOO</span> not a configured symbol 
+was not diagnosed. The call was silently unresolved.
+</li>
+<li><b>DEF0128:</b> Evaluation of a character literal was skipped when it was the 
+very first token in a directive argument
+</li>
+<li><b>DEF0129:</b> C++11 character literal prefixes 'u' and 'U' were not recognized.
+</li>
+<li><b>DEF0130:</b> UCN character literals, e.g. <span class="code">\u89AB,\U6789ABCD</span> were not 
+recognized and cause a knock-on parsing bug by leaving the parser in a
+false "in-quotation"-state after the end of the UCN literal.
+</li>
+<li><b>DEF0131:</b> Coan fails to allow the expansion of a macro argument to a 
+system-include name or quoted string, thus faulting a valid macro call 
+such a <span class="code">HAS_INCLUDE(<string>)</span> or <span class="code">HAS_INCLUDE("string")</span>
+</li>
+<li><b>TST0007:</b> The test suite is migrated from perl to python.
+</li>
+<li><b>TST0008:</b> The test suite is migrated from the autotools serial harness to the
+parallel harness.
+</li>
+<li><b>REW0018:</b> <span class="code">--explain</span> option reworked. The <span class="code">--explain</span> option of the 
+<span class="code">symbols</span> command is re-thought to show much more clearly and concisely 
+the derivation of each macro expansion. It now reports successive steps 
+of macro replacement for the explained invocation rather than 
+recursively reporting the "most resolved form" of each macro invocation
+in the expained invocation.
+</li>
+<li><b>REW0019:</b> Reporting for the <span class="code">symbols</span> command now always reports the 
+provenance of a reported symbol: configured global, configured transient
+or unconfigured.
+</li>
+<li><b>REW0020:</b> The <span class="code">--once</span> option is removed and replaced by two new options
+<span class="code">--once-only</span> and <span class="code">--once-per-file</span>. The former is equivalent to the 
+old <span class="code">--once</span>. The latter causes each distinct reported item to be 
+reported just once per input file.
+</li>
+<li><b>REW0021:</b> Lexical scanning and expression parsing are re-written more 
+efficiently, with the result that coan 6.0 processes files on average 
+about twice as fast as coan 5.2
+</li>
+<li><b>REW0022:</b> Coan 6.0 is written entirely to the C++11 standard. Preprocessor
+differentiation to support compiler versions that lag the standard is
+removed and distro-versions that ship such compiler versions are not
+supported.
+</li>
+<li><b>FEA0033:</b> The <span class="code">--evalsyms</span> option of the <span class="code">symbols</span> command is removed 
+and replaced with the <span class="code">--expand</span> option. <span class="code">--evalsyms</span> reported the 
+"most resolved form" of a symbol invocation, which was of little 
+investigative use. <span class="code">--expand</span> reports the full macro expansion of a 
+symbol invocation, and the integer to which it evaluates, if any.
+</li>
+<li><b>FEA0034:</b> The new command <span class="code">lines</span> is added, which causes coan to report 
+<span class="code">#line</span>  directives. A corresponding option <span class="code">--lns</span> is provided for the 
+`symbols` command, causing coan to consider only <span class="code">#line</span> directives for
+reporting symbols.
+</li>
+<li><b>FEA0035:</b> The alternative operator keywords, <span class="code">and</span>, <span class="code">or</span>, <span class="code">not</span>, etc. are
+now supported.
+</li>
+<li><b>FEA0036:</b> Coan now issues an informational diagnostic whenever a
+<span class="code">#define</span> or <span class="code">#undef</span> retrospectively affects the meaning of previously
+defined symbols.
+</li>
+</ul> 
+<p></p>
 <p class="section">v5.2 Mike Kinghan 2013-09-07</p>
 <ul>
 <li><b>DEF0110:</b> Coan deleted indentation from simplified directives

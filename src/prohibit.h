@@ -37,7 +37,6 @@
 
 /** \file prohibit.h
  *	This file defines classes:
- *  - no_default_ctor
  *	- no_copy_init
  *	- no_assign
  *	- no_copy
@@ -46,19 +45,23 @@
 /// A utility class to prevent copy construction of containing class
 struct no_copy_init
 {
+    /// \cond NO_DOXYGEN
 	no_copy_init() = default;
 	no_copy_init(no_copy_init const &) = delete;
 	no_copy_init(no_copy_init &&) = delete;
+    /// \endcond NO_DOXYGEN
 };
 
 /// A utility class to prevent assignment of containing class
 struct no_assign
 {
+    /// \cond NO_DOXYGEN
 	no_assign() = default;
 	no_assign(no_assign const &) = default;
 	no_assign(no_assign &&) = default;
 	no_assign & operator=(no_assign const &) = delete;
 	no_assign & operator=(no_assign &&) = delete;
+    /// \endcond NO_DOXYGEN
 };
 
 /// A utility class to prevent copying of containing class

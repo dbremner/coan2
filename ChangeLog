@@ -1747,45 +1747,52 @@ coan v6.0 Mike Kinghan 2014-08-15
 		as insoluble but do not diagnose them.
 
 	Fix:
-		DEF0123: Diagnostics may truncate a cited input line. Diagnostics that 
+		DEF0124: Diagnostics may truncate a cited input line. Diagnostics that 
 		cited an input line in its supposedly original form did not include any 
 		extensions of the line after a line-continuation.
 
 	Fix:
-		DEF0123: The associativity of arithmetic operators was wrongly 
+		DEF0125: The associativity of arithmetic operators was wrongly 
 		right-to-left, not left-to-right, so an arithmetic expression in three 
 		or more unparenthisized operands of co-precedent operators was wrongly 
 		calculated, e.g. 2-21-21 as 2 instead of -40.
 
 	Fix:
-		DEF0124: Garbage in #if/​#elif not an error. Coan issues a warning if 
+		DEF0126: Garbage in #if/​#elif not an error. Coan issues a warning if 
 		excess tokens follow a directive. Where the directive is #if or #elif 
 		the argument must be an expression, so an error should be diagnosed.
 
 	Fix: 
-		DEF0124: Macro calls to unconfigured symbols not diagnosed. A 
+		DEF0127: Macro calls to unconfigured symbols not diagnosed. A 
 		function-like macro call e.g. FOO(x) with FOO not a configured symbol 
 		was not diagnosed. The call was silently unresolved.
 
 	Fix:
-		DEF0125: Evaluation of a character literal was skipped when it was the 
+		DEF0128: Evaluation of a character literal was skipped when it was the 
 		very first token in a directive argument, e.g.
 
 			#define FOO 'x'
 			#if 'x' == FOO // 'x' not evaluated, expression is unresolved
 			
 	Fix:
-		DEF0126: C++11 character literal prefixes 'u' and 'U' were not recognized.
+		DEF0129: C++11 character literal prefixes 'u' and 'U' were not recognized.
 		
 	Fix:
-		DEF0127: UCN character literals, e.g. '\u89AB,\U6789ABCD` were not 
+		DEF0130: UCN character literals, e.g. '\u89AB,\U6789ABCD` were not 
 		recognized and cause a knock-on parsing bug by leaving the parser in a
 		false "in-quotation"-state after the end of the UCN literal.
 		
 	Fix:
-		DEF0128: Coan fails to allow the expansion of a macro argument to a 
+		DEF0131: Coan fails to allow the expansion of a macro argument to a 
 		system-include name or quoted string, thus faulting a valid macro call 
 		such a `HAS_INCLUDE(<string>)` or `HAS_INCLUDE("string")`
+
+	New:
+		TST0007: The test suite is migrated from perl to python
+
+	New:
+		TST0008: The test suite is migrated from the autotools serial harness to the
+		parallel harness.
         		
 	New:
 		REW0018: `--explain` option reworked. The `--explain` option of the 
@@ -1801,7 +1808,7 @@ coan v6.0 Mike Kinghan 2014-08-15
         or unconfigured.
 
 	New:
-		REW0020: `The --once` option is removed and replaced by two new options
+		REW0020: The `--once` option is removed and replaced by two new options
 		`--once-only` and `--once-per-file`. The former is equivalent to the 
 		old `--once`. The latter causes each distinct reported item to be 
 		reported just once per input file.
@@ -1809,7 +1816,13 @@ coan v6.0 Mike Kinghan 2014-08-15
 	New:
 		REW0021: Lexical scanning and expression parsing are re-written more 
 		efficiently, with the result that coan 6.0 processes files on average 
-		about twice as fast as coan 5.2        
+		about twice as fast as coan 5.2
+
+	New:
+		REW0022: Coan 6.0 is written entirely to the C++11 standard. Preprocessor
+		differentiation to support compiler versions that lag the standard is
+		removed and distro-versions that ship such compiler versions are not
+		supported.        
 
     New:
 		FEA0033: The `--evalsyms` option of the `symbols` command is removed and

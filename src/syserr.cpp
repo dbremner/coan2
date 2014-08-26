@@ -37,7 +37,7 @@
 #include "platform.h"
 #include "syserr.h"
 
-/** \file syserr.h
+/** \file syserr.cpp
  *	This file implements free function `system_error_message`
  */
 

@@ -45,7 +45,7 @@
 #include <algorithm>
 #include <cassert>
 
-/** \file expansion.cpp
+/** \file expansion_base.cpp
  *   This file implements `struct expansion_base`.
  */
 

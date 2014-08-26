@@ -55,6 +55,7 @@
  */
 struct reference
 {
+    /// Type of result from cache insertion.
 	using insert_result = reference_cache::insert_result;
 
 	/** \brief Construct given a symbol locator
@@ -92,8 +93,8 @@ struct reference
 	/** \brief Construct given a symbol locator, a `chewer<CharSeq>`,
 	 *	and optional parent reference.
      *
-     *  \tparam CharSeq A charcter-sequence type
-	 *	\param `loc` Locator of the referenced symbol.
+     *  \tparam CharSeq A character-sequence type
+	 *	\param loc Locator of the referenced symbol.
      *  \param chew  On entry, a `chewer<CharSeq>` positioned at the offset in the
      *      associated `CharSeq` from which to scan for an argument list.
      *      On return `chew` is positioned at the first offset not consumed.
@@ -116,6 +117,8 @@ struct reference
 
 	/** \brief Equality.
      *
+     *  \param other A `reference` compared with `*this`.
+     *  \return True iff `other == *this`.
 	 *	References are equal iff they are references of the
 	 *	the same symbol with the same arguments.
 	 */
@@ -130,7 +133,7 @@ struct reference
 	}
 
 	///@{
-	/// Get a [const] the state of the referenced symbol
+	/// \brief Get a [const] the state of the referenced symbol
 	symbol::locator const & callee() const {
 		return _referee;
 	}
@@ -228,10 +231,11 @@ protected:
 	/** \brief Expand the reference
      *
 	 *	\param explain True if the `--explain` option is operative.
-    */
+	 *  \return A `reference_cache::entry` recording the expansion.
+     */
 	reference_cache::entry expand(bool explain);
 
-	/** Diagnose a syntactically invalid reference
+	/** \brief Diagnose a syntactically invalid reference.
      *
 	 *	\return An `evaluation` that is set insoluble
 	 *	if the reference is syntactically invalid.

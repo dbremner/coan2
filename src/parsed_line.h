@@ -171,8 +171,9 @@ protected:
 		return 0;
 	}
 
-    /// Try to extend the line past a new-line sequence of length `skip`,
-    /// returning the net length of the extension.
+    /// \brief Try to extend the line past a new-line sequence.
+    /// \param skip The length of the newline-sequence at the scanning position.
+    /// \return The net length of the extension.
 	size_t extend(size_t skip) override;
 
 	/// Try to read another line of input, returning the number of bytes read.
@@ -181,7 +182,7 @@ protected:
 	/** \brief Convert the directive in the line into a
 	 *	another one that has no argument.
      *
-	 *  \param keyword. The keyword of the replacement directive.
+	 *  \param keyword The keyword of the replacement directive.
      *
 	 *	The existing directive keyword in the line, if any,
 	 *	is replaced the `keyword` and the line is then terminated
@@ -192,7 +193,7 @@ protected:
 	/** \brief Replace the directive keyword in the line with another
 	 *	one.
      *
-	 *	\param keyword. The keyword of the replacement directive.
+	 *	\param directive The keyword of the replacement directive.
 	 */
 	void keyword_swap(std::string const & directive);
 

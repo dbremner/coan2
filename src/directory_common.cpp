@@ -37,7 +37,7 @@
 #include "directory_common.h"
 #include "filesys.h"
 
-/** \file directory_common.h
+/** \file directory_common.cpp
  *   This file implements `struct common::directory`
  */
 

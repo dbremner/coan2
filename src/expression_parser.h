@@ -61,6 +61,7 @@ struct expression_parser
 {
     static_assert(traits::is_random_access_char_sequence<CharSeq>::value,">:[");
 
+    /// Type of character-sequence containing the parsed expression
     using sequence_type = CharSeq;
 	/// Codes for logical deletion status.
 	enum deletion_code {
@@ -104,7 +105,7 @@ struct expression_parser
 	 *      offset in the associated `sequence_type`
 	 *		to scan. On return `chew` is positioned to the first offset
 	 *      not consumed.
-	 *	\param A pointer to the `reference` if any, that calls for
+	 *	\param ref A pointer to the `reference` if any, that calls for
 	 *		expression parsing.
 	 */
     expression_parser(
@@ -154,6 +155,7 @@ struct expression_parser
 
 private:
 
+    /// Type of an infix operation
     using infix_operation =
     evaluation 	(expression_parser::*)(evaluation const &, evaluation const &);
 
@@ -277,17 +279,15 @@ private:
 
 	/** \brief Evaluator for innermost subexpressions.
      *
-	 *  The member function evaluates symbols, numbers and unary operations,
-     *  including the parenthesis operation.
-     *
 	 *  \param chew On entry, a `chewer<sequence_type>` positioned to the
 	 *      offset in the associated `sequence_type` from which
 	 *		to scan. On return `chew` is positioned to the first
 	 *		offset not consumed.
-	 *
-     *  \param size_t Offset beyond which not to evaluate
-     *
+     *  \param end Offset beyond which not to evaluate.
 	 *  \return	An `evaluation` representing the result of evaluation.
+	 *
+	 *  The member function evaluates symbols, numbers and unary operations,
+     *  including the parenthesis operation.
      */
 	evaluation
 	unary_op(chewer<sequence_type> & chew, size_t end);
@@ -306,7 +306,7 @@ private:
 	 *      offset in the associated `sequence_type` from which
 	 *		to scan. On return `chew` is positioned to the first
 	 *		offset not consumed.
-     *  \param size_t Offset beyond which not to evaluate
+     *  \param end Offset beyond which not to evaluate
      *
 	 * \return	An `evaluation` representing the result of evaluation.
 	 */
@@ -348,10 +348,10 @@ private:
 	 *	\param chew A `chewer<sequence_type>` positioned to the offset
      *  in the associated `sequence_type` from which
 	 *		to search. On return `chew` is at the same position.
-	 *	\param size_t end Offset beyond which not to seach.
-	 *	\param size_t op_start Insignificant on entry. On return, receives
+	 *	\param end Offset beyond which not to seach.
+	 *	\param op_start Insignificant on entry. On return, receives
 	 *		the offset of the rightmost operator found, if any.
-	 *	\param size_t op_end Insignificant on entry. On return, receives
+	 *	\param op_end Insignificant on entry. On return, receives
 	 *		the offset just past the rightmost operator found,if any.
      *
 	 *	\return A pair whose first element is pointer to the `operation` whose
@@ -420,7 +420,7 @@ private:
 		++_cuts;
 	}
 
-	/** \defer Defer a diagnostic, with the current line context appended
+	/** \brief Defer a diagnostic, with the current line context appended
 	 *	if a source line is being parsed.
 	 */
 	void defer_diagnostic(diagnostic_base & gripe);

@@ -39,6 +39,10 @@
 
 #include "traits.h"
 
+/** \file eol.h
+ *  This file defines free template function `eol`.
+ */
+
 /** \brief Test for a newline-sequence at an offset in a character sequence.
  * \tparam CharSeq A random access character sequence type
  * \param seq A `CharSeq`

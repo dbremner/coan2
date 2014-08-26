@@ -150,17 +150,17 @@ struct specifier
 		return _bytes[0] == 0;
 	}
 
-	/// Expplicit cast to `bool` returns !null()
+	/// Explicit cast to `bool` returns !null()
 	explicit operator bool() const {
 		return !null();
 	}
 
 	/** \brief Attempt to read a specifier from a `chewer<std::string>`.
+	 *
 	 *  \param chew On entry, a `chewer<std::string>` positioned at the offset
 	 *  in the associated string from which to scan. On return`chew` is
 	 *  positioned to the first offset not consumed if a specifier is
 	 *  read, else is unchanged.
-     *
 	 *	\return The specifier read, if any, else the null specifier
 	 */
 	static specifier read(chewer<std::string> & chew) {
@@ -243,6 +243,7 @@ struct specifier
 
 private:
 
+    /// The specifier data.
 	char _bytes[serialized_size];
 
 };
@@ -282,66 +283,73 @@ private:
 	void build_format(symbol & sym);
 
 	/** \brief After building the first-cut format, make any necessary
-	 *	adjustments for the presence of '#'-operators:-
+     *  adjustments for the presence of '#'-operators.
+     *
+	 *	Occurrences of `#<whitespace><subsititute_expanded_arg_specifier>`
+	 *	are replaced by the corresponding `<subsititute_quoted_arg_specifier>`
      *
 	 *	\param nparams The number of parameters of the symbol requiring the
 	 *	format.
      *
-	 *	- If the symbol to which the format belongs has parameters then
-	 *	any operand of '#' must be a parameter (else exception).
+     *  \throw error_stringify_non_param if `nparams1` > 0 and an
+     *  operand of `#` is not a parameter.
      *
-	 *	- Occurrences of '#'<whitespace><subsititute_expanded_arg_specifier>
-	 *	are replaced by the corresponding <subsititute_quoted_arg_specifier>
 	 */
 	void do_stringify_adjustments(size_t nparams);
 
 	/** \brief After building the first-cut format, make any necessary
-	 *	adjustments for the presence of '##'-operators
+	 *	adjustments for the presence of '##'-operators.
+	 *
+	 *	Consecutive occurrences of '##' are collapsed to one.
      *
-	 *	- An '##'-operator cannot begin or end the format (else exception)
+	 *	If an operand is `<subsititute_expanded_arg_specifier>` that
+	 *	operand is replaced with the corresponding `<substitute_arg_specifier>`
      *
-	 *	- The operands must be tokens (else exception)
+	 *	Remaining occurrences of '##' and flanking whitespace are deleted.
+	 *
+     *  \throw error_misplaced_token_paste if an '##'-operator has no left
+     *  operand or no right operand.
      *
-	 *	- Consecutive occurrences of '##' are collapsed to one
+     *  \throw error_bad_token_paste if pasting the operands of `##` will
+     *  not form a token
      *
-	 *	- If an operand is <subsititute_expanded_arg_specifier> that
-	 *	operand is replaced with the corresponding <substitute_arg_specifier>
-     *
-	 *	- Remaining occurrences of '##' and flanking whitespace are deleted.
 	 */
 	void do_token_paste_adjustments();
 
 	/**	\brief Adjust the format for a '#'-operator.
-	 *	\param pos. The offset to the '#'-operator.
-	 *	\param pos. The number of parameters of the symbol requiring the
-	 *		format.
-     *
-	 *	- If `nparams` > 0 and the operand is not a format specifier
-	 *		exception `error_stringify_non_param` is thrown.
-     *
-	 *	- If `nparams` > 0 and the operand is a format specifier
+	 *
+	 *	If `nparams` > 0 and the operand is a format specifier
 	 *	then the operator and operand are replaced with the
-	 *	corresponding <substitute_quoted_arg_specifier>
+	 *	corresponding `<substitute_quoted_arg_specifier>`
+     *
+	 *	\param pos The offset to the '#'-operator.
+	 *	\param nparams The number of parameters of the symbol requiring the
+	 *		format
+	 *  \return The signed difference in the length of the format that
+	 *  results from the adjustment.
+     *  \throw error_stringify_non_param if `nparams1` > 0 and an
+     *  operand of `#` is not a parameter.
+     *
      *
 	 */
 	ptrdiff_t adjust_for_stringify_op(size_t pos, size_t nparams);
 
 	/**	\brief Adjust the format for a '##'-operator.
-	 *	\param pos. The offset to the '##'-operator.
-     *
-	 *	- If the operator has no left operand or no right operand
-	 *	then exception `error_misplaced_token_paste` is thrown.
-     *
-	 *	- If the operator has no left operand or no right operand
-	 *	then exception `error_misplaced_token_paste` is thrown.
-     *
-	 *	- If pasting the operands will not form a token then
-	 *	exception `error_bad_token_paste` is thrown.
-     *
-	 *	- If the either operand is a format specifier then it
-	 *	is replaced with the corresponding <substitute_arg_specifier>
+	 *
+	 *	If the either operand is a format specifier then it
+	 *	is replaced with the corresponding `<substitute_arg_specifier>`
      *
 	 *	The operator and flanking whitespace are deleted.
+	 *	\param pos The offset to the '##'-operator.
+     *  \return The signed difference in the length of the format that
+	 *  results from the adjustment.
+     *
+     *  \throw error_misplaced_token_paste if the operator has no left
+     *  operand or no right operand.
+     *
+     *  \throw error_bad_token_paste if pasting the operands will not form a
+     *  token
+     *
 	 */
 	ptrdiff_t adjust_for_token_paste_op(size_t pos);
 

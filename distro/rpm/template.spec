@@ -13,7 +13,7 @@ Group		: Development/Languages
 URL		: http://coan2.sourceforge.net/
 Source		: http://sourceforge.net/projects/coan2/files/v%{version}/%{name}-%{version}.tar.gz
 BuildRoot	: %{_tmppath}/%{name}-%{version}-root
-BuildRequires	: autoconf, automake, perl, gcc-c++ >= 4.3
+BuildRequires	: autoconf, automake, python, gcc-c++ >= 4.7
 %{?fc19:BuildRequires: perl-podlators}
 
 %description

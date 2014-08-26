@@ -38,6 +38,8 @@
 */
 #include "platform.h"
 
+/// \cond NO_DOXYGEN
+
 #ifdef NIX
 
 #include "filesys.h"
@@ -142,5 +144,7 @@ int set_permissions(std::string const & filename, permissions p)
 } // namespace fs
 
 #endif
+
+/// \endcond NO_DOXYGEN
 
 /* EOF*/

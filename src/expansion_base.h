@@ -143,16 +143,15 @@ protected:
 		size_t off = 0);
 
 	/** \brief Replace all occurrences of a reference throughout a terminal
-     *   segment of the this expansions's arguments
+     *   segment of this expansions's arguments
      *
 	 *	\param e An expansion.
-     *   \param replacement A replacement string.
 	 *	\param start Index into the arguments of this expansion.
 	 *	\return The number of replacements made.
      *
      *   In each expandable argument of the reference of this expansion,
      *   starting at index `start`, all occurrences of the reference of `e` are
-     *   replaced with `replacement`
+     *   replaced with the value of `e`
 	*/
 	unsigned edit_trailing_args(
 		expansion_base const & e,

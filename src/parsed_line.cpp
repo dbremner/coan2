@@ -47,6 +47,8 @@
 #include "diagnostic.h"
 #include "citable.h"
 
+/// \cond NO_DOXYGEN
+
 using namespace std;
 
 size_t parsed_line::extend()
@@ -308,5 +310,7 @@ void parsed_line::drop()
 		}
 	}
 }
+
+/// \cond NO_DOXYGEN
 
 // EOF

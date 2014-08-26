@@ -80,24 +80,28 @@ enum class text_type
 /// A tag class for selecting a chew mode
 struct whitespace
 {
+    /// Constant type id
 	static text_type const id = text_type::whitespace;
 	whitespace() {}
 };
 /// A tag class for selecting a chew mode
 struct greyspace
 {
+    /// Constant type id
 	static text_type const id = text_type::greyspace;
 	greyspace() {}
 };
 /// A tag class for selecting a chew mode
 struct continuation
 {
+    /// Constant type id
 	static text_type const id = text_type::continuation;
 	continuation() {}
 };
 /// A tag class for selecting a chew mode
 struct cxx_comment
 {
+    /// Constant type id
 	static text_type const id = text_type::cxx_comment;
 	cxx_comment() {}
 };
@@ -105,6 +109,7 @@ struct cxx_comment
 /// A tag class for selecting a chew mode
 struct c_comment
 {
+    /// Constant type id
 	static text_type const id = text_type::c_comment;
 	c_comment() {}
 };
@@ -112,6 +117,7 @@ struct c_comment
 /// A tag class for selecting a chew mode
 struct string_literal
 {
+    /// Constant type id
 	static text_type const id = text_type::string_literal;
 	string_literal() {}
 };
@@ -119,6 +125,7 @@ struct string_literal
 /// A tag class for selecting a chew mode
 struct character_literal
 {
+    /// Constant type id
 	static text_type const id = text_type::character_literal;
 	character_literal() {}
 };
@@ -126,6 +133,7 @@ struct character_literal
 /// A tag class for selecting a chew mode
 struct raw_string_literal
 {
+    /// Constant type id
 	static text_type const id = text_type::raw_string_literal;
 	raw_string_literal() {}
 };
@@ -133,6 +141,7 @@ struct raw_string_literal
 /// A tag class for selecting a chew mode
 struct header_name
 {
+    /// Constant type id
 	static text_type const id = text_type::header_name;
 	header_name() {}
 };
@@ -140,6 +149,7 @@ struct header_name
 /// A tag class for selecting a chew mode
 struct code
 {
+    /// Constant type id
 	static text_type const id = text_type::code;
 	code() {}
 };
@@ -147,6 +157,7 @@ struct code
 /// A tag class for selecting a chew mode
 struct name
 {
+    /// Constant type id
 	static text_type const id = text_type::name;
 	name() {}
 };
@@ -154,6 +165,7 @@ struct name
 /// A tag class for selecting a chew mode
 struct literal_space
 {
+    /// Constant type id
 	static text_type const id = text_type::literal_space;
 	literal_space() {}
 };
@@ -161,6 +173,7 @@ struct literal_space
 /// A tag class for selecting a chew mode
 struct punctuation
 {
+    /// Constant type id
 	static text_type const id = text_type::punctuation;
 	punctuation() {}
 };
@@ -168,6 +181,7 @@ struct punctuation
 /// A tag class for selecting a chew mode
 struct number_space
 {
+    /// Constant type id
 	static text_type const id = text_type::number_space;
 	number_space() {}
 };
@@ -175,6 +189,7 @@ struct number_space
 /// A tag class for selecting a chew mode
 struct stringify
 {
+    /// Constant type id
 	static text_type const id = text_type::stringify;
 	stringify() {}
 };
@@ -182,6 +197,7 @@ struct stringify
 /// A tag class for selecting a chew mode
 struct token_paste
 {
+    /// Constant type id
 	static text_type const id = text_type::token_paste;
 	token_paste() {}
 };
@@ -233,8 +249,11 @@ struct chewer : private no_assign
 {
     static_assert(traits::is_random_access_char_sequence<CharSeq>::value,">:[");
 
+    /// Type of the character-sequence consumed
     using sequence_type = CharSeq;
+    /// Value-type of the character-sequence
     using char_type = typename sequence_type::value_type;
+    /// SFINAE type equating to `void` if enabled.
     template<class Mode1, class Mode2>
     using void_if  =
     typename std::enable_if<std::is_same<Mode1,Mode2>::value>::type;
@@ -312,8 +331,6 @@ struct chewer : private no_assign
 	 *
 	 *  \tparam FirstMode Type of the first sccanning mode
 	 *  \tparam OtherModes Types of successive subsequent scanning modes
-     *  \param first_mode A `FirstMode`
-     *  \param other_modes A sequence of modes of types per `OtherModes`
      *
 	 */
 	template<class FirstMode, class ...OtherModes>
@@ -322,19 +339,19 @@ struct chewer : private no_assign
 		consume<FirstMode,OtherModes...>();
 	}
 
-	/// Say whether the scanning position is past the end of the
-	/// associated `sequence_type`.
+	/// \brief Say whether the scanning position is past the end of the
+	/// associated `sequence_type`
 	bool overshoot(size_t off = 0) const {
 		return _cur + off >= _len;
 	}
 
-	/// Get the character at an offset from the scanning position.
+	/// Get the character at an offset from the scanning position
 	char_type atoff(ptrdiff_t off) const {
 		return _buf[_cur + off];
 	}
 
-	/// Get a reference to the character at an offset from the
-	/// scanning position.
+	/// \brief Get a reference to the character at an offset from the
+	/// scanning position
 	char_type & atoff(size_t off) {
 		return _buf[_cur + off];
 	}
@@ -354,8 +371,8 @@ struct chewer : private no_assign
 		return _cur;
 	}
 
-	/// Get the remaining length of the associated `sequence_type` from the
-	/// scanning position.
+	/// \brief Get the remaining length of the associated `sequence_type` from
+	/// the scanning position.
 	size_t remaining() const {
 		return _len - _cur;
 	}
@@ -392,7 +409,7 @@ struct chewer : private no_assign
 	}
 
 	///@{
-	/// Get a [const] reference to the associated `sequence_type`
+	/// \brief Get a [const] reference to the associated `sequence_type`
 	sequence_type & buf() {
 		return _seq;
 	}
@@ -417,14 +434,17 @@ struct chewer : private no_assign
 
 	/** \brief Advance the scanning position an amount.
 	 *
+	 *  \param n The mount by which the advance the scanning position.
+	 *
      * The new position is not range-chacked.
      */
 	void on(size_t n) {
 		_cur += n;
 	}
 
-	/** \brief Retreat the cursor an amount.
+	/** \brief Retreat the scanning position an amount.
 	 *
+	 *  \param n The amount to move the scanning position back.
 	 *	The new position is not range-chacked.
 	 */
 	void back(size_t n) {
@@ -473,11 +493,13 @@ struct chewer : private no_assign
 
 private:
 
+    /// SFINAE type equating to void if `sequence_type` has an `extend` method.
     template<typename U>
     using if_sequence_is_extensible =
         typename
         std::enable_if<traits::has_extend_method<U>::value>::type;
 
+    /// SFINAE type equating to void if `sequence_type` lacks an `extend` method.
     template<typename U>
     using if_sequence_is_not_extensible =
         typename
@@ -523,12 +545,14 @@ private:
 
 	/// \brief Say whether there is a line-continuation at an offset
     /// from the scanning position.
+    /// \param off The offset at which to test
+    /// \return True iff there is a line-continuation at offset `off`
 	bool line_continues(size_t off = 0) {
 		return atoff(off) == '\\' && eol(off + 1);
 	}
 
     //@{
-	/// Consume characters satisfying a given mode, without
+	/// \brief Consume characters satisfying a given mode, without
 	/// preliminary `snyc()`
 	template<class Mode>
     void_if<Mode,chew_mode::continuation> consume() {
@@ -782,8 +806,8 @@ private:
     }
     ///@}
 
-    ///@
-    /// Consume characters satisfying a sequence of modes,
+    ///@{
+    /// \brief Consume characters satisfying a sequence of modes,
     /// without preliminary `sync()`
 	template<class First, class Next, class ...Rest>
 	typename std::enable_if<sizeof ...(Rest) == 0>::type

@@ -6,12 +6,12 @@ coan_symbol_rewind_tester.py coan_softlink_tester.py coan_test_metrics.py
 AM_TESTS_ENVIRONMENT = COAN_PKGDIR=$(top_srcdir); \
 	COAN_BUILDDIR=$(top_builddir); rm -f coan.test_timer.time.txt; \
 	export COAN_PKGDIR; export COAN_BUILDDIR;
-LOG_COMPILER = $(PYTHON)	
- 
-.phony: clean distclean-local cat-failure-logs
+LOG_COMPILER = python
+	 
+.phony: all clean distclean-local cat-failure-logs
 
 cat-failure-logs: test-suite.log
-	@for trs in *.trs; do \
+	for trs in *.trs; do \
 		if test ! -z "`cat $$trs | grep -E ':test-result: FAIL' -`"; then \
 			log_file=$${trs%%.trs}.log; \
 			echo '---------------- BEGIN failure log' $$log_file \
@@ -30,3 +30,4 @@ clean:
 		rm -f *.stderr *.stdout *.output
 
 distclean-local: clean
+

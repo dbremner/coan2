@@ -52,7 +52,7 @@
 
 using namespace std;
 
-//! \cond NO_DOXYGEN
+/// \cond NO_DOXYGEN
 
 template<> std::string const directive<HASH_IF>::_keyword_ = TOK_IF;
 template<> std::string const directive<HASH_IFDEF>::_keyword_ = TOK_IFDEF;
@@ -91,8 +91,6 @@ template<>
 map<string,bool> directive<HASH_ERROR>::_directives_tab_ = map<string,bool>();
 template<>
 map<string,bool> directive<HASH_LINE>::_directives_tab_ = map<string,bool>();
-
-//! \endcond NO_DOXYGEN
 
 vector<directive_base::evaluator> directive_base::_evaluator_tab_ = {
 	&directive<HASH_UNKNOWN>::eval,
@@ -438,5 +436,8 @@ line_type directive<HASH_LINE>::eval(chewer<parse_buffer> & chew)
 	}
 	return LT_PLAIN;
 }
+
+/// \endcond NO_DOXYGEN
+
 
 // EOF

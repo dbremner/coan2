@@ -49,6 +49,7 @@
  */
 struct argument_list : innards::parameter_list_base {
 
+    /// Base class
     using base = innards::parameter_list_base;
 
 	/// Explicitly construct from an `innards::parameter_list_base`
@@ -56,6 +57,8 @@ struct argument_list : innards::parameter_list_base {
 	: base(parms){}
 
     /** \brief Construct for `n` arguments
+     *
+     *  \param n The number of arguments of the argument list
      *
      * If `n` > 0, the list of placeholder arguments `$1,...,$n` is
      * constructed.

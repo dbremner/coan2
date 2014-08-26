@@ -2,7 +2,7 @@
 
 copyright = 'Copyright (c) 2012-2013 Michael Kinghan'
 
-import string, sys, os.path, argparse, glob, shutil
+import string, sys, os.path, glob, shutil
 
 top_srcdir = os.getenv('COAN_PKGDIR')
 
@@ -11,6 +11,7 @@ if not top_srcdir:
 
 sys.path.append(os.path.join(top_srcdir,'python'))
 
+import argparse 
 from coanlib import *	
 from class_TestCase import TestCase
 

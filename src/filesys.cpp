@@ -41,6 +41,8 @@
     This file implements the class `fs`
 */
 
+/// \cond NO_DOXYGEN
+
 using namespace std;
 
 string fs::tempname(string const & format)
@@ -72,5 +74,7 @@ string fs::abs_path(string const & filename)
 		return cwd_path.str();
 	}
 }
+
+/// \endcond NO_DOXYGEN
 
 /* EOF*/

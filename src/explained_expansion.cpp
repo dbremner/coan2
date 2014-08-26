@@ -42,6 +42,8 @@
  *   This file implements `struct explained_expansion`.
  */
 
+/// \cond NO_DOXYGEN
+
 using namespace std;
 
 unsigned
@@ -149,5 +151,7 @@ void explained_expansion::report_intermediate_value()
             << "<<" << endl;
 	}
 }
+
+/// \endcond NO_DOXYGEN
 
 // EOF

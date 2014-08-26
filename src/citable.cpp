@@ -41,6 +41,8 @@
  *	This file implements the overloads of free function `citable`
  */
 
+/// \cond NO_DOXYGEN
+
 using namespace std;
 
 namespace innards {
@@ -150,6 +152,8 @@ string citable(integer const & integ)
 	}
 	return string();
 }
+
+/// \endcond NO_DOXYGEN
 
 // EOF
 

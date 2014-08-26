@@ -40,6 +40,8 @@
  *   This file implements `struct unexplained_expansion`.
  */
 
+/// \cond NO_DOXYGEN
+
 using namespace std;
 
 unsigned unexplained_expansion::expand()
@@ -102,5 +104,7 @@ unsigned unexplained_expansion::expand(string & str)
 	}
 	return edits;
 }
+
+/// \endcond NO_DOXYGEN
 
 //EOF

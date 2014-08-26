@@ -57,7 +57,8 @@ struct reference_cache
 		 *  \param expansion The expansion of the reference
 		 *  \param eval The evaluation of the reference
 		 *  \param reported Has the reference been reported?
-		 *  \param Is the expansion complete (or imcomplete because too big)
+		 *  \param complete Is the expansion complete
+         *       (or imcomplete because too big)
 		 */
 		entry(
 			std::string const & expansion,
@@ -73,7 +74,8 @@ struct reference_cache
 		}
 
 		///@{
-		/// Get a [const] reference to the evaluation of the cached reference
+		/// \brief Get a [const] reference to the evaluation of the cached
+		/// reference.
 		evaluation const & eval() const {
 			return _eval;
 		}
@@ -113,15 +115,21 @@ struct reference_cache
 		bool _complete;
 	};
 
+    /// Type of map implementing the reference cache
 	using map = std::map<std::string,entry>;
+	/// Value-type of `map`
 	using value_type = map::value_type;
+	/// Iterator type on `map`
 	using iterator = map::iterator;
+	/// Const-iterator type on `map`
 	using const_iterator = map::const_iterator;
+	/// Type of result of insertion
 	using insert_result = std::pair<iterator,bool>;
 
 	/** \brief Insert a `value_type` into the cache
-	 *  \param v The `value_type` to insert
-	 *  \param hint A hint-iterator as per `std::map::insert`
+	 *  \param v The `value_type` to insert.
+	 *  \param hint A hint-iterator as per `std::map::insert`.
+	 *  \return An iterator to the inserted `value_type`.
 	 */
 	static iterator insert(value_type const & v, iterator hint) {
 		return get_map().insert(hint,v);
@@ -129,9 +137,10 @@ struct reference_cache
 
 
 	/** \brief Insert an `entry` by key into cache
-	 *  \param key The key of the entry
+	 *  \param key The key of the entry.
 	 *  \param e The entry to be inserted.
-	 *  \param hint A hint-iterator as per `std::map::insert`
+	 *  \param hint A hint-iterator as per `std::map::insert`.
+	 *  \return An iterator to the inserted `value_type`.
 	 */
 	static iterator
 	insert(std::string const & key, entry const & e, iterator hint) {

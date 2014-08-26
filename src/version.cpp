@@ -44,6 +44,8 @@
  *   This file implements free function `version`
  */
 
+/// \cond NO_DOXYGEN
+
 #ifndef PACKAGE_VERSION
 #ifdef NIX
 #error PACKAGE_VERSION not defined.
@@ -60,5 +62,7 @@ void version()
 	     __TIME__ << ')' << '\n';
 	exit(EXIT_SUCCESS);
 }
+
+/// \endcond NO_DOXYGEN
 
 // EOF

@@ -84,6 +84,7 @@ struct defer {};
 /// A base class for diagnostic classes
 struct diagnostic_base : private no_assign {
 
+    /// Type of pointer to `diagnostic_base`
 	using ptr = std::shared_ptr<diagnostic_base>;
 
 	/** \brief Constructor.
@@ -341,6 +342,8 @@ private:
 	 *	\tparam T Type returned by the selector member function.
 	 *   \param  match  The T that shall be returned by the selector function
 	 *		to select the diagnostic.
+	 *   \param  selector The member method that selects queued diagnostics for
+	 *      action.
 	 *   \param  action The member method, if any,
 	 *		to be called on selected diagnostics, else null.
 	 *   \return The number of diagnostics selected.
@@ -383,6 +386,7 @@ template<severity Level, unsigned Id>
 struct diagnostic : cloner<diagnostic_base,diagnostic<Level,Id>>
 {
 
+    /// Base class
     using base = cloner<diagnostic_base,diagnostic<Level,Id>>;
 
 	/// The severity level of this diagnostic type.
@@ -430,6 +434,7 @@ struct diagnostic : cloner<diagnostic_base,diagnostic<Level,Id>>
 template<unsigned Id>
 struct progress_msg : cloner<diagnostic<severity::progress,Id>,progress_msg<Id>>
 {
+    /// Base class
     using base = cloner<diagnostic<severity::progress,Id>,progress_msg<Id>>;
 
 	/// Constructor
@@ -444,6 +449,7 @@ struct progress_msg : cloner<diagnostic<severity::progress,Id>,progress_msg<Id>>
 template<unsigned Id>
 struct info_msg : cloner<diagnostic<severity::info,Id>,info_msg<Id>>
 {
+    /// Base class
     using base = cloner<diagnostic<severity::info,Id>,info_msg<Id>>;
 
 	/// Constructor
@@ -466,6 +472,7 @@ private:
 template<unsigned Id>
 struct warning_msg : cloner<diagnostic<severity::warning,Id>,warning_msg<Id>>
 {
+    /// Base class
     using base = cloner<diagnostic<severity::warning,Id>,warning_msg<Id>>;
 
 	/// Constructor
@@ -487,6 +494,7 @@ private:
 template<unsigned Id>
 struct error_msg : cloner<diagnostic<severity::error,Id>,error_msg<Id>>
 {
+    /// Base class
     using base = cloner<diagnostic<severity::error,Id>,error_msg<Id>>;
 
 	/// Constructor
@@ -509,6 +517,7 @@ private:
 template<unsigned Id>
 struct abend_msg : cloner<diagnostic<severity::abend,Id>,abend_msg<Id>>
 {
+    /// Base class
     using base = cloner<diagnostic<severity::abend,Id>,abend_msg<Id>>;
 
 	/// Constructor

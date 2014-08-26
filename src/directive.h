@@ -90,6 +90,10 @@ protected:
 
 	/** \brief Evaluate a directive.
 	 *  \param  type The `directive_type` of the directive.
+	 *  \param  chew  On entry, a `chewer<parse_buffer>` positioned to the
+	 *      offset in the associated `parse_buffer` from which
+	 *			to scan. On return `chew` is positioned to the first
+	 *			offset not consumed.
 	 *   \return A `line_type` determined by evaluation.
 	 */
 	static line_type eval(directive_type type, chewer<parse_buffer> & chew);
@@ -253,6 +257,6 @@ template<>
 line_type directive<HASH_LINE>::eval(chewer<parse_buffer> & chew);
 
 
-//! \endcond
+/// \endcond
 
 #endif /* EOF*/

@@ -55,6 +55,7 @@ using std::declval;
 template<typename T, typename V>
 struct has_value_type_of
 {
+    /// \cond NO_DOXYGEN
     template<typename A>
     static constexpr bool test(typename A::value_type * ptr) {
         return is_same<decltype(ptr),V *>::value;
@@ -63,6 +64,7 @@ struct has_value_type_of
         return false;
     }
     static const bool value = test<T>(nullptr);
+    /// \endcond NO_DOXYGEN
 };
 
 
@@ -73,6 +75,7 @@ struct has_value_type_of
 template<typename T>
 struct has_size_method
 {
+    /// \cond NO_DOXYGEN
     template<typename A>
     static constexpr bool test(decltype(declval<A>().size()) * ptr) {
         return is_same<decltype(ptr),size_t *>::value;
@@ -82,6 +85,7 @@ struct has_size_method
     }
 
     static const bool value = test<T>(nullptr);
+    /// \endcond NO_DOXYGEN
 };
 
 /** \brief `template struct traits::has_size_index_operator<T>`
@@ -91,6 +95,7 @@ struct has_size_method
 template< typename T>
 struct has_index_operator
 {
+    /// \cond NO_DOXYGEN
     template<typename A>
     static constexpr
     auto test( decltype(&declval<A>()[size_t(0)]) ptr) ->
@@ -104,6 +109,7 @@ struct has_index_operator
     }
 
     static const bool value = test<T>(nullptr);
+    /// \endcond NO_DOXYGEN
 };
 
 /** \brief `template struct traits::has_data_method<T>`
@@ -113,6 +119,7 @@ struct has_index_operator
 template< typename T>
 struct has_data_method
 {
+    /// \cond NO_DOXYGEN
     template<typename A>
     static constexpr auto test(decltype(declval<A const>().data()) ptr) ->
         decltype(is_same<decltype(ptr),typename A::value_type const *>::value)
@@ -125,6 +132,7 @@ struct has_data_method
     }
 
     static const bool value = test<T>(nullptr);
+    /// \endcond NO_DOXYGEN
 };
 
 /** \brief `template struct traits::has_extend_method<T>`
@@ -134,6 +142,7 @@ struct has_data_method
 template< typename T>
 struct has_extend_method
 {
+    /// \cond NO_DOXYGEN
     template<typename A>
     static constexpr bool test(decltype(declval<A>().extend()) * ptr) {
         return is_same<decltype(ptr),size_t *>::value;
@@ -145,7 +154,7 @@ struct has_extend_method
     }
 
     static const bool value = test<T>(nullptr);
-
+    /// \endcond NO_DOXYGEN
 };
 
 /** \brief `template struct traits::is_random_access_char_sequence<T>`
@@ -156,11 +165,13 @@ struct has_extend_method
 template<typename T>
 struct is_random_access_char_sequence
 {
+    /// \cond NO_DOXYGEN
     static const bool value =
         has_value_type_of<T,char>::value &&
         has_size_method<T>::value &&
         has_data_method<T>::value &&
         has_index_operator<T>::value;
+    /// \endcond NO_DOXYGEN
 };
 
 

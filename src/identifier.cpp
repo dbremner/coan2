@@ -43,6 +43,9 @@
 /** \file identifier.cpp
  *   This file implements the member functions of `namespace identifier`
  */
+
+/// \cond NO_DOXYGEN
+
 using namespace std;
 
 namespace identifier {
@@ -115,5 +118,7 @@ template
 string read(chewer<parse_buffer> &);
 
 } //namespace identifier
+
+/// \endcond NO_DOXYGEN
 
 // EOF

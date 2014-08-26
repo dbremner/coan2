@@ -234,7 +234,8 @@ struct file_tree : private no_copy
 		 *  \param  abs_path    The absolute path within which files
 		 *       are to be added to the node.
 		 *  \param  filter  The filter for selecting eleigible files.
-         *
+		 *   \return The number of files inserted.
+		 *
 		 *  `abs_path` is assumed to be positioned at the first element, if
 		 *  any, from which files have not already been inserted to
 		 *  the `node`.
@@ -242,8 +243,7 @@ struct file_tree : private no_copy
 		 *  This member function is called by `insert_intermediate` when that
 		 *  function has exhausted the elements of the path that are
          *   already represented in the `node`.
-         *
-		 *   \return The number of files inserted.
+
 		 */
 		template<typename Filter>
 		unsigned terminal_insert(path_t & abs_path, Filter & filter);

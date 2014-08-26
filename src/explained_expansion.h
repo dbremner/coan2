@@ -77,17 +77,16 @@ protected:
 	 *	`explained_expansion` itself.
      *
 	 *	\param e An explained_expansion.
-     *   \param in A replacement string.
 	 *	\param do_self If true, this `explained_expansion` itself is edited and
 	 *		then recursive parents. If false, the parent of the
 	 *		explained_expansion, if any, is edited and then recursive parents.
      *   \return The number of replacements made.
      *
 	 *	In each `explained_expansion` reached, if
-	 *	`args_expansion_done()` is false then occurrences of `ref` are
-	 *	replaced with `replacement` throughout the expanded argument at
-	 *	its `cur_arg_index() and subsquent arguments. Otherwise `ref`
-	 *	is replaced with `replacement` throughout the current value of
+	 *	`args_expansion_done()` is false then occurrences of the reference of
+	 *  `e` are replaced with the value of `e` throughout the expanded argument
+	 *  at its `cur_arg_index() and subsquent arguments. Otherwise the reference of
+	 *  `e` is replaced with its value throughout the current value of
 	 *	the explained_expansion.
 	 *
 	 *  The effect of this member function in explained macro expansion

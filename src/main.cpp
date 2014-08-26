@@ -49,9 +49,10 @@ using namespace std;
     This file implements the coan program
 */
 
-//! Execute a coan process
+/// Execute a coan process
 static void		process();
 
+/// coan main entry point
 int main(int argc, char *argv[])
 {
 	try {

@@ -338,8 +338,9 @@ struct path {
 	}
 	///@}
 
-	/// Set the cursor to index the final element, or to 0 if the `path`
-	/// is empty, returning the new position.
+	/// \brief Set the cursor to index the final element, or to 0 if the `path`
+	/// is empty.
+	/// \return The new cursor position.
 	int to_end() {
 		_cursor = elements() ? elements() - 1 : 0;
 		return _cursor;
@@ -429,11 +430,15 @@ private:
 	char _last = 0;
 };
 
-
-
 /*! \brief Get a path by concatenation of a string with a path.
 
-    The \c cursor of the new path is initialized to 0
+    \tparam Delim The host system's path delimiter.
+
+    \param str The lefthand operand
+    \param path The righthand operand
+    \return The path resulting from concatenation of `str` and `path`
+
+    The `cursor` of the new path is initialized to 0
 */
 template<char Delim>
 path<Delim> operator+(std::string const & str, path<Delim> const & path)
@@ -441,7 +446,8 @@ path<Delim> operator+(std::string const & str, path<Delim> const & path)
 	return path<Delim>(str) + path;
 }
 
-typedef path<PATH_DELIM> path_t;
+/// Alias `path_t` according to host system path delimiter
+using path_t = path<PATH_DELIM>;
 
 
 #endif /* EOF*/

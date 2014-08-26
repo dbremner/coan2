@@ -41,6 +41,9 @@
 /** \file parameter_substitution.cpp
  *   This file implements the members of `namespace parameter_substitution`.
  */
+
+/// \cond NO_DOXYGEN
+
 using namespace std;
 
 namespace parameter_substitution {
@@ -241,5 +244,6 @@ std::string format::legible() const
 
 } // namespace parameter_substitution.
 
+/// \endcond NO_DOXYGEN
 
 // EOF

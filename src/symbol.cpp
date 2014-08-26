@@ -45,6 +45,12 @@
 #include <cstring>
 #include <cassert>
 
+/** \file symbol.cpp
+ *   This file implements `struct symbol`.
+ */
+
+/// \cond NO_DOXYGEN
+
 using namespace std;
 
 symbol::table_entry
@@ -553,5 +559,7 @@ template
 symbol::locator symbol::find_any_in(chewer<string> &, size_t &);
 template
 symbol::locator symbol::find_any_in(chewer<parse_buffer> &, size_t &);
+
+/// \endcond NO_DOXYGEN
 
 // EOF

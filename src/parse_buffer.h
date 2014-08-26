@@ -40,7 +40,7 @@
 #include <string>
 #include "eol.h"
 
-/** \file base_parse_buffer
+/** \file parse_buffer.h
  *
  *	This file defines `struct parse_buffer`
  */
@@ -50,6 +50,7 @@
  */
 struct parse_buffer
 {
+    /// Value-type of `parse_buffer`
     using value_type = char;
 
 	/// Default constuctor
@@ -87,11 +88,10 @@ struct parse_buffer
 	}
 
 	///@{
-	//! Get a [const] reference to the underlying std::string
+	/// \brief Get a [const] reference to the underlying std::string
 	std::string & str() {
 		return _text;
 	}
-
 	std::string const & str() const {
 		return _text;
 	}
@@ -103,11 +103,10 @@ struct parse_buffer
 	}
 
 	///@{
-	/// Get a [const] pointer to the data
+	/// \brief Get a [const] pointer to the data
 	char const * data() const {
 		return _text.data();
 	}
-
 	char * data() {
 		return const_cast<char *>(_text.data());
 	}

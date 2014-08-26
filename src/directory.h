@@ -44,8 +44,10 @@
 #include "platform.h"
 #ifdef WINDOWS
 #include "directory_win.h"
+/// `directory` is `win::directory` under Windows
 using directory = win::directory;
 #else
+/// `directory` is `nix::directory` under *nix
 #include "directory_nix.h"
 using directory = nix::directory;
 #endif

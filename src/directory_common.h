@@ -67,7 +67,7 @@ struct directory {
 		_last_error = 0;
 	}
 
-	//. Say whether the directory is in a valid state.
+	/// Say whether the directory is in a valid state.
 	bool good() const {
 		return !_last_error;
 	}

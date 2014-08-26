@@ -53,8 +53,8 @@ struct unexplained_expansion : expansion_base
 	explicit unexplained_expansion(reference const & ref)
 	: expansion_base(ref){};
 
-	/** Perform the unexplained expansion of the reference, returning the number
-	 *	of edits applied.
+	/** \brief Perform the unexplained expansion of the reference.
+     *  \return The number of edits applied.
 	 */
 	unsigned expand() override;
 

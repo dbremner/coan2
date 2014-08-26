@@ -2,7 +2,7 @@
 
 # Create a random structure of randomly named directories
 
-import sys, argparse, string, random, os.path, shutil
+import sys, string, random, os.path, shutil
 
 top_srcdir = os.getenv('COAN_PKGDIR')
 if not top_srcdir:
@@ -10,6 +10,7 @@ if not top_srcdir:
 
 sys.path.append(os.path.join(top_srcdir,'python'))
 
+import argparse
 from coanlib import *
 
 copyright = 'Copyright (c) 2012 Michael Kinghan'

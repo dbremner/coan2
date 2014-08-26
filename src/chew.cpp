@@ -45,6 +45,8 @@ using namespace std;
  *   This file implements specializations of `template class chewer<CharSeq>`
  */
 
+/// \cond NO_DOXYGEN
+
 template<>
 void chewer<parse_buffer>::missing_terminator(size_t mark, char missing)
 {
@@ -67,5 +69,7 @@ void chewer<string>::missing_terminator(size_t mark, char missing){}
 
 template<>
 void chewer<string>::eof_in_comment(){}
+
+/// \nocond NO_DOXYGEN
 
 /* EOF*/

@@ -93,11 +93,9 @@ private:
 	/** \brief Decode an UTF-8 encoded character from a text offset.
      *
 	 *  \tparam CharSeq A character-sequence type
-	 *
 	 *  \param chew On entry, a `chewer<CharSeq>` positioned at the offset
 	 *  in the associated `CharSeq` from which to scan. On return`chew` is
 	 *  positioned to the first offset not consumed.
-     *
 	 *	\return The integer value of the UTF-8 character parsed, or
 	 *  `ULLONG_MAX` if none is parsed.
 	 */
@@ -134,14 +132,11 @@ private:
 	/** \brief Read a numeral of known base from a text pointer, returning a
 	 *   value and overflow indicator.
 	 *
-	 *  \tparam CharSeq A character-sequence type
-	 *
+	 *  \tparam CharSeq A character-sequence type.
 	 *  \param  base The arithmetic base in which the numeral is to be evaluated.
-     *
 	 *  \param chew On entry, a `chewer<CharSeq>` positioned at the offset
 	 *  in the associated `CharSeq` from which to scan. On return`chew` is
 	 *  positioned to the first offset not consumed.
-     *
 	 *  \return An `std::pair` containing, first, the integer value of the
 	 *  parsed numeral; second, a bool that is true if the value of
 	 *  the parsed numeral overflows unsigned long long, in which case
@@ -156,15 +151,13 @@ private:
 
 	/** \brief Read a numerically encoded character constant from a
 	 *	text offset, returning its value as an `integer`.
-     *  \tparam CharSeq A character-sequence type
-     *
+	 *
+     *  \tparam CharSeq A character-sequence type.
 	 *  \param base The presumed base of the constant, either 8 (octal) or
 	 *  16 (hex).
-     *
 	 *  \param chew On entry, a `chewer<CharSeq>` positioned at the offset
 	 *  in the associated `CharSeq` from which to scan. On return`chew` is
 	 *  positioned to the first offset not consumed.
-     *
 	 *  \return The integer value of encoded constant, if any is found,
 	 *  else `ULONG_MAX`.
      *

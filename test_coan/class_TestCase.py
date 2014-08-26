@@ -115,6 +115,7 @@ class TestCase:
 			progress("*** NO-OUTPUT")
 		if self.__redirect_op == '<':
 			progress("*** REDIRECT")
+		print "test command="+self.__test_cmd
 		coanlib.run(self.__test_cmd,self.__stdout_file,self.__stderr_file)
 		actual_syscode = self.__parse_syscode_from_stderr()
 		if self.__test_exact:

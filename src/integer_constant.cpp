@@ -45,6 +45,8 @@
  *   This file defines `struct integer_constant`.
  */
 
+/// \cond NO_DOXYGEN
+
 using namespace std;
 
 template<class CharSeq>
@@ -540,5 +542,6 @@ template
 integer
 integer_constant::read_char(chewer<string> & chew);
 
+/// \endcond NO_DOXYGEN
 
 // EOF

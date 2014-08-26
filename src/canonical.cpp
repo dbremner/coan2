@@ -40,11 +40,12 @@
 
 using namespace std;
 
-/** \file canonical_string.cpp
+/** \file canonical.cpp
  *	This file implements specializations of
  *	`template struct canonical<What>`
  */
 
+/// \cond NO_DOXYGEN
 bool innards::canonical_base::cxx() const {
 	return !options::plaintext();
 }
@@ -68,5 +69,7 @@ template
 void canonical<symbol>::canonicalize(chewer<string> & chew);
 template
 void canonical<symbol>::canonicalize(chewer<parse_buffer> & chew);
+
+/// \endcond NO_DOXYGEN
 
 /* EOF */

@@ -86,8 +86,9 @@ struct evaluation {
 		return _empty;
 	}
 
-	/** Get/set the residual number of binary operators in the expression,
-	 *	after simplification.
+	/** \brief Get/set the residual number of binary operators in the
+	 *  expression, after simplification.
+	 *  \return A reference to the count of binary operators in the expression.
 	 */
 	unsigned short & net_infix_ops() {
 		return _net_infix_ops;
