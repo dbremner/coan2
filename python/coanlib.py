@@ -87,6 +87,9 @@ def bail(msg, exitcode = 1):
 	file_del(__get_test_size_file())		
 	sys.exit(exitcode)
 	
+def __have_time():
+	return os.getenv('TIME') == 'yes'
+	
 def __get_time_file():
 	''' Set the name of the test timing file if unset'''
 	global __time_file
@@ -229,7 +232,7 @@ def slurp_lines(file):
 	return lines
 	
 def run(cmd,
-	stdout_file = None,stderr_file = None,stdin_file = None, timing = True):
+	stdout_file = None,stderr_file = None,stdin_file = None, timing = __have_time()):
 	''' 
 	Run a command optionally specifying
 	files to capture stdout and stderr and whether timing is required
