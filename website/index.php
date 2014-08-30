@@ -29,7 +29,7 @@ application of this sort\">
   <li><a id=\"acknowledge\" href=\"index.php?page=acknowledge\">Acknowledgements</a></li>
   <li><a id=\"todo\" href=\"index.php?page=todo\">To Do</a></li>
   <li><a id=\"changes\" href=\"index.php?page=changes\">Changelog</a></li>
-  <li><a id=\"cv\" href=\"index.php?page=cv\">My CV</a></li>
+  <!-- <li><a id=\"cv\" href=\"index.php?page=cv\">My CV</a></li> -->
   <!-- <li><a id=\"brief_cv\" href=\"index.php?page=brief_cv\">My Brief CV</a></li> -->
 </ul>
 
