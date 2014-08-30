@@ -107,10 +107,12 @@ args = vars(parser.parse_args())
 client = args['client']
 if (client):
 	set_prog(client)
-do_metrics()
 set_verbosity(args['verbosity'])
 pkgdir = deduce_pkgdir(args)
 execdir = deduce_execdir(args)
+if not windows():
+	os.system('chmod -R +w ' + pkgdir)
+do_metrics()
 testfiles = args['infile'];
 if len(testfiles) == 0:
 	pattern = os.path.join(pkgdir,'test_coan','test_cases','*.c')
@@ -136,8 +138,6 @@ archbits = get_wordsize()
 if not archbits:
 	bail('*** Cannot determine wordsize of this machine! ***')
 
-if not windows():
-	os.system('chmod -R +w ' + pkgdir)
 	
 if not monkey_args:
 	num_tests = len(testfiles)

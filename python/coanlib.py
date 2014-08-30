@@ -158,10 +158,10 @@ def fopen(file,mode):
 		bail('*** Unknown file open mode\'' + mode + '\' ***')   
 	try:
 		return open(file,mode)
-	except IOError:
+	except IOError as error:
 		modestr = 'reading' if mode == 'r' else 'writing'
 		bail('*** Cannot open file \"' + file + '\"' + " for " + \
-			modestr + ' ***')
+			modestr + ': ' + error.strerror + ' ***')
 			
 def make_path(path):
 	''' 
@@ -291,7 +291,7 @@ def deduce_pkgdir(args = {}):
 	return os.path.abspath(pkgdir)
 
 def deduce_execdir(args = {}):
-	''' Deduce the actual directory contaiing the coan
+	''' Deduce the actual directory containing the coan
 	executable given the commandline args '''
 	execdir = None
 	try:
@@ -300,10 +300,10 @@ def deduce_execdir(args = {}):
 		pass
 	if not execdir:
 		execdir = 'src'
-		builddir = os.getenv('COAN_BUILDDIR')
-		if not builddir:
-			builddir = deduce_pkgdir(args)
-		execdir = os.path.join(builddir,execdir)
+	builddir = os.getenv('COAN_BUILDDIR')
+	if not builddir:
+		builddir = deduce_pkgdir(args)
+	execdir = os.path.join(builddir,execdir)
 	return os.path.abspath(execdir)
 
 def compute_runtime(time_files = [__get_time_file()]):

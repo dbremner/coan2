@@ -16,7 +16,6 @@ from coanlib import *
 #import argparse
 
 set_prog('coan_softlink_tester')
-do_metrics()
 
 parser = argparse.ArgumentParser(
 	prog=get_prog(),
@@ -61,6 +60,10 @@ if windows():
 args = vars(parser.parse_args())
 pkgdir = deduce_pkgdir(args)
 execdir = deduce_execdir(args)
+if not windows():
+	os.system('chmod -R +w ' + pkgdir)
+do_metrics()
+
 rootname = os.path.abspath(args['rootname'])
 failures = 0
 infiles = 0
@@ -141,9 +144,6 @@ def check_test_result():
 
 
 atexit.register(exithandler)
-
-if not windows():
-	os.system('chmod -R +w ' + pkgdir)
 	
 file_del('link2options.h')
 file_del('link2scrap')

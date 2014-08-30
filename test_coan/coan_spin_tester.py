@@ -17,7 +17,6 @@ from coanlib import *
 
 
 set_prog('coan_spin_tester')
-do_metrics()
 
 parser = argparse.ArgumentParser(
 	prog=get_prog(),
@@ -60,6 +59,10 @@ set_verbosity(args['verbosity'])
 pkgdir = args['pkgdir']
 pkgdir = deduce_pkgdir(args)
 execdir = deduce_execdir(args)
+if not windows():
+	os.system('chmod -R +w ' + pkgdir)
+do_metrics()
+
 failures = 0
 keep = args['keep']
 bail = args['bail']
@@ -81,9 +84,6 @@ gripe = 'abend 0x0100e: The spin directory cannot include or be ' \
 epitaph = 'progress 0x02101: Completed ABNORMALLY, exit code 0x08'
 stderr_text = None
 error_regex = re.compile('coan:\s+(\S+):\s+line\s+\d+:\s+error\s+0x\S{5}:')
-
-if not windows():
-	os.system('chmod -R +w ' + pkgdir)
 	
 def get_stderr_text():
 	global stderr_text

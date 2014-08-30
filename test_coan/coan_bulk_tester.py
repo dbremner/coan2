@@ -16,7 +16,6 @@ from coanlib import *
 #import argparse
 
 set_prog('coan_bulk_tester')
-do_metrics()
 
 parser = argparse.ArgumentParser(
 	prog=get_prog(),
@@ -73,6 +72,10 @@ args = vars(parser.parse_args())
 set_verbosity(args['verbosity'])
 pkgdir = deduce_pkgdir(args)
 execdir = deduce_execdir(args)
+if not windows():
+	os.system('chmod -R +w ' + pkgdir)
+do_metrics()
+
 executable = os.path.join(execdir,'coan.exe') if windows() \
 	else os.path.join(execdir,'coan')
 scrapdir = os.path.join(pkgdir,'test_coan','scrap')
@@ -95,9 +98,6 @@ num_infiles = 0
 num_sabotaged_files = 0
 failures = 0
 testno = 0
-
-if not windows():
-	os.system('chmod -R +w ' + pkgdir)
 
 def exithandler():
 	''' atexit() cleanup '''
