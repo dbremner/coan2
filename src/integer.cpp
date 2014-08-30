@@ -604,6 +604,7 @@ char const * integer::type_desc(integer_type it)
 	default:
 		assert(false);
 	}
+	return "";
 }
 
 // EOF

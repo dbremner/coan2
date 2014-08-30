@@ -2,7 +2,7 @@
 
 copyright = 'Copyright (c) 2012-2013 Michael Kinghan'
 
-import sys, os, atexit, re, string
+import sys, os, argparse, atexit, re, string
 
 top_srcdir = os.getenv('COAN_PKGDIR')
 if not top_srcdir:
@@ -10,7 +10,6 @@ if not top_srcdir:
 
 sys.path.append(os.path.join(top_srcdir,'python'))
 
-import argparse
 from coanlib import *
 #if sys.version_info < (2,7):
 #	sys.path.append(os.path.join(top_srcdir,'python','argparse-1.2.1'))

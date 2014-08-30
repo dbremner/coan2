@@ -149,11 +149,6 @@ def __validate_verbosity(keyword):
 	if keyword not in __severities_by_word:
 		bail("Unknown severity keyword: \"" + keyword + "\"")
 		
-def __have_time():
-	''' Is $TIME set == 'yes'?'''
-	val = os.getenv('TIME')
-	return val is not None and val == 'yes'
-		
 def windows():
 	''' Say whether the host OS is Windows '''
 	return os.name == 'nt'
@@ -163,10 +158,10 @@ def fopen(file,mode):
 		bail('*** Unknown file open mode\'' + mode + '\' ***')   
 	try:
 		return open(file,mode)
-	except IOError as error:
+	except IOError:
 		modestr = 'reading' if mode == 'r' else 'writing'
 		bail('*** Cannot open file \"' + file + '\"' + " for " + \
-			modestr + ': ' + '{0}'.format(error) + ' ***')
+			modestr + ' ***')
 			
 def make_path(path):
 	''' 
@@ -185,7 +180,7 @@ def del_tree(rootdir):
 	try:
 		if os.path.isdir(rootdir):
 			shutil.rmtree(rootdir)
-	except OSError:
+	except OSError as error:
 		bail('*** Failed to delete directory \"' + rootdir + '\": ' + 
 			error.strerror)
 		
@@ -233,9 +228,8 @@ def slurp_lines(file):
 	fh.close()
 	return lines
 	
-	
 def run(cmd,
-	stdout_file = None,stderr_file = None,stdin_file = None, timing = __have_time()):
+	stdout_file = None,stderr_file = None,stdin_file = None, timing = True):
 	''' 
 	Run a command optionally specifying
 	files to capture stdout and stderr and whether timing is required
@@ -301,15 +295,15 @@ def deduce_execdir(args = {}):
 	executable given the commandline args '''
 	execdir = None
 	try:
-		excedir = args['execdir']
+		execdir = args['execdir']
 	except:
 		pass
 	if not execdir:
 		execdir = 'src'
-	builddir = os.getenv('COAN_BUILDDIR')
-	if not builddir:
-		builddir = deduce_pkgdir(args)
-	execdir = os.path.join(builddir,execdir)
+		builddir = os.getenv('COAN_BUILDDIR')
+		if not builddir:
+			builddir = deduce_pkgdir(args)
+		execdir = os.path.join(builddir,execdir)
 	return os.path.abspath(execdir)
 
 def compute_runtime(time_files = [__get_time_file()]):
@@ -426,8 +420,6 @@ def measure_test_size():
 		
 def do_metrics():
 	''' Initailize coan test metrics '''
-	if not __have_time():
-		return
 	time_file = __get_time_file()
 	size_file = __get_test_size_file()
 	if time_file and size_file:

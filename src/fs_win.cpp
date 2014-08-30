@@ -41,6 +41,7 @@
 #ifdef WINDOWS
 
 #include "filesys.h"
+#include "syserr.h"
 #include "diagnostic.h"
 #include "path.h"
 #include <cassert>

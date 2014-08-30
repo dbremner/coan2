@@ -33,7 +33,7 @@ class TestCase:
 		self.__stdout_file = ''
 		self.__stderr_file = ''
 		self.__skip = False
-		self.__testdir = os.path.join(self.__pkgdir,'test_coan')
+		self.__cwd = os.getcwd()
 		if self.__monkey_args:
 			self.__test_args = self.__monkey_args + ' --keepgoing'
 		if len(self.__test_files) and not self.__monkey_args:
@@ -115,7 +115,6 @@ class TestCase:
 			progress("*** NO-OUTPUT")
 		if self.__redirect_op == '<':
 			progress("*** REDIRECT")
-		print "test command="+self.__test_cmd
 		coanlib.run(self.__test_cmd,self.__stdout_file,self.__stderr_file)
 		actual_syscode = self.__parse_syscode_from_stderr()
 		if self.__test_exact:
@@ -256,7 +255,10 @@ class TestCase:
 	def __match_words(self,actual_word,expected_word):
 		if actual_word == expected_word:
 			return True
-		expected_word = string.replace(expected_word,'{CWD}',self.__testdir)
+		expected_word = expected_word.replace('{CWD}',self.__cwd)
+		if windows():
+			actual_word = actual_word.replace('\\','/')
+			expected_word = expected_word.replace('\\','/')
 		return True if actual_word == expected_word else False;
 	
 	# Private class members
