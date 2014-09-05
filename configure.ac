@@ -1,7 +1,7 @@
-AC_INIT(coan,6.0)
+AC_INIT(coan,6.0.1)
 AC_CONFIG_MACRO_DIRS([m4])
 AC_PREREQ(2.59)
-AM_INIT_AUTOMAKE(1.10 no-define)
+AM_INIT_AUTOMAKE(1.13 no-define)
 AC_CHECK_HEADERS(strings.h)
 AC_MSG_CHECKING(for big-endian host)
 AC_TRY_RUN([main () {

@@ -88,7 +88,7 @@ def bail(msg, exitcode = 1):
 	sys.exit(exitcode)
 	
 def __have_time():
-	return os.getenv('TIME') == 'yes'
+	return os.getenv('HAVE_TIME') == 'yes'
 	
 def __get_time_file():
 	''' Set the name of the test timing file if unset'''

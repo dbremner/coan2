@@ -4,11 +4,12 @@ TESTS = coan_case_tester.py coan_bulk_tester.py coan_spin_tester.py \
 coan_symbol_rewind_tester.py coan_softlink_tester.py coan_test_metrics.py
 
 AM_TESTS_ENVIRONMENT = COAN_PKGDIR=$(top_srcdir); \
-	COAN_BUILDDIR=$(top_builddir); rm -f coan.test_timer.time.txt; \
-	export COAN_PKGDIR; export COAN_BUILDDIR;
+	COAN_BUILDDIR=$(top_builddir); HAVE_TIME=$(TIME); \
+	rm -f coan.test_timer.time.txt; \
+	export COAN_PKGDIR; export COAN_BUILDDIR; export HAVE_TIME;
 LOG_COMPILER = python
 	 
-.phony: all clean distclean-local cat-failure-logs
+.phony: all clean clean-metrics distclean-local cat-failure-logs
 
 cat-failure-logs: test-suite.log
 	for trs in *.trs; do \
@@ -21,11 +22,16 @@ cat-failure-logs: test-suite.log
 				'----------------'; \
 		fi; \
 	done
-
+	
 check: cat-failure-logs
 
-clean:
-	rm -f *.o wordsize *.tmp *.time.txt *.size.txt
+clean-metrics:
+	rm -f *.time.txt *.size.txt
+	
+check-am: clean-metrics
+	
+clean: clean-metrics
+	rm -f *.o wordsize *.tmp
 	cd $(top_srcdir)/test_coan/test_cases && \
 		rm -f *.stderr *.stdout *.output
 

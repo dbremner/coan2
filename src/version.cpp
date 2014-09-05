@@ -50,7 +50,7 @@
 #ifdef NIX
 #error PACKAGE_VERSION not defined.
 #endif
-#define PACKAGE_VERSION "6.0"
+#define PACKAGE_VERSION "6.0.1"
 #endif
 
 using namespace std;
