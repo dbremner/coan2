@@ -87,9 +87,7 @@ def bail(msg, exitcode = 1):
 	file_del(__get_test_size_file())		
 	sys.exit(exitcode)
 	
-def __have_time():
-	return os.getenv('HAVE_TIME') == 'yes'
-	
+
 def __get_time_file():
 	''' Set the name of the test timing file if unset'''
 	global __time_file
@@ -211,10 +209,11 @@ def file_del(filename):
 		if e.errno != errno.ENOENT: # errno.ENOENT = no such file or directory
 			bail('*** Failed to delete file \"' + filename + '\"')
 				
-def slurp_command(cmd):
+def slurp_command(cmd, with_stderr = False):
 	''' Return the output of a command as a string '''
 	words = cmd.split()
-	output = subprocess.check_output(words)
+	output = subprocess.check_output(words) if not with_stderr \
+		else subprocess.check_output(words, stderr=subprocess.STDOUT)
 	return output
 	
 def slurp_file(file):
@@ -231,8 +230,19 @@ def slurp_lines(file):
 	fh.close()
 	return lines
 	
+def __timing_metrics_enabled():
+	return os.getenv('TIMING_METRICS') == '1'
+
+def __do_timing_metrics():
+	if not __timing_metrics_enabled():
+		return False
+	time_version = slurp_command('/usr/bin/time --version', True)
+	return time_version.find('GNU') != -1 
+
+DO_TIMING_METRICS = __do_timing_metrics()
+	
 def run(cmd,
-	stdout_file = None,stderr_file = None,stdin_file = None, timing = __have_time()):
+	stdout_file = None,stderr_file = None,stdin_file = None, timing = DO_TIMING_METRICS):
 	''' 
 	Run a command optionally specifying
 	files to capture stdout and stderr and whether timing is required
@@ -432,3 +442,8 @@ def do_metrics():
 			report_metrics,
 			[__get_time_file()],
 			[__get_test_size_file()])
+
+if __name__ == "__main__":
+	print slurp_command('/usr/bin/time --version', True)
+
+	

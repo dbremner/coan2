@@ -20,14 +20,25 @@ AM_COND_IF([IS_BIG_ENDIAN],\
 	[AC_MSG_ERROR([Sorry. Coan is buggy on big-endian systems])])
 AC_CHECK_PROG([PYTHON],[python],[yes],[no])
 AC_CHECK_PROG([TIME],[time],[yes],[no])
+AC_ARG_ENABLE(make-check-timing,
+	[AC_HELP_STRING([--enable-make-check-timing=@<:@yes/no@:>@],
+		[Enable/disable collection of timing \
+		metrics by `make check`. @<:@default=no@:>@])],
+	[if test x$enableval = xyes; then make_check_timing=yes; \
+	else make_check_timing=no; fi],[make_check_timing=no])
+AM_CONDITIONAL([MAKE_CHECK_TIMING],[test "$make_check_timing" = "yes" -a "$TIME" = "yes"])
+AM_CONDITIONAL([LACK_TIME],[test "$make_check_timing" = "yes" -a "$TIME" = "no"])
 AM_CONFIG_HEADER(config.h)
-${CXXFLAGS=""}
 AC_LANG([C++])
+saved_cxxflags="$CXXFLAGS"
 AC_PROG_CXX
+CXXFLAGS="$saved_cxxflags"
 AX_CXX_COMPILE_STDCXX_11([noext],[mandatory])
 AC_SUBST([AM_CXXFLAGS], [-O2])
 AC_CONFIG_FILES(Makefile src/Makefile man/Makefile test_coan/Makefile)
 AC_OUTPUT
+AM_COND_IF([LACK_TIME],\
+	[AC_MSG_WARN([`--enable-make-check-timing` ignored because `time` is not available])])
 AM_CONDITIONAL([HAVENT_PYTHON],[test "$PYTHON" = "no"])
 AM_COND_IF([HAVENT_PYTHON],\
 	[AC_MSG_WARN([`python` is not in your `PATH`. You will not be able to run `make check`])])
