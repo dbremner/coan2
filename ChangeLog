@@ -1844,4 +1844,37 @@ coan v6.0 Mike Kinghan 2014-08-15
 	New:
 		FEA0036: Coan now issues an informational diagnostic whenever a
 		`#define` or `#undef` retrospectively affects the meaning of previously
-		defined symbols. 
+		defined symbols.
+
+coan v6.1 Mike Kinghan 2014-10-04
+	New:
+		REW0022: By default, coan now detects constructs of the three forms:
+
+			#ifndef FOO
+			#define FOO
+			...
+			#endif
+
+		or:
+
+			#if ! defined FOO
+			#define FOO
+			...
+			#endif
+
+		or:
+
+			#if ! defined(FOO)
+			#define FOO
+			...
+			#endif
+
+		as being intended to effect idempotence of the scope, and provided
+		that `FOO` is unconfigured when seen, the controlling condition is
+		assumed to be true, so that the scope will be parsed on first sight
+		of the controlling condition. Thus `FOO` becomes a transiently defined
+		symbol and any subsequent scope of the same condition will not be parsed.
+
+		This behaviour can be suppressed by specifying the new `--no-idempotence`
+		option.
+				  

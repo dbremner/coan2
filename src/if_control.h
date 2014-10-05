@@ -104,8 +104,8 @@ struct if_control {
 		return ifstate[if_depth()] == IF_STATE_OUTSIDE;
 	}
 
-	/**	\brief Is the current line outside any `#if` scope or in the scope of a
-	 *   satisfied `#if`?
+	/**	\brief Is the current line outside any `#if` scope or in the scope of
+	 *  only satisfied `#if`s?
 	 */
 	static bool is_unconditional_line();
 
@@ -122,6 +122,18 @@ struct if_control {
 	/// Get the current `#if`-state.
 	static if_state state() {
 		return ifstate[if_depth()];
+	}
+
+	/// Set the `#if`-state at the current nesting depth.
+	static void set_state(if_state is) {
+		size_t deep = if_depth();
+		ifstate[deep] = is;
+	}
+
+	/// Set the idempotence flag at the current nesting depth.
+	static void set_idempotence(bool idempotent = true) {
+		size_t deep = if_depth();
+		idempotence[deep] = idempotent;
 	}
 
 	/// Reset the depth of `#if`-nesting to 0.
@@ -149,11 +161,10 @@ private:
 	/// Increment the `#if`-nesting depth.
 	static void nest();
 
-	/// Set the `#if`-state at the current nesting depth.
-	static void set_state(if_state is) {
-		size_t deep = if_depth();
-		ifstate[deep] = is;
-	}
+	/**	\brief Is the current scope at a given nesting depth either outside any
+	 * `#if` or constrolled by a satisfied `#if`?
+	 */
+    static bool is_active_scope(unsigned depth);
 
 	/// State transition
 	static void Strue();
@@ -235,6 +246,11 @@ private:
 
 	/// Array of states of nested `#if`-directives
 	static if_state	ifstate[MAXDEPTH];
+
+	/** \brief Array of bool flags indicating the if-state at an index was set
+	 * by recognition of idempotence
+	 */
+	static bool	idempotence[MAXDEPTH];
 
 	/// Current depth of `#if`-nesting
 	static size_t		depth;

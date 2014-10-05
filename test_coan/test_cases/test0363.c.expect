@@ -1,6 +1,6 @@
 JX_ENABLE_ARC: global: expands afresh as >>1<<: evaluates to 1: in options
 JXArcCompatibilityMacros_h: unconfigured: insoluble: {CWD}/test_cases/test0363.c(28)
-JXArcCompatibilityMacros_h: unconfigured: insoluble: {CWD}/test_cases/test0363.c(29)
+JXArcCompatibilityMacros_h: transient: expands afresh as >><<: {CWD}/test_cases/test0363.c(29)
 __clang__: unconfigured: insoluble: {CWD}/test_cases/test0363.c(31)
 JX_STRONG: unconfigured: insoluble: {CWD}/test_cases/test0363.c(32)
 JX_STRONG: unconfigured: insoluble: {CWD}/test_cases/test0363.c(34)

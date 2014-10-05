@@ -1,5 +1,5 @@
 /**ARGS: symbols --expand --locate -DJX_ENABLE_ARC=1 */
-/**SYSCODE: = 2 */
+/**SYSCODE: = 3 */
 
 /*
 * JXArcCompatibilityMacros.h

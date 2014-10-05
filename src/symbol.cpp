@@ -41,6 +41,7 @@
 #include "canonical.h"
 #include "contradiction.h"
 #include "if_control.h"
+#include "idempotence.h"
 #include <algorithm>
 #include <cstring>
 #include <cassert>
@@ -422,12 +423,17 @@ symbol::digest_transient_define(formal_parameter_list const & params,
 						  << id() << parameters().str()
 						  << '=' << *_defn << "\" at line "
 						  << _line << emit();
-				} else {
+				} else if (/*IMK if_control::if_depth() == 0*/ true) {
 					/* Differing #define contradicts -D option */
 					contradiction::flush();
 					contradiction::insert(
                             contradiction::cause::DIFFERENTLY_REDEFING_D,id());
 					return LT_DIRECTIVE_DROP;
+				} else {
+				    string line =
+                        canonical<string>(line_despatch::cur_line().str());
+				    info_conditionally_redefining_defined() << '\"' << line <<
+                        "\" differently redefines -D symbol" << emit();
 				}
 			}
 			/* Definitions the same */
@@ -443,13 +449,21 @@ symbol::digest_transient_define(formal_parameter_list const & params,
 		}
 		/* symbol is already undefined. */
 		else if (is_global) {
-			/* #define contradicts -U option */
-			contradiction::insert(contradiction::cause::DEFINING_U,id());
-			return LT_DIRECTIVE_DROP;
+            if (/*IMK if_control::if_depth() == 0*/ true) {
+                /* #define contradicts -U option */
+                contradiction::insert(contradiction::cause::DEFINING_U,id());
+                return LT_DIRECTIVE_DROP;
+            } else {
+                string line =
+                    canonical<string>(line_despatch::cur_line().str());
+                info_conditionally_defining_undefined() << '\"' << line <<
+                    "\" conditionally overrides -U or --implicit" << emit();
+            }
 		}
 		//* Else #define countervails #undef */
 	}
-	if (if_control::is_unconditional_line() && !options::no_transients()) {
+    if (options::no_transients()) {} // In this case, nothing further
+	else if (if_control::is_unconditional_line()) {
 		if (!configured()) {
 			warning_transient_symbol_added()
 				<< "\"-D" << id() << params.str()
@@ -458,11 +472,20 @@ symbol::digest_transient_define(formal_parameter_list const & params,
 		}
 		define(definition,params);
 		_provenance = provenance::transient;
-	} else if (!options::no_transients()) {
-		/* 	If we are here the symbol must be unconfigured.
-			If it were configured global then we have already returned.
-			Hence it could only be configured transient, which is not allowed.
-		*/
+	} else if (idempotence::get_waypoint() ==
+                idempotence::waypoint::got_define) {
+		if (!configured()) {
+            idempotence::at_symbol(id());
+            if (idempotence::check()) {
+                warning_transient_symbol_added()
+                    << "\"-D" << id() << params.str()
+                    << '=' << definition
+                    << "\" has been assumed for the current file" << emit();
+                define(definition,params);
+                _provenance = provenance::transient;
+            }
+		}
+    } else {
 		set_parameters(params);
 		_provenance = provenance::unconfigured;
 	}
@@ -472,7 +495,7 @@ symbol::digest_transient_define(formal_parameter_list const & params,
 void symbol::digest_global_undef(chewer<string> & chew)
 {
 	if (chew) {
-		error_garbage_arg() << "Garbage in \"#undef " << id() << '\"' << emit();
+		error_garbage_arg() << "Garbage in \"-U" << id() << '\"' << emit();
 		return;
 	}
 	if (configured()) {
@@ -507,12 +530,18 @@ symbol::digest_transient_undef()
 				        << id() << parameters().str()
 				        << '=' << *_defn << " at line "
 				        << _line << emit();
-			} else  { /* #undef contradicting -D option */
+			} else if (/*IMK if_control::if_depth() == 0*/ true) {
+			    /* #undef contradicting -D option */
 				if (contradiction::last_conflicted_symbol_id() != id()) {
 					contradiction::flush();
 					contradiction::save(contradiction::cause::UNDEFING_D,id());
 				}
 				return LT_DIRECTIVE_DROP;
+			} else {
+                string line =
+                    canonical<string>(line_despatch::cur_line().str());
+                info_conditionally_undefining_defined() << '\"' << line <<
+                    "\" conditionally overrides -D symbol" << emit();
 			}
 		}
 		/* symbol is already undefined. */

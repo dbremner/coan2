@@ -13,6 +13,13 @@ configuration-related questions. <a href="index.php?page=about">More...</a>
 
 <p class="section">Latest News</p>
 <ul>
+<li><b>2014-09-16</b> Coan v6.0.1 release</li>
+<li><em>What's new?</em>
+	<ul>
+		<li>This patch release corrects minor autotooling bugs in the coan test-harness. 
+		There are no changes to the coan executable apart from the version it reports.</li>
+	</ul>
+</li>
 <li><b>2014-08-25</b> Coan v6.0 release</li>
 <li><em>What's new?</em>
 	<ul>

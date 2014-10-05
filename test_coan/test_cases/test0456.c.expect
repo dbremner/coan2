@@ -1,0 +1,41 @@
+/**ARGS: source -DFOO */
+/**SYSCODE: = 16 | 2 | 1 */
+#ifndef G0
+#define G0
+
+	#ifndef G1
+	#define G1
+	KEEP ME
+	#endif
+	
+	KEEP ME
+	
+	#ifndef G2
+	// A comment
+	#define G2
+	KEEP ME
+	#endif
+
+	#ifndef G3
+	#undef G3
+	#define G3
+	KEEP ME
+	#else
+	KEEP ME
+	#endif
+	
+	#if ! defined(G4)
+	#define G4
+	KEEP ME
+	#endif
+	
+	KEEP ME
+	
+	#if ! defined G5
+	#define G5
+	KEEP ME
+	#endif
+	
+	KEEP ME
+
+#endif

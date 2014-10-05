@@ -93,7 +93,7 @@ infiles_file = 'infiles.temp.txt'
 undefs_file = 'undefs.temp.txt'
 scrap_files = []
 infiles_list = []
-undefs_list = []
+undefs_set = set([])
 num_infiles = 0
 num_sabotaged_files = 0
 failures = 0
@@ -221,8 +221,8 @@ def count_test_files():
 	''' Count the test *.c. *.cpp and *.h files created '''
 	os.path.walk(scrapdir,tally_source_files,None)
 
-def generate_undefs_list():
-	''' Build list *undefs_list * of -U-macros for all symbols found 
+def generate_undefs_set():
+	''' Build list *undefs_set * of -U-macros for all symbols found 
 	in the test files, max 64K in length '''
 	fh = fopen(stdout_file,'r')
 	lines = fh.readlines()
@@ -231,7 +231,9 @@ def generate_undefs_list():
 	for line in lines:
 		length += len(line)
 		line = line.replace(': unconfigured','');
-		undefs_list.append(' -U' + string.strip(line))
+		line = line.replace(': transient','');
+		option = ' -U' + string.strip(line)
+		undefs_set.add(option)
 		if length >= (1 << 16):
 			break
 			
@@ -248,7 +250,7 @@ def generate_infiles_file():
 	
 def generate_undefs_file():
 	''' List all test input files to file *infiles_file *'''
-	write_list_to_file(undefs_list,undefs_file)
+	write_list_to_file(undefs_set,undefs_file)
 
 atexit.register(exithandler)
 generate_test_data()
@@ -276,11 +278,11 @@ update_test_size_file(num_infiles)
 # Run coan with --recurse on the scrap tree again, to
 # apply --undef SYM to all .cpp and .h files, for symbol SYM
 # that was found by the first test.
-generate_undefs_list()
+generate_undefs_set()
 #cmd = '{0} source {1} --no-inc --verbose --recurse '\
 cmd = '{0} source {1} --verbose --recurse '\
 	'--filter cpp,h --backup \"~\" {2}'.\
-	format(executable,' '.join(undefs_list),scrapdir)
+	format(executable,' '.join(undefs_set),scrapdir)
 run(cmd,None,stderr_file)
 progress("*** Done ***")
 check_test_result();
@@ -295,7 +297,7 @@ generate_infiles_list()
 generate_infiles_file()
 #cmd = '{0} source {1} --no-inc --verbose --recurse --filter cpp,h --backup \"~\"'.\
 cmd = '{0} source {1} --verbose --recurse --filter cpp,h --backup \"~\"'.\
-	format(executable,' '.join(undefs_list))
+	format(executable,' '.join(undefs_set))
 run(cmd,None,stderr_file,infiles_file)
 progress("*** Done ***");
 check_test_result();

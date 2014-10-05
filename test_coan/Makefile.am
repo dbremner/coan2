@@ -44,7 +44,7 @@ check-am: clean-metrics
 clean: clean-metrics
 	rm -f *.o wordsize *.tmp
 	cd $(top_srcdir)/test_coan/test_cases && \
-		rm -f *.stderr *.stdout *.output
+		rm -f *.stderr *.stdout *.output coan_out_*
 
 distclean-local: clean
 

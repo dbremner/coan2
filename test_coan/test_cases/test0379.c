@@ -1,5 +1,5 @@
-/**ARGS: symbols --once-only --expand */
-/**SYSCODE: = 2 */
+/**ARGS: symbols --once-only --expand --locate */
+/**SYSCODE: = 3 */
 /*===---- float.h - Characteristics of floating point types ----------------===
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy

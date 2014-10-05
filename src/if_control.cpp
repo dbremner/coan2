@@ -53,6 +53,7 @@
 if_control::if_state	if_control::ifstate[MAXDEPTH] = {if_state(0)};
 size_t		if_control::depth = 0;
 size_t		if_control::if_start_lines[MAXDEPTH] = {0};
+bool	    if_control::idempotence[MAXDEPTH] = {0};
 
 void if_control::Strue()
 {
@@ -110,7 +111,12 @@ void if_control::Delse()
 
 void if_control::Dendif()
 {
-	line_despatch::drop();
+	if (!idempotence[depth]) {
+        line_despatch::drop();
+	} else {
+        idempotence[depth] = false;
+        line_despatch::print();
+	}
 	--depth;
 }
 
@@ -323,14 +329,24 @@ bool if_control::dead_line()
 	       state == IF_STATE_FALSE_TRAILER;
 }
 
-bool if_control::is_unconditional_line()
+bool if_control::is_active_scope(unsigned depth)
 {
 	if_state state =
-	    ifstate[if_depth()];
+	    ifstate[depth];
 	return	state == IF_STATE_OUTSIDE ||
 	        state == IF_STATE_TRUE_PREFIX ||
 	        state == IF_STATE_TRUE_MIDDLE ||
 	        state == IF_STATE_TRUE_ELSE ;
+}
+
+bool if_control::is_unconditional_line()
+{
+    for (unsigned depth = 0; depth <= if_depth(); ++depth) {
+        if (!is_active_scope(depth)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 /* EOF*/

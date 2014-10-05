@@ -26,6 +26,7 @@ coan_SOURCES = \
 	get_options.cpp \
 	hash_include.cpp \
 	help.cpp \
+	idempotence.cpp \
 	identifier.cpp \
 	if_control.cpp \
 	integer_constant.cpp \
@@ -70,6 +71,7 @@ noinst_HEADERS = \
 	get_options.h \
 	hash_include.h \
 	help.h \
+	idempotence.h \
 	identifier.h \
 	if_control.h \
 	integer_constant.h \

@@ -1,5 +1,5 @@
 /**ARGS: source */
-/**SYSCODE: = 2 */
+/**SYSCODE: = 3 */
 /* Problem code from Tony Whitely */
 
 

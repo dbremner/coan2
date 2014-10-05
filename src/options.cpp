@@ -89,6 +89,7 @@ bool	options::_recurse_ = false;
 bool	options::_keepgoing_ = false;
 bool	options::_implicit_ = false;
 bool	options::_no_transients_ = false;
+bool	options::_no_idempotence_ = false;
 int		options::_diagnostic_filter_ = 0;
 bool    options::_parsing_file_ = false;
 vector<string> options::_argfile_argv_;
@@ -128,6 +129,7 @@ struct option options::long_options [] = {
 	{ "implicit", no_argument, nullptr, OPT_IMPLICIT },
 	{ "explain", no_argument, nullptr, OPT_EXPLAIN },
 	{ "no-transients", no_argument, nullptr, OPT_NO_TRANSIENTS },
+	{ "no-idempotence", no_argument, nullptr, OPT_NO_IDEMPOTENCE },
 	{ "dir", required_argument, nullptr, OPT_DIR },
 	{ "prefix", required_argument, nullptr, OPT_PREFIX },
 	{ "select", required_argument, nullptr, OPT_SELECT },
@@ -591,8 +593,12 @@ void options::parse_command_args(int argc, char *argv[])
 			_no_transients_ = true;
 			warning_no_transients_used() << "The --no-transients option "
 				<< "prohibits coan from taking account of the effects of "
-				<< "in-source #define and #undef directives. "
+				<< "in-source #define and #undef directives. It implies --no-idempotence."
 				<< "Use at your own risk." << emit();
+			break;
+		case OPT_NO_IDEMPOTENCE: /* Suppress recogbition of idempotence
+					constructs */
+			_no_idempotence_ = true;
 			break;
 		case OPT_DIR: /* Specify the spin directory */
 			io::set_spin_dir(optarg);
@@ -782,6 +788,9 @@ void options::finish()
 			/* No restriction on listed #includes implies list all*/
 			_list_system_includes_ = _list_local_includes_ = true;
 		}
+	}
+	if (_no_transients_) {
+        _no_idempotence_ = true;
 	}
 	progress_file_tracker() <<
 		dataset::files() << " files to process" << emit();

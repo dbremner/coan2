@@ -588,6 +588,14 @@ using  info_symlink = info_msg<2>;
  *	the meaning of another symbol.
  */
 using  info_retrospective_redefinition = info_msg<3>;
+/// Report that an idempotence construct has been detected.
+using info_idempotence_detected = info_msg<4>;
+/// Report an `#undef` conditionally overriding a -D
+using info_conditionally_undefining_defined = info_msg<5>;
+/// Report an `#define` conditionally overriding a -U
+using info_conditionally_defining_undefined = info_msg<6>;
+/// Report an `#define` conditionally redefining a -D
+using info_conditionally_redefining_defined = info_msg<7>;
 
 /** \brief Report that same argument occurs for multiple `--define` or
  *	`--undefine` options

@@ -44,6 +44,7 @@
 #include "contradiction.h"
 #include "canonical.h"
 #include "symbol.h"
+#include "idempotence.h"
 #include <iostream>
 
 /** \file directive.cpp
@@ -180,6 +181,7 @@ directive_base::eval_ifdef_or_ifndef(
 			         LT_TRUE : LT_FALSE;
 		}
 	} else {
+	    idempotence::at_symbol(sloc->id());
 		if (options::implicit()) {
 			retval = type == HASH_IFDEF ?
 			         LT_FALSE : LT_TRUE;
@@ -237,6 +239,7 @@ void directive_base::erase_all() {
 template<>
 line_type directive<HASH_UNKNOWN>::eval(chewer<parse_buffer> &)
 {
+    idempotence::at_start();
 	return LT_PLAIN;
 }
 
@@ -261,6 +264,7 @@ line_type directive<HASH_IF>::eval(chewer<parse_buffer> & chew)
 		}
 		chew = mark;
 	}
+	idempotence::at_if();
 	expression_parser<parse_buffer> ep(chew);
 	evaluation ev = ep.result();
 	if (ev.resolved()) {
@@ -276,24 +280,28 @@ line_type directive<HASH_IF>::eval(chewer<parse_buffer> & chew)
 template<>
 line_type directive<HASH_IFDEF>::eval(chewer<parse_buffer> & chew)
 {
+    idempotence::at_start();
 	return eval_ifdef_or_ifndef(_type_,chew);
 }
 
 template<>
 line_type directive<HASH_IFNDEF>::eval(chewer<parse_buffer> & chew)
 {
+	idempotence::at_ifndef();
 	return eval_ifdef_or_ifndef(_type_,chew);
 }
 
 template<>
 line_type directive<HASH_ELSE>::eval(chewer<parse_buffer> &)
 {
+    idempotence::at_start();
 	return LT_ELSE;
 }
 
 template<>
 line_type directive<HASH_ELIF>::eval(chewer<parse_buffer> & chew)
 {
+    idempotence::at_start();
 	return
 	    static_cast<line_type>(directive_base::eval(HASH_IF,chew)
 	                           - LT_IF + LT_ELIF);
@@ -302,6 +310,7 @@ line_type directive<HASH_ELIF>::eval(chewer<parse_buffer> & chew)
 template<>
 line_type directive<HASH_ENDIF>::eval(chewer<parse_buffer> &)
 {
+    idempotence::at_start();
 	return LT_ENDIF;
 }
 
@@ -336,6 +345,7 @@ line_type directive<HASH_DEFINE>::eval(chewer<parse_buffer> & chew)
 		directive<HASH_DEFINE>(arg).report();
 	}
 	if (!line_despatch::cur_line().dropping()) {
+        idempotence::at_define();
 		retval = sloc->digest_transient_define(macro_params,definition);
 	}
 	sloc->report();
@@ -346,6 +356,7 @@ line_type directive<HASH_DEFINE>::eval(chewer<parse_buffer> & chew)
 template<>
 line_type directive<HASH_UNDEF>::eval(chewer<parse_buffer> & chew)
 {
+    idempotence::at_start();
 	line_type retval = line_despatch::cur_line().dropping() ?
 	                   LT_DIRECTIVE_DROP : LT_DIRECTIVE_KEEP;
 
@@ -363,6 +374,7 @@ line_type directive<HASH_UNDEF>::eval(chewer<parse_buffer> & chew)
 template<>
 line_type directive<HASH_INCLUDE>::eval(chewer<parse_buffer> & chew)
 {
+    idempotence::at_start();
 	line_type retval = line_despatch::cur_line().dropping() ?
 	                   LT_DIRECTIVE_DROP : LT_DIRECTIVE_KEEP;
 	chew(greyspace);
@@ -388,6 +400,7 @@ line_type directive<HASH_INCLUDE>::eval(chewer<parse_buffer> & chew)
 template<>
 line_type directive<HASH_PRAGMA>::eval(chewer<parse_buffer> & chew)
 {
+    idempotence::at_start();
 	if (line_despatch::cur_line().reportable()) {
 		string str = canonical<string>(chew);
 		directive<HASH_PRAGMA>(str).report();
@@ -398,6 +411,7 @@ line_type directive<HASH_PRAGMA>::eval(chewer<parse_buffer> & chew)
 template<>
 line_type directive<HASH_ERROR>::eval(chewer<parse_buffer> & chew)
 {
+    idempotence::at_start();
 	if (line_despatch::cur_line().reportable()) {
 		string str = canonical<string>(chew);
 		directive<HASH_ERROR>(str).report();
@@ -420,6 +434,7 @@ line_type directive<HASH_ERROR>::eval(chewer<parse_buffer> & chew)
 template<>
 line_type directive<HASH_LINE>::eval(chewer<parse_buffer> & chew)
 {
+    idempotence::at_start();
 	chew(greyspace);
 	size_t off = size_t(chew);
 	if (!chew) {

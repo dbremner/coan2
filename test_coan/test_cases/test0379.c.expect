@@ -1,41 +1,73 @@
-__FLOAT_H: unconfigured: insoluble
-__MINGW32__: unconfigured: insoluble
-_MSC_VER: unconfigured: insoluble
-__has_include_next: unconfigured: insoluble
-__has_include_next(<float.h>): unconfigured: insoluble
-FLT_EVAL_METHOD: unconfigured: insoluble
-FLT_ROUNDS: unconfigured: insoluble
-FLT_RADIX: unconfigured: insoluble
-FLT_MANT_DIG: unconfigured: insoluble
-DBL_MANT_DIG: unconfigured: insoluble
-LDBL_MANT_DIG: unconfigured: insoluble
-DECIMAL_DIG: unconfigured: insoluble
-FLT_DIG: unconfigured: insoluble
-DBL_DIG: unconfigured: insoluble
-LDBL_DIG: unconfigured: insoluble
-FLT_MIN_EXP: unconfigured: insoluble
-DBL_MIN_EXP: unconfigured: insoluble
-LDBL_MIN_EXP: unconfigured: insoluble
-FLT_MIN_10_EXP: unconfigured: insoluble
-DBL_MIN_10_EXP: unconfigured: insoluble
-LDBL_MIN_10_EXP: unconfigured: insoluble
-FLT_MAX_EXP: unconfigured: insoluble
-DBL_MAX_EXP: unconfigured: insoluble
-LDBL_MAX_EXP: unconfigured: insoluble
-FLT_MAX_10_EXP: unconfigured: insoluble
-DBL_MAX_10_EXP: unconfigured: insoluble
-LDBL_MAX_10_EXP: unconfigured: insoluble
-FLT_MAX: unconfigured: insoluble
-DBL_MAX: unconfigured: insoluble
-LDBL_MAX: unconfigured: insoluble
-FLT_EPSILON: unconfigured: insoluble
-DBL_EPSILON: unconfigured: insoluble
-LDBL_EPSILON: unconfigured: insoluble
-FLT_MIN: unconfigured: insoluble
-DBL_MIN: unconfigured: insoluble
-LDBL_MIN: unconfigured: insoluble
-__STDC_VERSION__: unconfigured: insoluble
-__STRICT_ANSI__: unconfigured: insoluble
-FLT_TRUE_MIN: unconfigured: insoluble
-DBL_TRUE_MIN: unconfigured: insoluble
-LDBL_TRUE_MIN: unconfigured: insoluble
+__FLOAT_H: unconfigured: insoluble: {CWD}/test_cases/test0379.c(26)
+__FLOAT_H: transient: expands afresh as >><<: {CWD}/test_cases/test0379.c(27)
+__MINGW32__: unconfigured: insoluble: {CWD}/test_cases/test0379.c(34)
+_MSC_VER: unconfigured: insoluble: {CWD}/test_cases/test0379.c(34)
+__has_include_next: unconfigured: insoluble: {CWD}/test_cases/test0379.c(34)
+__has_include_next(<float.h>): unconfigured: insoluble: {CWD}/test_cases/test0379.c(34)
+FLT_EVAL_METHOD: unconfigured: insoluble: {CWD}/test_cases/test0379.c(38)
+FLT_ROUNDS: unconfigured: insoluble: {CWD}/test_cases/test0379.c(39)
+FLT_RADIX: unconfigured: insoluble: {CWD}/test_cases/test0379.c(40)
+FLT_MANT_DIG: unconfigured: insoluble: {CWD}/test_cases/test0379.c(41)
+DBL_MANT_DIG: unconfigured: insoluble: {CWD}/test_cases/test0379.c(42)
+LDBL_MANT_DIG: unconfigured: insoluble: {CWD}/test_cases/test0379.c(43)
+DECIMAL_DIG: unconfigured: insoluble: {CWD}/test_cases/test0379.c(44)
+FLT_DIG: unconfigured: insoluble: {CWD}/test_cases/test0379.c(45)
+DBL_DIG: unconfigured: insoluble: {CWD}/test_cases/test0379.c(46)
+LDBL_DIG: unconfigured: insoluble: {CWD}/test_cases/test0379.c(47)
+FLT_MIN_EXP: unconfigured: insoluble: {CWD}/test_cases/test0379.c(48)
+DBL_MIN_EXP: unconfigured: insoluble: {CWD}/test_cases/test0379.c(49)
+LDBL_MIN_EXP: unconfigured: insoluble: {CWD}/test_cases/test0379.c(50)
+FLT_MIN_10_EXP: unconfigured: insoluble: {CWD}/test_cases/test0379.c(51)
+DBL_MIN_10_EXP: unconfigured: insoluble: {CWD}/test_cases/test0379.c(52)
+LDBL_MIN_10_EXP: unconfigured: insoluble: {CWD}/test_cases/test0379.c(53)
+FLT_MAX_EXP: unconfigured: insoluble: {CWD}/test_cases/test0379.c(54)
+DBL_MAX_EXP: unconfigured: insoluble: {CWD}/test_cases/test0379.c(55)
+LDBL_MAX_EXP: unconfigured: insoluble: {CWD}/test_cases/test0379.c(56)
+FLT_MAX_10_EXP: unconfigured: insoluble: {CWD}/test_cases/test0379.c(57)
+DBL_MAX_10_EXP: unconfigured: insoluble: {CWD}/test_cases/test0379.c(58)
+LDBL_MAX_10_EXP: unconfigured: insoluble: {CWD}/test_cases/test0379.c(59)
+FLT_MAX: unconfigured: insoluble: {CWD}/test_cases/test0379.c(60)
+DBL_MAX: unconfigured: insoluble: {CWD}/test_cases/test0379.c(61)
+LDBL_MAX: unconfigured: insoluble: {CWD}/test_cases/test0379.c(62)
+FLT_EPSILON: unconfigured: insoluble: {CWD}/test_cases/test0379.c(63)
+DBL_EPSILON: unconfigured: insoluble: {CWD}/test_cases/test0379.c(64)
+LDBL_EPSILON: unconfigured: insoluble: {CWD}/test_cases/test0379.c(65)
+FLT_MIN: unconfigured: insoluble: {CWD}/test_cases/test0379.c(66)
+DBL_MIN: unconfigured: insoluble: {CWD}/test_cases/test0379.c(67)
+LDBL_MIN: unconfigured: insoluble: {CWD}/test_cases/test0379.c(68)
+__STDC_VERSION__: unconfigured: insoluble: {CWD}/test_cases/test0379.c(69)
+__STRICT_ANSI__: unconfigured: insoluble: {CWD}/test_cases/test0379.c(69)
+FLT_TRUE_MIN: unconfigured: insoluble: {CWD}/test_cases/test0379.c(70)
+DBL_TRUE_MIN: unconfigured: insoluble: {CWD}/test_cases/test0379.c(71)
+LDBL_TRUE_MIN: unconfigured: insoluble: {CWD}/test_cases/test0379.c(72)
+FLT_EVAL_METHOD: transient: expands afresh as >>__FLT_EVAL_METHOD__<<: {CWD}/test_cases/test0379.c(78)
+FLT_ROUNDS: transient: expands afresh as >>(__builtin_flt_rounds())<<: {CWD}/test_cases/test0379.c(79)
+FLT_RADIX: transient: expands afresh as >>__FLT_RADIX__<<: {CWD}/test_cases/test0379.c(80)
+FLT_MANT_DIG: transient: expands afresh as >>__FLT_MANT_DIG__<<: {CWD}/test_cases/test0379.c(82)
+DBL_MANT_DIG: transient: expands afresh as >>__DBL_MANT_DIG__<<: {CWD}/test_cases/test0379.c(83)
+LDBL_MANT_DIG: transient: expands afresh as >>__LDBL_MANT_DIG__<<: {CWD}/test_cases/test0379.c(84)
+DECIMAL_DIG: transient: expands afresh as >>__DECIMAL_DIG__<<: {CWD}/test_cases/test0379.c(86)
+FLT_DIG: transient: expands afresh as >>__FLT_DIG__<<: {CWD}/test_cases/test0379.c(88)
+DBL_DIG: transient: expands afresh as >>__DBL_DIG__<<: {CWD}/test_cases/test0379.c(89)
+LDBL_DIG: transient: expands afresh as >>__LDBL_DIG__<<: {CWD}/test_cases/test0379.c(90)
+FLT_MIN_EXP: transient: expands afresh as >>__FLT_MIN_EXP__<<: {CWD}/test_cases/test0379.c(92)
+DBL_MIN_EXP: transient: expands afresh as >>__DBL_MIN_EXP__<<: {CWD}/test_cases/test0379.c(93)
+LDBL_MIN_EXP: transient: expands afresh as >>__LDBL_MIN_EXP__<<: {CWD}/test_cases/test0379.c(94)
+FLT_MIN_10_EXP: transient: expands afresh as >>__FLT_MIN_10_EXP__<<: {CWD}/test_cases/test0379.c(96)
+DBL_MIN_10_EXP: transient: expands afresh as >>__DBL_MIN_10_EXP__<<: {CWD}/test_cases/test0379.c(97)
+LDBL_MIN_10_EXP: transient: expands afresh as >>__LDBL_MIN_10_EXP__<<: {CWD}/test_cases/test0379.c(98)
+FLT_MAX_EXP: transient: expands afresh as >>__FLT_MAX_EXP__<<: {CWD}/test_cases/test0379.c(100)
+DBL_MAX_EXP: transient: expands afresh as >>__DBL_MAX_EXP__<<: {CWD}/test_cases/test0379.c(101)
+LDBL_MAX_EXP: transient: expands afresh as >>__LDBL_MAX_EXP__<<: {CWD}/test_cases/test0379.c(102)
+FLT_MAX_10_EXP: transient: expands afresh as >>__FLT_MAX_10_EXP__<<: {CWD}/test_cases/test0379.c(104)
+DBL_MAX_10_EXP: transient: expands afresh as >>__DBL_MAX_10_EXP__<<: {CWD}/test_cases/test0379.c(105)
+LDBL_MAX_10_EXP: transient: expands afresh as >>__LDBL_MAX_10_EXP__<<: {CWD}/test_cases/test0379.c(106)
+FLT_MAX: transient: expands afresh as >>__FLT_MAX__<<: {CWD}/test_cases/test0379.c(108)
+DBL_MAX: transient: expands afresh as >>__DBL_MAX__<<: {CWD}/test_cases/test0379.c(109)
+LDBL_MAX: transient: expands afresh as >>__LDBL_MAX__<<: {CWD}/test_cases/test0379.c(110)
+FLT_EPSILON: transient: expands afresh as >>__FLT_EPSILON__<<: {CWD}/test_cases/test0379.c(112)
+DBL_EPSILON: transient: expands afresh as >>__DBL_EPSILON__<<: {CWD}/test_cases/test0379.c(113)
+LDBL_EPSILON: transient: expands afresh as >>__LDBL_EPSILON__<<: {CWD}/test_cases/test0379.c(114)
+FLT_MIN: transient: expands afresh as >>__FLT_MIN__<<: {CWD}/test_cases/test0379.c(116)
+DBL_MIN: transient: expands afresh as >>__DBL_MIN__<<: {CWD}/test_cases/test0379.c(117)
+LDBL_MIN: transient: expands afresh as >>__LDBL_MIN__<<: {CWD}/test_cases/test0379.c(118)

@@ -43,6 +43,7 @@
 #include "options.h"
 #include "line_despatch.h"
 #include "expansion_base.h"
+#include "idempotence.h"
 
 /** \file expression_parser.cpp
  *   This file implements `struct expression_parser`
@@ -521,6 +522,7 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 		}
 		if (*chew == '!') {
 			chew(+1,greyspace);
+			idempotence::at_not();
 			result = unary_op(chew,end);
 			if (result.net_infix_ops() > 0) {
 				restore_paren(result.lparen_off(),result.rparen_off());
@@ -616,6 +618,8 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 			}
 			sloc->report();
 			if (!sloc->configured()) {
+                idempotence::at_defined();
+                idempotence::at_symbol(sloc->id());
 				if (options::implicit()) {
 					result.set_value(0);
 				}
@@ -625,6 +629,7 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 			break;
 		} else if (word == TOK_ALT_BOOLEAN_NOT) {
 			chew(+1,greyspace);
+			idempotence::at_not();
 			result = unary_op(chew,end);
 			if (result.net_infix_ops() > 0) {
 				restore_paren(result.lparen_off(),result.rparen_off());

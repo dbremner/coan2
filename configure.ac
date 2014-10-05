@@ -1,4 +1,4 @@
-AC_INIT(coan,6.0.1)
+AC_INIT(coan,6.1)
 AC_CONFIG_MACRO_DIRS([m4])
 AC_PREREQ(2.59)
 AM_INIT_AUTOMAKE(1.13 no-define)

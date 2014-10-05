@@ -201,6 +201,10 @@ struct  options {
 	static bool no_transients() {
 		return	_no_transients_;
 	}
+	/// Is idempotent symbol detection suppressed?
+	static bool no_idempotence() {
+		return	_no_idempotence_;
+	}
 	/// Do we report the progressive expansion of symbol references?
 	static bool explain_references() {
 		return	_explain_references_;
@@ -292,7 +296,8 @@ private:
 		OPT_SELECT = 7,			///< The `--select` option
 		OPT_LNS = 8,			///< The `--lns` option
 		OPT_EXPAND_MAX = 9,		///< The `--max-expansion` option
-		OPT_ONCE_PER_FILE = 10	///< The `--once-per-file` option
+		OPT_ONCE_PER_FILE = 10,	///< The `--once-per-file` option
+		OPT_NO_IDEMPOTENCE = 11	///< The `--no-idempotence` option
 	};
 
 	/** \brief Array of structures specifying the valid options for all coan
@@ -476,6 +481,8 @@ private:
 	 *	`#define` and `#undef` directives?
 	 */
 	static bool _no_transients_;
+	/// Do we suppress idempotent symbol recognition?
+	static bool _no_idempotence_;
 	/// Do we report the derivation of symbol resolutions?
 	static bool _explain_references_;
 	/// Is symbol reporting restricted to a selected set?
