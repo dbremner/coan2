@@ -138,7 +138,7 @@ template<> void parsed_line::keyword_edit<directive_type::HASH_ENDIF>() {
 
 void parsed_line::set_dropping()
 {
-	_dropping = if_control::dead_line() ^ options::complement();
+	_dropping = if_control::cannot_reach_line() ^ options::complement();
 }
 
 void parsed_line::set_reportable()

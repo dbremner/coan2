@@ -52,6 +52,19 @@
  */
 
 if_control::scope_info if_control::_scope_info_[MAXDEPTH];
+if_control::truth_value if_control::state_truth_values[IF_STATE_COUNT] = {
+    True, // IF_STATE_OUTSIDE,
+    False, // IF_STATE_FALSE_PREFIX,
+    True, // IF_STATE_TRUE_PREFIX,
+    Indeterminate, // IF_STATE_PASS_MIDDLE,
+    False, // IF_STATE_FALSE_MIDDLE,
+    True, // IF_STATE_TRUE_MIDDLE,
+    Indeterminate, // IF_STATE_PASS_ELSE,
+    False, // IF_STATE_FALSE_ELSE,
+    True, // IF_STATE_TRUE_ELSE,
+    False // IF_STATE_FALSE_TRAILER,
+};
+
 unsigned if_control::_depth_ = 0;
 
 void if_control::Strue()
@@ -320,24 +333,13 @@ void if_control::transition(line_type linetype)
 bool if_control::is_satisfied_scope(unsigned depth)
 {
 	if_state state = _scope_info_[depth]._if_state;
-	return	state == IF_STATE_OUTSIDE ||
-	        state == IF_STATE_TRUE_PREFIX ||
-	        state == IF_STATE_TRUE_MIDDLE ||
-	        state == IF_STATE_TRUE_ELSE ;
+	return state_truth_values[state] == True;
 }
 
 bool if_control::is_unsatisfied_scope(unsigned depth)
 {
 	if_state state = _scope_info_[depth]._if_state;
-	return state == IF_STATE_FALSE_PREFIX ||
-	       state == IF_STATE_FALSE_MIDDLE ||
-	       state == IF_STATE_FALSE_ELSE ||
-	       state == IF_STATE_FALSE_TRAILER;
-}
-
-bool if_control::dead_line()
-{
-    return is_unsatisfied_scope(_depth_);
+	return state_truth_values[state] == False;
 }
 
 bool if_control::must_reach_line()
@@ -352,22 +354,20 @@ bool if_control::must_reach_line()
 
 bool if_control::cannot_reach_line()
 {
-    for (unsigned depth = 0; depth <= _depth_; ++depth) {
-        if (is_unsatisfied_scope(depth)) {
-            return true;
-        }
-    }
-    return false;
+    return is_unsatisfied_scope(_depth_);
 }
 
 bool if_control::may_reach_line()
 {
+#if 0 //IMK
     for (unsigned depth = 0; depth <= _depth_; ++depth) {
         if (is_unsatisfied_scope(depth)) {
             return false;
         }
     }
-    return true;
+    return true
+#endif
+    return !is_unsatisfied_scope(_depth_);
 }
 
 /* EOF*/

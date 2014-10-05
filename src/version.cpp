@@ -50,7 +50,7 @@
 #ifdef NIX
 #error PACKAGE_VERSION not defined.
 #endif
-#define PACKAGE_VERSION "6.0.1"
+#define PACKAGE_VERSION "7.0"
 #endif
 
 using namespace std;
@@ -58,7 +58,7 @@ using namespace std;
 void version()
 {
 	cout << options::prog_name() << ", version " << PACKAGE_VERSION <<
-	     " for " << OS_TYPE << "(built " <<  __DATE__ << ',' <<
+	     " for " << OS_TYPE << " (built " <<  __DATE__ << ',' <<
 	     __TIME__ << ')' << '\n';
 	exit(EXIT_SUCCESS);
 }

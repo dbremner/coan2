@@ -96,9 +96,6 @@ struct if_control {
 	 */
 	static void transition(line_type linetype);
 
-	/// Is the current line rejected?
-	static bool dead_line();
-
 	/// Is the current line outside any `#if` scope?
 	static bool was_unconditional_line() {
 		return _scope_info_[_depth_]._if_state == IF_STATE_OUTSIDE;
@@ -149,6 +146,16 @@ struct if_control {
 
 private:
 
+	/// Enumeration of possible true values of `#if`s
+	enum truth_value {
+	    /// Falsified by configuration
+	    False,
+	    /// Verified by configurarion
+	    True,
+	    /// Neither falsified nor verified by configuration
+	    Indeterminate
+	};
+
     /// Characteristics of the scope at a given level if nesting
     struct scope_info {
         /// The `if_state` at this scope
@@ -173,6 +180,9 @@ private:
 	 *   An array of pointers to state transition functions.
 	 */
 	static transition_t * const transition_table[IF_STATE_COUNT][LT_SENTINEL];
+
+	/// Lookup table of truth-values corresponding to if_states
+	static truth_value state_truth_values[IF_STATE_COUNT];
 
 	/// Increment the `#if`-nesting depth.
 	static void nest();
