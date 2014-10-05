@@ -4,7 +4,7 @@
 /***************************************************************************
  *   Copyright (C) 2004, 2006 Symbian Software Ltd.                        *
  *   All rights reserved.                                                  *
- *   Copyright (C) 2007-2013 Mike Kinghan, imk@burroingroingjoing.com      *
+ *   Copyright (C) 2007-2014 Mike Kinghan, imk@burroingroingjoing.com      *
  *   All rights reserved.                                                  *
  *                                                                         *
  *   Contributed originally by Mike Kinghan, imk@burroingroingjoing.com    *

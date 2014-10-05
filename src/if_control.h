@@ -8,7 +8,7 @@
  *   All rights reserved.                                                  *
  *   Copyright (C) 1985, 1993 The Regents of the University of California. *
  *   All rights reserved.                                                  *
- *   Copyright (C) 2007-2013 Mike Kinghan, imk@burroingroingjoing.com      *
+ *   Copyright (C) 2007-2014 Mike Kinghan, imk@burroingroingjoing.com      *
  *   All rights reserved.                                                  *
  *                                                                         *
  *   Contributed by Mike Kinghan, imk@burroingroingjoing.com,              *
@@ -109,9 +109,13 @@ struct if_control {
 	 */
 	static bool must_reach_line();
 
-	/**	\brief Is the current line in the scope of some unsatisfied `#if?
-	 */
+	/// Is the current line in the scope of some unsatisfied `#if?
     static bool cannot_reach_line();
+
+	/**	\brief Is the current line in the scope of some `#if` whose
+	 *  truth-value is undetermined.
+	 */
+    static bool may_reach_line();
 
 	/// Get the starting line number of the current `#if` sequence.
 	static size_t if_start_line() {

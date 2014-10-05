@@ -8,7 +8,7 @@
  *   All rights reserved.                                                  *
  *   Copyright (C) 1985, 1993 The Regents of the University of California. *
  *   All rights reserved.                                                  *
- *   Copyright (C) 2007-2013 Mike Kinghan, imk@burroingroingjoing.com      *
+ *   Copyright (C) 2007-2014 Mike Kinghan, imk@burroingroingjoing.com      *
  *   All rights reserved.                                                  *
  *                                                                         *
  *   Contributed by Mike Kinghan, imk@burroingroingjoing.com,              *

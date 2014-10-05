@@ -5,7 +5,7 @@
  *   All rights reserved.                                                  *
  *   Copyright (C) 1985, 1993 The Regents of the University of California. *
  *   All rights reserved.                                                  *
- *   Copyright (C) 2007-2013 Mike Kinghan, imk@burroingroingjoing.com      *
+ *   Copyright (C) 2007-2014 Mike Kinghan, imk@burroingroingjoing.com      *
  *   All rights reserved.                                                  *
  *                                                                         *
  *   Contributed by Mike Kinghan, imk@burroingroingjoing.com,              *
@@ -333,7 +333,6 @@ bool if_control::is_unsatisfied_scope(unsigned depth)
 	       state == IF_STATE_FALSE_MIDDLE ||
 	       state == IF_STATE_FALSE_ELSE ||
 	       state == IF_STATE_FALSE_TRAILER;
-
 }
 
 bool if_control::dead_line()
@@ -354,11 +353,21 @@ bool if_control::must_reach_line()
 bool if_control::cannot_reach_line()
 {
     for (unsigned depth = 0; depth <= _depth_; ++depth) {
-        if (!is_satisfied_scope(depth)) {
+        if (is_unsatisfied_scope(depth)) {
             return true;
         }
     }
     return false;
+}
+
+bool if_control::may_reach_line()
+{
+    for (unsigned depth = 0; depth <= _depth_; ++depth) {
+        if (is_unsatisfied_scope(depth)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 /* EOF*/

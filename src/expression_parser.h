@@ -2,7 +2,7 @@
 #define EXPRESSION_PARSER_H
 #pragma once
 /***************************************************************************
- *   Copyright (C) 2007-2013 Mike Kinghan, imk@burroingroingjoing.com      *
+ *   Copyright (C) 2007-2014 Mike Kinghan, imk@burroingroingjoing.com      *
  *   All rights reserved.                                                  *
  *                                                                         *
  *   Contributed originally by Mike Kinghan, imk@burroingroingjoing.com    *

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007-2013 Mike Kinghan, imk@burroingroingjoing.com      *
+ *   Copyright (C) 2007-2014 Mike Kinghan, imk@burroingroingjoing.com      *
  *   All rights reserved.                                                  *
  *                                                                         *
  *   Contributed originally by Mike Kinghan, imk@burroingroingjoing.com    *
@@ -229,6 +229,8 @@ string usage()
 	        "\t\tList only symbols from directives that must be reached\n"
 	        "\t--cant\n"
 	        "\t\tList only symbols from directives that cannot be reached\n"
+	        "\t--may\n"
+	        "\t\tList only symbols from directives not excluded by --cant\n"
 	        "\t-L, --locate\n"
 	        "\t\tReport the source file and line number of each listed "
 	        "occurrence.\n"
@@ -286,6 +288,8 @@ string usage()
 	        "\t\tList only pragmas that must be reached.\n"
 	        "\t--cant\n"
 	        "\t\tList only pragmas that cannot be reached.\n"
+	        "\t--may\n"
+	        "\t\tList only pragmas not excluded by --cant\n"
 	        "\t-L, --locate\n"
 	        "\t\tReport the source file and line number of each listed "
 	        "occurrence.\n"
@@ -300,6 +304,8 @@ string usage()
 	        "\t\tList only #error directives that must be reached.\n"
 	        "\t--cant\n"
 	        "\t\tList only #error directives that cannot be reached.\n"
+	        "\t--may\n"
+	        "\t\tList only #error directives not excluded by --cant\n"
 	        "\t-L, --locate\n"
 	        "\t\tReport the source file and line number of each listed "
 	        "occurrence.\n"
@@ -314,6 +320,8 @@ string usage()
 	        "\t\tList only #line directives that must be reached.\n"
 	        "\t--cant\n"
 	        "\t\tList only #line directives that cannot be reached.\n"
+	        "\t--may\n"
+	        "\t\tList only #line directives not excluded by --cant\n"
 	        "\t-L, --locate\n"
 	        "\t\tReport the source file and line number of each listed "
 	        "occurrence.\n"
@@ -328,6 +336,8 @@ string usage()
 	        "\t\tList only directives that must be reached.\n"
 	        "\t--cant\n"
 	        "\t\tList only directives that cannot be eached.\n"
+	        "\t--may\n"
+	        "\t\tList only directives not excluded by --cant\n"
 	        "\t-L, --locate\n"
 	        "\t\tReport the source file and line number of each listed "
 	        "occurrence.";
