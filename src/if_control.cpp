@@ -324,24 +324,6 @@ void if_control::nest()
 	_scope_info_[_depth_]._start_line = line_despatch::cur_line().num();
 }
 
-void if_control::transition(line_type linetype)
-{
-	if_state state = _scope_info_[_depth_]._if_state;
-	transition_table[state][linetype]();
-}
-
-bool if_control::is_satisfied_scope(unsigned depth)
-{
-	if_state state = _scope_info_[depth]._if_state;
-	return state_truth_values[state] == True;
-}
-
-bool if_control::is_unsatisfied_scope(unsigned depth)
-{
-	if_state state = _scope_info_[depth]._if_state;
-	return state_truth_values[state] == False;
-}
-
 bool if_control::must_reach_line()
 {
     for (unsigned depth = 0; depth <= _depth_; ++depth) {
@@ -352,22 +334,5 @@ bool if_control::must_reach_line()
     return true;
 }
 
-bool if_control::cannot_reach_line()
-{
-    return is_unsatisfied_scope(_depth_);
-}
-
-bool if_control::may_reach_line()
-{
-#if 0 //IMK
-    for (unsigned depth = 0; depth <= _depth_; ++depth) {
-        if (is_unsatisfied_scope(depth)) {
-            return false;
-        }
-    }
-    return true
-#endif
-    return !is_unsatisfied_scope(_depth_);
-}
 
 /* EOF*/

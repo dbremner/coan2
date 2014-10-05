@@ -94,7 +94,11 @@ struct if_control {
      *
 	 *  \param	linetype	The linetype of the last evaluated input line.
 	 */
-	static void transition(line_type linetype);
+	static void transition(line_type linetype) {
+        if_state state = _scope_info_[_depth_]._if_state;
+        transition_table[state][linetype]();
+    }
+
 
 	/// Is the current line outside any `#if` scope?
 	static bool was_unconditional_line() {
@@ -107,12 +111,16 @@ struct if_control {
 	static bool must_reach_line();
 
 	/// Is the current line in the scope of some unsatisfied `#if?
-    static bool cannot_reach_line();
+    static bool cannot_reach_line() {
+        return is_unsatisfied_scope(_depth_);
+    }
 
 	/**	\brief Is the current line in the scope of some `#if` whose
 	 *  truth-value is undetermined.
 	 */
-    static bool may_reach_line();
+    static bool may_reach_line() {
+        return !is_unsatisfied_scope(_depth_);
+    }
 
 	/// Get the starting line number of the current `#if` sequence.
 	static size_t if_start_line() {
@@ -190,12 +198,18 @@ private:
 	/**	\brief Is the scope at a given nesting depth either outside any
 	 * `#if` or controlled by a satisfied `#if`?
 	 */
-    static bool is_satisfied_scope(unsigned depth);
+    static bool is_satisfied_scope(unsigned depth) {
+        if_state state = _scope_info_[depth]._if_state;
+        return state_truth_values[state] == True;
+    }
 
 	/**	\brief Is the scope at a given nesting depth
      *   controlled by an unsatisfied `#if`?
 	 */
-    static bool is_unsatisfied_scope(unsigned depth);
+    static bool is_unsatisfied_scope(unsigned depth) {
+        if_state state = _scope_info_[depth]._if_state;
+        return state_truth_values[state] == False;
+    }
 
 	/// State transition
 	static void Strue();
