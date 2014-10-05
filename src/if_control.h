@@ -139,7 +139,10 @@ struct if_control {
 
 	/// Set the `#if`-state at the current nesting depth.
 	static void set_state(if_state is) {
-		_scope_info_[_depth_]._if_state = is;
+	    scope_info * psi = _scope_info_ + _depth_;
+		psi->_if_state = is;
+		psi->_truth_value = state_truth_values[is];
+
 	}
 
 	/// Set the idempotence flag at the current nesting depth.
@@ -172,6 +175,8 @@ private:
         bool _by_idempotence = false;
         /// The line number at which the scope starts
         unsigned _start_line = 0;
+        /// The true-value of the `if_state` at this scope
+        truth_value _truth_value = True;
     };
 
     /** \brief Maximum depth of hash-if nesting.
@@ -199,16 +204,14 @@ private:
 	 * `#if` or controlled by a satisfied `#if`?
 	 */
     static bool is_satisfied_scope(unsigned depth) {
-        if_state state = _scope_info_[depth]._if_state;
-        return state_truth_values[state] == True;
+        return _scope_info_[depth]._truth_value == True;
     }
 
 	/**	\brief Is the scope at a given nesting depth
      *   controlled by an unsatisfied `#if`?
 	 */
     static bool is_unsatisfied_scope(unsigned depth) {
-        if_state state = _scope_info_[depth]._if_state;
-        return state_truth_values[state] == False;
+        return _scope_info_[depth]._truth_value == False;
     }
 
 	/// State transition
