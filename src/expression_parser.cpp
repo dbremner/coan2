@@ -475,6 +475,7 @@ expression_parser<CharSeq>::infix_op(chewer<sequence_type> & chew, size_t end)
 			return lhs;
 		}
 		chew = end_lhs;
+		idempotence::at_start();
 		/* Evaluate rhs...*/
 		evaluation rhs = next_evaluator<Precedence - 1>(chew,end);
 		size_t end_rhs = size_t(chew);
@@ -521,8 +522,8 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 			break;
 		}
 		if (*chew == '!') {
-			chew(+1,greyspace);
 			idempotence::at_not();
+			chew(+1,greyspace);
 			result = unary_op(chew,end);
 			if (result.net_infix_ops() > 0) {
 				restore_paren(result.lparen_off(),result.rparen_off());
@@ -532,6 +533,7 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 			break;
 		}
 		if (*chew == '~') {
+			idempotence::at_start();
 			chew(+1,greyspace);
 			result = unary_op(chew,end);
 			if (result.net_infix_ops() > 0) {
@@ -563,6 +565,7 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 			break;
 		}
 		if (*chew == '+') {
+			idempotence::at_start();
 			chew(+1,greyspace);
 			result = unary_op(chew,end);
 			if (result.net_infix_ops() > 0) {
@@ -571,6 +574,7 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 			break;
 		}
 		if (*chew == '-') {
+			idempotence::at_start();
 			chew(+1,greyspace);
 			result = unary_op(chew,end);
 			if (result.net_infix_ops() > 0) {
@@ -581,6 +585,7 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 			break;
 		}
 		if (isdigit(*chew)) {
+			idempotence::at_start();
 			size_t mark = size_t(chew);
 			integer val = integer_constant::read_numeral(chew);
 			if (val.type() != INT_UNDEF) {
@@ -625,11 +630,12 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 				}
 				break;
 			}
+			idempotence::at_start();
 			result.set_value(sloc->defined());
 			break;
 		} else if (word == TOK_ALT_BOOLEAN_NOT) {
-			chew(+1,greyspace);
 			idempotence::at_not();
+			chew(+1,greyspace);
 			result = unary_op(chew,end);
 			if (result.net_infix_ops() > 0) {
 				restore_paren(result.lparen_off(),result.rparen_off());
@@ -638,6 +644,7 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 			result.set_value(!result.value());
 			break;
 		} else if (word == TOK_ALT_BIT_NOT) {
+			idempotence::at_start();
 			chew(+1,greyspace);
 			result = unary_op(chew,end);
 			if (result.net_infix_ops() > 0) {
@@ -651,6 +658,7 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 			chew = mark;
 		}
 		if (*chew == '\'') {
+			idempotence::at_start();
 			/* Possible character constant */
 			size_t mark = size_t(chew);
 			integer val = integer_constant::read_char(chew);
@@ -665,6 +673,7 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 				break;
 			}
 		} else if (identifier::is_start_char(*chew)) {
+			idempotence::at_start();
 			size_t mark = size_t(chew);
 			if (*chew == 'L' || *chew == 'u' || *chew == 'U') {
 				/* Possible prefixed character constant*/
@@ -730,6 +739,7 @@ expression_parser<CharSeq>::unary_op(chewer<CharSeq> & chew, size_t end)
 			}
 		}
 		else {
+			idempotence::at_start();
 			error_ill_formed_expression gripe;
 			string good =
                 citable(!options::plaintext(),_seq.substr(0,size_t(chew)));

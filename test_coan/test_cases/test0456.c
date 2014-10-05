@@ -60,5 +60,12 @@
 	#else
 	KEEP ME
 	#endif
+	
+	#if ! defined G6 && defined UNK
+	#define G6
+	KEEP_ME
+	#else
+	KEEP ME
+	#endif
 
 #endif

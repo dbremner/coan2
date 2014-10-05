@@ -102,19 +102,18 @@ struct idempotence {
     /** \brief enumerated states of progression to identifying an
      *  idempotent `#if` construct.
      */
-    enum class waypoint {
+    enum waypoint {
         none, ///< Outside any idempotence condition
         got_if,  ///< Reached `#if`
         got_if_not, ///< Reached `#if !`
         got_if_not_defined, ///< Reached `#if ! defined
-        got_ifndef, ///< Reached `#ifndef`
+        got_ifndef = got_if_not_defined, ///< Reached `#ifndef`
         got_define, ///< Reached `#define` after previous states
     };
 
     /// Set the latest possibly occuring in `#ifndef` or `#if ! defined`
     static void at_symbol(std::string const & symbol) {
-        if (current_waypoint() == waypoint::got_ifndef ||
-            current_waypoint() == waypoint::got_if_not_defined) {
+        if (current_waypoint() == waypoint::got_ifndef) {
             last_ifndef_symbol() = symbol;
         } else if (current_waypoint() == waypoint::got_define) {
             last_define_symbol() = symbol;
@@ -136,7 +135,7 @@ struct idempotence {
 
     /// Get the current waypoint
     static waypoint get_waypoint() {
-        return current_waypoint();
+        return waypoint(current_waypoint());
     }
 
     /// Update the current waypoint at an `#if` directive
@@ -146,22 +145,17 @@ struct idempotence {
 
     /// Update the current waypoint at a `!` or `not` operator
     static void at_not() {
-        current_waypoint() = current_waypoint() == waypoint::got_if ?
-            waypoint::got_if_not : waypoint::none;
+        ++current_waypoint();
     }
 
     /// Update the current waypoint at a `defined` operator
     static void at_defined() {
-        current_waypoint() = current_waypoint() == waypoint::got_if_not ?
-            waypoint::got_if_not_defined : waypoint::none;
+        ++current_waypoint();
     }
 
     /// Update the current waypoint at a `#define` directive
     static void at_define() {
-        current_waypoint() =
-        (current_waypoint() == waypoint::got_if_not_defined ||
-        current_waypoint() == waypoint::got_ifndef) ?
-            waypoint::got_define : waypoint::none;
+        ++current_waypoint();
     }
 
     /// Update the current waypoint at an `#indef` directive
@@ -204,8 +198,8 @@ private:
     static waypoint waypoint_thunk(waypoint wp);
 
     /// The current waypoint
-    static waypoint & current_waypoint() {
-        static waypoint wp = waypoint::none;
+    static int & current_waypoint() {
+        static int wp = waypoint::none;
         return wp;
     }
 
