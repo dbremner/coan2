@@ -1,37 +1,6 @@
-/**ARGS: source -UG0 -UG4 */
-/**SYSCODE: = 1 | 2 | 16 | 32  */
-// error : inserted by coan: "#define G0" contradicts -U or --implicit at {CWD}/test_cases/test0458.c(4)
-
-	#ifndef G1
-	#define G1
-	KEEP ME G1
-	#endif
-	
-	KEEP ME G1
-	
-	#ifndef G2
-	// A comment
-	#define G2
-	KEEP ME G2
-	#endif
-
-	#ifndef G3
-	#undef G3
-	#define G3
-	KEEP ME G3
-	#else
-	KEEP ME G3
-	#endif
-	
-// error : inserted by coan: "#define G4" contradicts -U or --implicit at {CWD}/test_cases/test0458.c(37)
-	KEEP ME G4
-	
-// error : inserted by coan: "#define G4" contradicts -U or --implicit at {CWD}/test_cases/test0458.c(44)
-	KEEP ME G4
-	
-	#if ! defined G5
-	#define G5
-	KEEP ME
-	#endif
-	
-	KEEP ME
+G0: global
+G1: unconfigured
+KEEP_G1_1: unconfigured
+KEEP_G1_2: unconfigured
+G2: global
+KEEP_G2_2: transient

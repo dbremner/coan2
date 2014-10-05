@@ -68,6 +68,7 @@ bool	options::_list_only_once_ = false;
 bool 	options::_list_once_per_file_ = false;
 bool	options::_list_only_must_reach_ = false ;
 bool	options::_list_only_cant_reach_ = false;
+bool	options::_list_only_may_reach_ = false;
 bool	options::_list_symbols_in_ifs_ = false;
 bool	options::_list_symbols_in_defs_ = false;
 bool	options::_list_symbols_in_undefs_ = false;
@@ -125,6 +126,7 @@ struct option options::long_options [] = {
 	{ "local", no_argument, nullptr, OPT_LOCAL },
 	{ "must", no_argument, nullptr, OPT_MUST_REACH },
 	{ "cant", no_argument, nullptr, OPT_CANT_REACH },
+	{ "may", no_argument, nullptr, OPT_MAY_REACH },
 	{ "expand", no_argument, nullptr, OPT_EXPAND },
 	{ "implicit", no_argument, nullptr, OPT_IMPLICIT },
 	{ "explain", no_argument, nullptr, OPT_EXPLAIN },
@@ -162,8 +164,8 @@ struct cmd_option options::commands [] = {
 int const options::source_cmd_exclusions[] = {
 	OPT_IFS, OPT_DEFS, OPT_UNDEFS, OPT_INCLUDES, OPT_LOCATE,
 	OPT_ONCE, OPT_SYSTEM, OPT_LOCAL, OPT_MUST_REACH, OPT_CANT_REACH,
-	OPT_EXPAND, OPT_PREFIX, OPT_EXPLAIN, OPT_SELECT, OPT_LNS,
-	OPT_ONCE_PER_FILE,0
+	OPT_MAY_REACH, OPT_EXPAND, OPT_PREFIX, OPT_EXPLAIN, OPT_SELECT, OPT_LNS,
+	OPT_ONCE_PER_FILE, 0
 };
 
 int const options::symbols_cmd_exclusions[] = {
@@ -216,7 +218,7 @@ int const options::lines_cmd_exclusions[] = {
 int const options::spin_cmd_exclusions[] = {
 	OPT_IFS, OPT_DEFS, OPT_UNDEFS, OPT_INCLUDES, OPT_LOCATE,
 	OPT_ONCE, OPT_SYSTEM, OPT_LOCAL, OPT_MUST_REACH, OPT_CANT_REACH,
-	OPT_BACKUP, OPT_EXPAND, OPT_EXPLAIN, OPT_SELECT, OPT_LNS,
+	OPT_MAY_REACH, OPT_BACKUP, OPT_EXPAND, OPT_EXPLAIN, OPT_SELECT, OPT_LNS,
 	OPT_ONCE_PER_FILE, 0
 };
 
@@ -538,6 +540,9 @@ void options::parse_command_args(int argc, char *argv[])
 		case OPT_CANT_REACH:
 			_list_only_cant_reach_ = true;
 			break;
+		case OPT_MAY_REACH:
+			_list_only_may_reach_ = true;
+			break;
 		case OPT_EXPAND:
 			_expand_references_ = true;
 			break;
@@ -740,7 +745,13 @@ void options::finish()
 	bool input_is_stdin = false;
 
 	if (_list_only_must_reach_ && _list_only_cant_reach_) {
-		error_usage() << "--active is inconsistent with --inactive" << emit();
+		error_usage() << "--must is inconsistent with --cant" << emit();
+	}
+	if (_list_only_must_reach_ && _list_only_may_reach_) {
+		error_usage() << "--must is inconsistent with --may" << emit();
+	}
+	if (_list_only_cant_reach_ && _list_only_may_reach_) {
+		error_usage() << "--cant is inconsistent with --may" << emit();
 	}
 	if (_list_only_once_ && _list_once_per_file_) {
 		error_usage()

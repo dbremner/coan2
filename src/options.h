@@ -121,15 +121,19 @@ struct  options {
 	static bool list_once_per_file() {
 		return _list_once_per_file_;
 	}
-	/// Do we list items only from operative directives?
+	/// Do we list items only from reachable directives?
 	static bool list_only_must_reach() {
 		return _list_only_must_reach_;
 	}
-	/// Do we list items only from inoperative directives?
+	/// Do we list items only from unreachable directives?
 	static bool list_only_cant_reach() {
 		return _list_only_cant_reach_;
 	}
-	/// Do we list items only from inoperative directives?
+	/// Do we list items only from not-unreachable directives?
+	static bool list_only_may_reach() {
+		return _list_only_may_reach_;
+	}
+	/// Do we list items only from conditional directives?
 	static bool list_symbols_in_ifs() {
 		return _list_symbols_in_ifs_;
 	}
@@ -270,7 +274,7 @@ private:
 		OPT_GAG = 'g', 			///< The `--gag` option
 		OPT_VERBOSE = 'V', 		///< The `--verbose` option
 		OPT_COMPLEMENT = 'c', 	///< The `--complement` option
-		OPT_EVALWIP = 'E', 	///< The `--eval-wip` option
+		OPT_EVALWIP = 'E', 	    ///< The `--eval-wip` option
 		OPT_DISCARD = 'k', 		///< The `--discard` option
 		OPT_LINE = 1,			///< The `--line` option
 		OPT_POD = 'P', 			///< The `--pod` option
@@ -285,19 +289,20 @@ private:
 		OPT_ONCE = 'o',			///< The `--once-only` option
 		OPT_SYSTEM = 's',		///< The `--system` option
 		OPT_LOCAL = 'l',		///< The `--local` option
-		OPT_MUST_REACH = 12,		///< The `--must` option
-		OPT_CANT_REACH = 13,		///< The `--cant` option
-		OPT_EXPAND = 3,			///< The `--expand` option
+		OPT_MUST_REACH = 3,		///< The `--must` option
+		OPT_CANT_REACH = 4,		///< The `--cant` option
+		OPT_MAY_REACH = 5,      ///< The `--may` option
+		OPT_EXPAND = 6,			///< The `--expand` option
 		OPT_IMPLICIT = 'm',		///< The `--implicit` option
-		OPT_DIR = 4,			///< The `--dir` option
+		OPT_DIR = 7,			///< The `--dir` option
 		OPT_PREFIX = 'p',		///< The `--prefix` option
-		OPT_NO_TRANSIENTS = 5,	///< The `--no-transients` option
-		OPT_EXPLAIN = 6,		///< The `--explain` option
-		OPT_SELECT = 7,			///< The `--select` option
-		OPT_LNS = 8,			///< The `--lns` option
-		OPT_EXPAND_MAX = 9,		///< The `--max-expansion` option
-		OPT_ONCE_PER_FILE = 10,	///< The `--once-per-file` option
-		OPT_NO_IDEMPOTENCE = 11	///< The `--no-idempotence` option
+		OPT_NO_TRANSIENTS = 8,	///< The `--no-transients` option
+		OPT_EXPLAIN = 9,		///< The `--explain` option
+		OPT_SELECT = 10,		///< The `--select` option
+		OPT_LNS = 11,			///< The `--lns` option
+		OPT_EXPAND_MAX = 12,	///< The `--max-expansion` option
+		OPT_ONCE_PER_FILE = 13,	///< The `--once-per-file` option
+		OPT_NO_IDEMPOTENCE = 14	///< The `--no-idempotence` option
 	};
 
 	/** \brief Array of structures specifying the valid options for all coan
@@ -439,10 +444,12 @@ private:
 	static bool	_list_only_once_;
 	/// Do we report only the first occurrence per file of listed items?
 	static bool	_list_once_per_file_;
-	/// Do we list items only from kept lines?
+	/// Do we list items only from reachable lines?
 	static bool	_list_only_must_reach_;
-	/// Do list items only from dropped lines?
+	/// Do list items only from unreachable lines?
 	static bool	_list_only_cant_reach_;
+	/// Do list items only from non-unreachable lines?
+	static bool	_list_only_may_reach_;
 	/// Do we list symbols in `#if/else/endif directives?
 	static bool	_list_symbols_in_ifs_;
 	/// Do we list symbols in `#define` directives?

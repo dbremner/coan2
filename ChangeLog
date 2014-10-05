@@ -1848,7 +1848,7 @@ coan v6.0 Mike Kinghan 2014-08-15
 
 coan v6.1 Mike Kinghan 2014-10-04
 	New:
-		REW0022: By default, coan now detects constructs of the three forms:
+		FEA0037: By default, coan now detects constructs of the three forms:
 
 			#ifndef FOO
 			#define FOO
@@ -1877,4 +1877,24 @@ coan v6.1 Mike Kinghan 2014-10-04
 
 		This behaviour can be suppressed by specifying the new `--no-idempotence`
 		option.
-				  
+
+	New:
+		RET0005: The `--active` option is withdrawn as having an insufficiently
+		clear meaning.
+		
+	New:
+		RET0006: The `--inactive` option is withdrawn as having an insufficiently
+		clear meaning.
+	
+	New:
+		FEA0038: The `--must` option is introduced replacing the `--active`
+		option, to specify that items shall be reported only from directives that
+		*must* be executed under the specified configuration.
+	New:
+		FEA0039: The `--cant` option is introduced replacing the `--inactive`
+		option, to specify that items shall be reported only from directives that
+		*cannot* be executed under the specified configuration.
+	New:
+		FEA0040: The `--may` option is introduced to specify that items shall 
+		be reported only from directives not excluded by `--cant`
+		

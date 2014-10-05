@@ -201,6 +201,8 @@ void parsed_line::set_reportable()
 			verdict = _dropping && !if_control::must_reach_line();
 		} else if (options::list_only_must_reach()) {
 			verdict = !_dropping && if_control::must_reach_line();
+		} else if (options::list_only_may_reach()) {
+		    verdict = !_dropping && if_control::may_reach_line();
 		}
 	}
 	_reportable = verdict;

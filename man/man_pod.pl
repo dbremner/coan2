@@ -403,17 +403,18 @@ references are listed.
 =item B<--must>
 
 List only references from directives that must be executed, i.e. are top-level or 
-else in the scope only of true conditions.
+else in the scope only of true conditions. This option excludes B<--cant> and B<--may>.
 
 =item B<--cant>
 
 List only references from directives that cannot be executed i.e. are in the scope 
-of some condition that is false.
+of some condition that is false. This option excludes B<--must> and B<--may>.
 
 =item B<--may>
 
 List only references from directives that are not excluded by B<--cant>, i.e. 
-are in the scope of some condition whose truth-value is undetermined.
+are in the scope of some condition whose truth-value is undetermined. This 
+option excludes B<--must> and B<--cant>.
 
 =item B<-L>, B<--locate>
 
@@ -491,17 +492,19 @@ of a header are listed.
 =item B<--must>
 
 List only headers from directives directives that must be executed, i.e. are top-level or 
-else in the scope only of true conditions.
+else in the scope only of true conditions. This option excludes B<--cant> and 
+B<--may>.
 
 =item B<--cant>
 
 List only headers from directives that cannot be executed i.e. are in the scope 
-of some condition that is false.
+of some condition that is false. This option excludes B<--must> and B<--may>.
 
 =item B<--may>
 
 List only headers from directives that are not excluded by B<--cant>, i.e. 
 are in the scope of some condition whose truth-value is undetermined.
+This option excludes B<--must> and B<--cant>.
 
 =item B<-L>, B<--locate>
 
@@ -534,20 +537,22 @@ of a distinct B<#define> or B<#undef> directive are listed.
 
 =over
 
-=item B<-A>, B<--must>
+=item B<--must>
 
 List only B<#define> and B<#undef> directives that must be executed, i.e. are top-level or 
-else in the scope only of true conditions.
+else in the scope only of true conditions. This option excludes B<--cant> and 
+B<--may>.
 
 =item B<--cant>
 
 List only B<#define> and B<#undef> directives that cannot be executed i.e. are in the scope 
-of some condition that is false.
+of some condition that is false. This option excludes B<--must> and B<--may>.
 
 =item B<--may>
 
 List only B<#define> and B<#undef> directives that are not excluded by B<--cant>, i.e. 
-are in the scope of some condition whose truth-value is undetermined.
+are in the scope of some condition whose truth-value is undetermined. This 
+option excludes B<--must> and B<--cant>.
 
 =item B<-L>, B<--locate>
 
@@ -574,20 +579,22 @@ of a pragma are listed.
 
 =over
 
-=item B<-A>, B<--must>
+=item B<--must>
 
 List only pragmas that must be executed, i.e. are top-level or 
-else in the scope only of true conditions.
+else in the scope only of true conditions. This option excludes B<--cant> and 
+B<--may>.
 
 =item B<--cant>
 
 List only pragmas that cannot be executed i.e. are in the scope 
-of some condition that is false.
+of some condition that is false. This option excludes B<--must> and B<--may>.
 
 =item B<--may>
 
 List only pragmas that are not excluded by B<--cant>, i.e. 
 are in the scope of some condition whose truth-value is undetermined.
+This option excludes B<--must> and B<--cant>.
 
 =item B<-L>, B<--locate>
 
@@ -614,20 +621,22 @@ of a distinct B<#error> directive are listed.
 
 =over
 
-=item B<-A>, B<--must>
+=item B<--must>
 
 List only B<#error> directives that must be executed, i.e. are top-level or 
-else in the scope only of true conditions.
+else in the scope only of true conditions. This option excludes B<--cant> and 
+B<--may>.
 
-=item B<-I>, B<--cant>
+=item B<--cant>
 
 List only B<#error> directives that cannot be executed i.e. are in the scope 
-of some condition that is false.
+of some condition that is false. This option excludes B<--must> and B<--may>.
 
 =item B<--may>
 
 List only B<#error> directives that are not excluded by B<--cant>, i.e. 
 are in the scope of some condition whose truth-value is undetermined.
+This option excludes B<--must> and B<--cant>.
 
 =item B<-L>, B<--locate>
 
@@ -654,20 +663,22 @@ of a distinct directive are listed.
 
 =over
 
-=B<--must>
+=item B<--must>
 
 List only B<#line> directives that must be executed, i.e. are top-level or 
-else in the scope only of true conditions..
+else in the scope only of true conditions. This option excludes B<--cant> and 
+B<--may>.
 
-=item B<-I>, B<--cant>
+=item B<--cant>
 
 List only B<#line> directives that cannot be executed i.e. are in the scope 
-of some condition that is false.
+of some condition that is false. This option excludes B<--must> and B<--may>.
 
 =item B<--may>
 
 List only B<#line> directives that are not excluded by B<--cant>, i.e. 
 are in the scope of some condition whose truth-value is undetermined.
+This option excludes B<--must> and B<--cant>.
 
 =item B<-L>, B<--locate>
 
@@ -694,20 +705,22 @@ of a distinct directive are listed.
 
 =over
 
-=B<--must>
+=item B<--must>
 
 List only directives that must be executed, i.e. are top-level or 
-else in the scope only of true conditions..
+else in the scope only of true conditions. This option excludes B<--cant> and 
+B<--may>.
 
-=item B<-I>, B<--cant>
+=item B<--cant>
 
 List only directives that cannot be executed i.e. are in the scope 
-of some condition that is false.
+of some condition that is false. This option excludes B<--must> and B<--may>.
 
 =item B<--may>
 
 List only directives that are not excluded by B<--cant>, i.e. 
 are in the scope of some condition whose truth-value is undetermined.
+This option excludes B<--must> and B<--cant>.
 
 =item B<-L>, B<--locate>
 
