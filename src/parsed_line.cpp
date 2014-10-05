@@ -197,10 +197,10 @@ void parsed_line::set_reportable()
 		verdict = false;
 	}
 	if (verdict) {
-		if (options::list_only_inactive()) {
-			verdict = _dropping && !if_control::is_unconditional_line();
-		} else if (options::list_only_active()) {
-			verdict = !_dropping && if_control::is_unconditional_line();
+		if (options::list_only_cant_reach()) {
+			verdict = _dropping && !if_control::must_reach_line();
+		} else if (options::list_only_must_reach()) {
+			verdict = !_dropping && if_control::must_reach_line();
 		}
 	}
 	_reportable = verdict;

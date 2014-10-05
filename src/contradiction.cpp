@@ -63,7 +63,7 @@ void contradiction::insert_pending()
 		if (_policy_ == CONTRADICTION_ERROR) {
 			warning_error_generated() << "An #error directive was generated "
 			                          " by the --conflict policy" << emit();
-			if (if_control::is_unconditional_line()) {
+			if (if_control::must_reach_line()) {
 				warning_unconditional_error_output() <<
 					"An operative #error directive was outpout" << emit();
 			}

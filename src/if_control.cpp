@@ -317,15 +317,6 @@ void if_control::transition(line_type linetype)
 	transition_table[state][linetype]();
 }
 
-bool if_control::dead_line()
-{
-	if_state state = _scope_info_[_depth_]._if_state;
-	return state == IF_STATE_FALSE_PREFIX ||
-	       state == IF_STATE_FALSE_MIDDLE ||
-	       state == IF_STATE_FALSE_ELSE ||
-	       state == IF_STATE_FALSE_TRAILER;
-}
-
 bool if_control::is_satisfied_scope(unsigned depth)
 {
 	if_state state = _scope_info_[depth]._if_state;
@@ -335,7 +326,22 @@ bool if_control::is_satisfied_scope(unsigned depth)
 	        state == IF_STATE_TRUE_ELSE ;
 }
 
-bool if_control::is_unconditional_line()
+bool if_control::is_unsatisfied_scope(unsigned depth)
+{
+	if_state state = _scope_info_[depth]._if_state;
+	return state == IF_STATE_FALSE_PREFIX ||
+	       state == IF_STATE_FALSE_MIDDLE ||
+	       state == IF_STATE_FALSE_ELSE ||
+	       state == IF_STATE_FALSE_TRAILER;
+
+}
+
+bool if_control::dead_line()
+{
+    return is_unsatisfied_scope(_depth_);
+}
+
+bool if_control::must_reach_line()
 {
     for (unsigned depth = 0; depth <= _depth_; ++depth) {
         if (!is_satisfied_scope(depth)) {
@@ -343,6 +349,16 @@ bool if_control::is_unconditional_line()
         }
     }
     return true;
+}
+
+bool if_control::cannot_reach_line()
+{
+    for (unsigned depth = 0; depth <= _depth_; ++depth) {
+        if (!is_satisfied_scope(depth)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 /* EOF*/

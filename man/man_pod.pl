@@ -400,7 +400,7 @@ references are listed.
 
 =over 
 
-=item B<-A>, B<--active>
+=item B<--must>
 
 List only references from directives that are top-level or else in the scope 
 only of true conditions.
@@ -483,12 +483,12 @@ of a header are listed.
 
 =over
 
-=item B<-A>, B<--active>
+=item B<--must>
 
 List only headers from directives that are top-level or else in the scope only 
 of true conditions.
 
-=item B<-I>, B<--inactive>
+=item B<--cant>
 
 List only headers from directives in the scope of some condition that is
 false.
@@ -524,12 +524,12 @@ of a distinct B<#define> or B<#undef> directive are listed.
 
 =over
 
-=item B<-A>, B<--active>
+=item B<-A>, B<--must>
 
 List only B<#define> and B<#undef> directives that are top-level or else in the
 scope only of true conditions.
 
-=item B<-I>, B<--inactive>
+=item B<--cant>
 
 List only B<#define> and B<#undef> directives in the scope of some condition 
 that is false.
@@ -559,12 +559,12 @@ of a pragma are listed.
 
 =over
 
-=item B<-A>, B<--active>
+=item B<-A>, B<--must>
 
 List only pragmas that are top-level or else in the
 scope only of true conditions.
 
-=item B<-I>, B<--inactive>
+=item B<--cant>
 
 List only pragmas in the scope of some condition that is false.
 
@@ -593,7 +593,7 @@ of a distinct B<#error> directive are listed.
 
 =over
 
-=item B<-A>, B<--active>
+=item B<-A>, B<--must>
 
 List only B<#error> directives that are top-level or else in the
 scope only of true conditions.
@@ -627,7 +627,7 @@ of a distinct directive are listed.
 
 =over
 
-=item B<-A>, B<--active>
+=B<--must>
 
 List only directives that are top-level or else in the
 scope only of true conditions.

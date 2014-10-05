@@ -122,12 +122,12 @@ struct  options {
 		return _list_once_per_file_;
 	}
 	/// Do we list items only from operative directives?
-	static bool list_only_active() {
-		return _list_only_active_;
+	static bool list_only_must_reach() {
+		return _list_only_must_reach_;
 	}
 	/// Do we list items only from inoperative directives?
-	static bool list_only_inactive() {
-		return _list_only_inactive_;
+	static bool list_only_cant_reach() {
+		return _list_only_cant_reach_;
 	}
 	/// Do we list items only from inoperative directives?
 	static bool list_symbols_in_ifs() {
@@ -285,8 +285,8 @@ private:
 		OPT_ONCE = 'o',			///< The `--once-only` option
 		OPT_SYSTEM = 's',		///< The `--system` option
 		OPT_LOCAL = 'l',		///< The `--local` option
-		OPT_ACTIVE = 'A',		///< The `--active` option
-		OPT_INACTIVE = 'I',		///< The `--inactive` option
+		OPT_MUST_REACH = 12,		///< The `--must` option
+		OPT_CANT_REACH = 13,		///< The `--cant` option
 		OPT_EXPAND = 3,			///< The `--expand` option
 		OPT_IMPLICIT = 'm',		///< The `--implicit` option
 		OPT_DIR = 4,			///< The `--dir` option
@@ -440,9 +440,9 @@ private:
 	/// Do we report only the first occurrence per file of listed items?
 	static bool	_list_once_per_file_;
 	/// Do we list items only from kept lines?
-	static bool	_list_only_active_;
+	static bool	_list_only_must_reach_;
 	/// Do list items only from dropped lines?
-	static bool	_list_only_inactive_;
+	static bool	_list_only_cant_reach_;
 	/// Do we list symbols in `#if/else/endif directives?
 	static bool	_list_symbols_in_ifs_;
 	/// Do we list symbols in `#define` directives?

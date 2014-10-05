@@ -107,7 +107,11 @@ struct if_control {
 	/**	\brief Is the current line outside any `#if` scope or in the scope of
 	 *  only satisfied `#if`s?
 	 */
-	static bool is_unconditional_line();
+	static bool must_reach_line();
+
+	/**	\brief Is the current line in the scope of some unsatisfied `#if?
+	 */
+    static bool cannot_reach_line();
 
 	/// Get the starting line number of the current `#if` sequence.
 	static size_t if_start_line() {
@@ -169,10 +173,15 @@ private:
 	/// Increment the `#if`-nesting depth.
 	static void nest();
 
-	/**	\brief Is the current scope at a given nesting depth either outside any
-	 * `#if` or constrolled by a satisfied `#if`?
+	/**	\brief Is the scope at a given nesting depth either outside any
+	 * `#if` or controlled by a satisfied `#if`?
 	 */
     static bool is_satisfied_scope(unsigned depth);
+
+	/**	\brief Is the scope at a given nesting depth
+     *   controlled by an unsatisfied `#if`?
+	 */
+    static bool is_unsatisfied_scope(unsigned depth);
 
 	/// State transition
 	static void Strue();

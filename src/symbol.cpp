@@ -463,7 +463,7 @@ symbol::digest_transient_define(formal_parameter_list const & params,
 		//* Else #define countervails #undef */
 	}
     if (options::no_transients()) {} // In this case, nothing further
-	else if (if_control::is_unconditional_line()) {
+	else if (if_control::must_reach_line()) {
 		if (!configured()) {
 			warning_transient_symbol_added()
 				<< "\"-D" << id() << params.str()
@@ -553,7 +553,7 @@ symbol::digest_transient_undef()
 			return LT_DIRECTIVE_KEEP;
 		}
 	}
-	if (if_control::is_unconditional_line() && !options::no_transients()) {
+	if (if_control::must_reach_line() && !options::no_transients()) {
 		if (!configured()) {
 			warning_transient_symbol_added() << "\"-U" << id() <<
 					 "\" has been assumed for the current file" << emit();

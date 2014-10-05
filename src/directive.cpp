@@ -417,7 +417,7 @@ line_type directive<HASH_ERROR>::eval(chewer<parse_buffer> & chew)
 		directive<HASH_ERROR>(str).report();
 	}
 	if (!line_despatch::cur_line().dropping()) {
-		if (if_control::is_unconditional_line()) {
+		if (if_control::must_reach_line()) {
 			if (if_control::was_unconditional_line()) {
 				warning_unconditional_error_input() <<
 					"An operative #error directive was input"

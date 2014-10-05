@@ -66,8 +66,8 @@ bool	options::_replace_ = false;
 bool	options::_list_locate_ = false;
 bool	options::_list_only_once_ = false;
 bool 	options::_list_once_per_file_ = false;
-bool	options::_list_only_active_ = false ;
-bool	options::_list_only_inactive_ = false;
+bool	options::_list_only_must_reach_ = false ;
+bool	options::_list_only_cant_reach_ = false;
 bool	options::_list_symbols_in_ifs_ = false;
 bool	options::_list_symbols_in_defs_ = false;
 bool	options::_list_symbols_in_undefs_ = false;
@@ -123,8 +123,8 @@ struct option options::long_options [] = {
 	{ "once-per-file", no_argument, nullptr, OPT_ONCE_PER_FILE },
 	{ "system", no_argument, nullptr, OPT_SYSTEM },
 	{ "local", no_argument, nullptr, OPT_LOCAL },
-	{ "active", no_argument, nullptr, OPT_ACTIVE },
-	{ "inactive", no_argument, nullptr, OPT_INACTIVE },
+	{ "must", no_argument, nullptr, OPT_MUST_REACH },
+	{ "cant", no_argument, nullptr, OPT_CANT_REACH },
 	{ "expand", no_argument, nullptr, OPT_EXPAND },
 	{ "implicit", no_argument, nullptr, OPT_IMPLICIT },
 	{ "explain", no_argument, nullptr, OPT_EXPLAIN },
@@ -161,7 +161,7 @@ struct cmd_option options::commands [] = {
 
 int const options::source_cmd_exclusions[] = {
 	OPT_IFS, OPT_DEFS, OPT_UNDEFS, OPT_INCLUDES, OPT_LOCATE,
-	OPT_ONCE, OPT_SYSTEM, OPT_LOCAL, OPT_ACTIVE, OPT_INACTIVE,
+	OPT_ONCE, OPT_SYSTEM, OPT_LOCAL, OPT_MUST_REACH, OPT_CANT_REACH,
 	OPT_EXPAND, OPT_PREFIX, OPT_EXPLAIN, OPT_SELECT, OPT_LNS,
 	OPT_ONCE_PER_FILE,0
 };
@@ -215,7 +215,7 @@ int const options::lines_cmd_exclusions[] = {
 
 int const options::spin_cmd_exclusions[] = {
 	OPT_IFS, OPT_DEFS, OPT_UNDEFS, OPT_INCLUDES, OPT_LOCATE,
-	OPT_ONCE, OPT_SYSTEM, OPT_LOCAL, OPT_ACTIVE, OPT_INACTIVE,
+	OPT_ONCE, OPT_SYSTEM, OPT_LOCAL, OPT_MUST_REACH, OPT_CANT_REACH,
 	OPT_BACKUP, OPT_EXPAND, OPT_EXPLAIN, OPT_SELECT, OPT_LNS,
 	OPT_ONCE_PER_FILE, 0
 };
@@ -532,11 +532,11 @@ void options::parse_command_args(int argc, char *argv[])
 		case OPT_LOCATE:
 			_list_locate_ = true;
 			break;
-		case OPT_ACTIVE:
-			_list_only_active_ = true;
+		case OPT_MUST_REACH:
+			_list_only_must_reach_ = true;
 			break;
-		case OPT_INACTIVE:
-			_list_only_inactive_ = true;
+		case OPT_CANT_REACH:
+			_list_only_cant_reach_ = true;
 			break;
 		case OPT_EXPAND:
 			_expand_references_ = true;
@@ -739,7 +739,7 @@ void options::finish()
 	int cmd_code = _command_->cmd_code;
 	bool input_is_stdin = false;
 
-	if (_list_only_active_ && _list_only_inactive_) {
+	if (_list_only_must_reach_ && _list_only_cant_reach_) {
 		error_usage() << "--active is inconsistent with --inactive" << emit();
 	}
 	if (_list_only_once_ && _list_once_per_file_) {
