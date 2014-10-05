@@ -305,11 +305,10 @@ if_control::transition_table[IF_STATE_COUNT][LT_SENTINEL] = {
 
 void if_control::nest()
 {
-	size_t deep = ++_depth_;
-	if (deep >= MAXDEPTH) {
+	if (++_depth_ >= MAXDEPTH) {
 		error_too_deep() << "Too many levels of nesting" << emit();
 	}
-	_scope_info_[deep]._start_line = line_despatch::cur_line().num();
+	_scope_info_[_depth_]._start_line = line_despatch::cur_line().num();
 }
 
 void if_control::transition(line_type linetype)
@@ -327,7 +326,7 @@ bool if_control::dead_line()
 	       state == IF_STATE_FALSE_TRAILER;
 }
 
-bool if_control::is_active_scope(unsigned depth)
+bool if_control::is_satisfied_scope(unsigned depth)
 {
 	if_state state = _scope_info_[depth]._if_state;
 	return	state == IF_STATE_OUTSIDE ||
@@ -339,7 +338,7 @@ bool if_control::is_active_scope(unsigned depth)
 bool if_control::is_unconditional_line()
 {
     for (unsigned depth = 0; depth <= _depth_; ++depth) {
-        if (!is_active_scope(depth)) {
+        if (!is_satisfied_scope(depth)) {
             return false;
         }
     }

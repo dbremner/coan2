@@ -147,8 +147,6 @@ private:
         if_state _if_state = IF_STATE_OUTSIDE;
         /// Was the scope entered by virtue of idempotence recognition
         bool _by_idempotence = false;
-        /// Is the scope unconditional (all controlling conditions are true)
-        bool _unconditional = true;
         /// The line number at which the scope starts
         unsigned _start_line = 0;
     };
@@ -174,7 +172,7 @@ private:
 	/**	\brief Is the current scope at a given nesting depth either outside any
 	 * `#if` or constrolled by a satisfied `#if`?
 	 */
-    static bool is_active_scope(unsigned depth);
+    static bool is_satisfied_scope(unsigned depth);
 
 	/// State transition
 	static void Strue();
