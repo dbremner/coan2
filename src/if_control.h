@@ -101,7 +101,7 @@ struct if_control {
 
 	/// Is the current line outside any `#if` scope?
 	static bool was_unconditional_line() {
-		return ifstate[if_depth()] == IF_STATE_OUTSIDE;
+		return _scope_info_[_depth_]._if_state == IF_STATE_OUTSIDE;
 	}
 
 	/**	\brief Is the current line outside any `#if` scope or in the scope of
@@ -111,37 +111,47 @@ struct if_control {
 
 	/// Get the starting line number of the current `#if` sequence.
 	static size_t if_start_line() {
-		return if_start_lines[if_depth()];
+		return _scope_info_[_depth_]._start_line;
 	}
 
 	/// Get the current depth of `#if`-nesting.
 	static size_t if_depth() {
-		return depth;
+		return _depth_;
 	}
 
 	/// Get the current `#if`-state.
 	static if_state state() {
-		return ifstate[if_depth()];
+		return _scope_info_[_depth_]._if_state;
 	}
 
 	/// Set the `#if`-state at the current nesting depth.
 	static void set_state(if_state is) {
-		size_t deep = if_depth();
-		ifstate[deep] = is;
+		_scope_info_[_depth_]._if_state = is;
 	}
 
 	/// Set the idempotence flag at the current nesting depth.
 	static void set_idempotence(bool idempotent = true) {
-		size_t deep = if_depth();
-		idempotence[deep] = idempotent;
+		_scope_info_[_depth_]._by_idempotence = idempotent;
 	}
 
 	/// Reset the depth of `#if`-nesting to 0.
 	static void top() {
-		depth = 0;
+		_depth_ = 0;
 	}
 
 private:
+
+    /// Characteristics of the scope at a given level if nesting
+    struct scope_info {
+        /// The `if_state` at this scope
+        if_state _if_state = IF_STATE_OUTSIDE;
+        /// Was the scope entered by virtue of idempotence recognition
+        bool _by_idempotence = false;
+        /// Is the scope unconditional (all controlling conditions are true)
+        bool _unconditional = true;
+        /// The line number at which the scope starts
+        unsigned _start_line = 0;
+    };
 
     /** \brief Maximum depth of hash-if nesting.
      *
@@ -244,19 +254,10 @@ private:
 	/// Diagnose unexpected end of input on `cerr`
 	static void early_eof();
 
-	/// Array of states of nested `#if`-directives
-	static if_state	ifstate[MAXDEPTH];
-
-	/** \brief Array of bool flags indicating the if-state at an index was set
-	 * by recognition of idempotence
-	 */
-	static bool	idempotence[MAXDEPTH];
-
+	/// Array of `scope_info` indexed by nesting depth
+	static scope_info _scope_info_[MAXDEPTH];
 	/// Current depth of `#if`-nesting
-	static size_t		depth;
-
-	/// Array of start lines of nested `#if`-directives
-	static size_t		if_start_lines[MAXDEPTH];
+	static unsigned	_depth_;
 
 };
 

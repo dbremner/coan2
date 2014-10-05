@@ -402,11 +402,13 @@ references are listed.
 
 =item B<-A>, B<--active>
 
-List only references from operative directives.
+List only references from directives that are top-level or else in the scope 
+only of true conditions.
 
 =item B<-I>, B<--inactive>
 
-List only references from inoperative directives.
+List only references from directives in the scope of some condition that is
+false.
 
 =item B<-L>, B<--locate>
 
@@ -483,11 +485,13 @@ of a header are listed.
 
 =item B<-A>, B<--active>
 
-List only headers from operative directives.
+List only headers from directives that are top-level or else in the scope only 
+of true conditions.
 
 =item B<-I>, B<--inactive>
 
-List only headers from inoperative directives.
+List only headers from directives in the scope of some condition that is
+false.
 
 =item B<-L>, B<--locate>
 
@@ -522,11 +526,13 @@ of a distinct B<#define> or B<#undef> directive are listed.
 
 =item B<-A>, B<--active>
 
-List only operative B<#define> and B<#undef> directives.
+List only B<#define> and B<#undef> directives that are top-level or else in the
+scope only of true conditions.
 
 =item B<-I>, B<--inactive>
 
-List only inoperative B<#define> and B<#undef> directives.
+List only B<#define> and B<#undef> directives in the scope of some condition 
+that is false.
 
 =item B<-L>, B<--locate>
 
@@ -555,11 +561,12 @@ of a pragma are listed.
 
 =item B<-A>, B<--active>
 
-List only operative pragmas.
+List only pragmas that are top-level or else in the
+scope only of true conditions.
 
 =item B<-I>, B<--inactive>
 
-List only inoperative pragmas.
+List only pragmas in the scope of some condition that is false.
 
 =item B<-L>, B<--locate>
 
@@ -588,11 +595,12 @@ of a distinct B<#error> directive are listed.
 
 =item B<-A>, B<--active>
 
-List only operative B<#error> directives.
+List only B<#error> directives that are top-level or else in the
+scope only of true conditions.
 
 =item B<-I>, B<--inactive>
 
-List only inoperative B<#error> directives.
+List only B<#error> directives in the scope of some condition that is false.
 
 =item B<-L>, B<--locate>
 
@@ -621,11 +629,12 @@ of a distinct directive are listed.
 
 =item B<-A>, B<--active>
 
-List only operative directives.
+List only directives that are top-level or else in the
+scope only of true conditions.
 
 =item B<-I>, B<--inactive>
 
-List only inoperative directives.
+List only directives in the scope of some condition that is false.
 
 =item B<-L>, B<--locate>
 
