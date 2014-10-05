@@ -1,4 +1,4 @@
-/**ARGS: symbols --active  */
+/**ARGS: symbols --must  */
 /**SYSCODE: = 0 */
 
 #ifdef UNDEF1

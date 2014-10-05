@@ -1,4 +1,4 @@
-/**ARGS: symbols -L -u -I -DFOO -UBAR */
+/**ARGS: symbols -L -u --cant -DFOO -UBAR */
 /**SYSCODE: = 2 */
 #ifdef FOO
 #define FOO 1

@@ -1,4 +1,4 @@
-/**ARGS: directives --active --locate -DFOO -UBAR */
+/**ARGS: directives --must --locate -DFOO -UBAR */
 /**SYSCODE: = 0 */
 /**NO-OUTPUT */
 #ifdef U1

@@ -1,4 +1,4 @@
-/**ARGS: defs --once-only --inactive -DFOO */
+/**ARGS: defs --once-only --cant -DFOO */
 /**SYSCODE: = 2 */
 #ifdef FOO
 #define /* comment */ B /* comment */ " Definition  1 " // Comment

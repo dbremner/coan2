@@ -1,4 +1,4 @@
-/**ARGS: symbols -A -L --explain --select YY*,Z*,A -DXX=A */
+/**ARGS: symbols --must -L --explain --select YY*,Z*,A -DXX=A */
 /**SYSCODE: = 3 */
 
 #define YY XX

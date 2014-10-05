@@ -1,4 +1,4 @@
-/**ARGS: symbols -L --active --explain --select C*,F* */
+/**ARGS: symbols -L --must --explain --select C*,F* */
 /**SYSCODE: = 2 */
 
 #define AB 2

@@ -1,4 +1,4 @@
-/**ARGS: defs --active --once-only -DFOO */
+/**ARGS: defs --must --once-only -DFOO */
 /**SYSCODE: = 2 */
 #ifdef FOO
 #define FOO /* comment */ 1

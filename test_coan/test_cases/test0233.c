@@ -1,4 +1,4 @@
-/**ARGS: errors  -DFOO --active --locate */
+/**ARGS: errors  -DFOO --must --locate */
 /**SYSCODE: = 2 | 128 */
 #ifdef FOO
 #error An  /* comment */\

@@ -1,4 +1,4 @@
-/**ARGS: symbols -L -d -u --expand -A -DFOO -DSTR=string */
+/**ARGS: symbols -L -d -u --expand --must -DFOO -DSTR=string */
 /**SYSCODE: = 2 */
 #ifdef FOO
 #define FOO 1

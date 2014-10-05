@@ -1,4 +1,4 @@
-/**ARGS: includes -L --inactive -DFOO -UBAR */
+/**ARGS: includes -L --cant -DFOO -UBAR */
 /**SYSCODE: = 0 */
 #ifdef FOO
 #include <foo.h>

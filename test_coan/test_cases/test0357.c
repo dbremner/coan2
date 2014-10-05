@@ -1,4 +1,4 @@
-/**ARGS: symbols -DFOO --no-transients --locate --expand --active */
+/**ARGS: symbols -DFOO --no-transients --locate --expand --must */
 /**SYSCODE: = 2 */
 
 #define A 1

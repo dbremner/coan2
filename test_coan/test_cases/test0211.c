@@ -1,4 +1,4 @@
-/**ARGS: symbols --locate --active -DFOO=0 -UBAR */
+/**ARGS: symbols --locate --must -DFOO=0 -UBAR */
 /**SYSCODE: = 0 */
 #ifdef FOO
 #if FOO == 1

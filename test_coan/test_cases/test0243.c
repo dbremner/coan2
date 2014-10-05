@@ -1,4 +1,4 @@
-/**ARGS: symbols --locate --undefs --inactive -DFOO -UBAR */
+/**ARGS: symbols --locate --undefs --cant -DFOO -UBAR */
 /**SYSCODE: = 2 */
 #ifdef FOO
 #define FOO 1

@@ -1,4 +1,4 @@
-/**ARGS: directives  --active --once-only --locate -DFOO -UBAR "-DHDR=<time.h>" */
+/**ARGS: directives  --must --once-only --locate -DFOO -UBAR "-DHDR=<time.h>" */
 /**SYSCODE: = 2 | 128 */
 #ifdef FOO
 	#include HDR

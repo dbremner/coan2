@@ -1,4 +1,4 @@
-/**ARGS: symbols --locate --defs --active -DFOO -UBAR */
+/**ARGS: symbols --locate --defs --must -DFOO -UBAR */
 /**SYSCODE: = 2 */
 #ifdef FOO
 #define FOO 1

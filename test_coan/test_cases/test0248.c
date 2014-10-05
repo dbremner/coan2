@@ -1,4 +1,4 @@
-/**ARGS: pragmas  --active --locate -DFOO -UBAR */
+/**ARGS: pragmas  --must --locate -DFOO -UBAR */
 /**SYSCODE: = 0 */
 #ifdef FOO
 #pragma This /* comment

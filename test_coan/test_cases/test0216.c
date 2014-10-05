@@ -1,4 +1,4 @@
-/**ARGS: includes -L --active --once-only -DFOO -UBAR */
+/**ARGS: includes -L --must --once-only -DFOO -UBAR */
 /**SYSCODE: = 0 */
 #ifdef FOO
 #include <foo.h>

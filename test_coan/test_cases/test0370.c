@@ -1,4 +1,4 @@
-/**ARGS: symbols -A -L --explain -DXX=A */
+/**ARGS: symbols --must -L --explain -DXX=A */
 /**SYSCODE: = 3 */
 
 #define YY XX

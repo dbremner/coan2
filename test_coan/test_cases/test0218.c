@@ -1,4 +1,4 @@
-/**ARGS: symbols -L -I -DFOO=0 -UBAR */
+/**ARGS: symbols -L --cant -DFOO=0 -UBAR */
 /**SYSCODE: = 0 */
 #ifdef FOO
 #if FOO == 1

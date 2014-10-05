@@ -1,4 +1,4 @@
-/**ARGS: includes -s -A -DFOO */
+/**ARGS: includes -s --must -DFOO */
 /**SYSCODE: = 0 */
 #ifdef FOO
 #include <foo.h>

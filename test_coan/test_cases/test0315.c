@@ -1,4 +1,4 @@
-/**ARGS: includes -l -I -DFOO --locate --once-only */
+/**ARGS: includes -l --cant -DFOO --locate --once-only */
 /**SYSCODE: = 0 */
 #ifdef FOO
 #include <foo.h>
