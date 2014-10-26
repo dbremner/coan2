@@ -91,6 +91,7 @@ bool	options::_keepgoing_ = false;
 bool	options::_implicit_ = false;
 bool	options::_no_transients_ = false;
 bool	options::_no_idempotence_ = false;
+bool	options::_no_override_ = false;
 int		options::_diagnostic_filter_ = 0;
 bool    options::_parsing_file_ = false;
 vector<string> options::_argfile_argv_;
@@ -103,7 +104,6 @@ struct option options::long_options [] = {
 	{ "backup",required_argument,nullptr,OPT_BACKUP},
 	{ "define", required_argument, nullptr, OPT_DEF },
 	{ "undef", required_argument, nullptr, OPT_UNDEF },
-	{ "conflict", required_argument, nullptr, OPT_CONFLICT },
 	{ "gag", required_argument, nullptr, OPT_GAG },
 	{ "verbose", no_argument, nullptr, OPT_VERBOSE },
 	{ "complement", no_argument, nullptr, OPT_COMPLEMENT },
@@ -132,6 +132,7 @@ struct option options::long_options [] = {
 	{ "explain", no_argument, nullptr, OPT_EXPLAIN },
 	{ "no-transients", no_argument, nullptr, OPT_NO_TRANSIENTS },
 	{ "no-idempotence", no_argument, nullptr, OPT_NO_IDEMPOTENCE },
+	{ "no-override", no_argument, nullptr, OPT_NO_OVERRIDE },
 	{ "dir", required_argument, nullptr, OPT_DIR },
 	{ "prefix", required_argument, nullptr, OPT_PREFIX },
 	{ "select", required_argument, nullptr, OPT_SELECT },
@@ -169,47 +170,47 @@ int const options::source_cmd_exclusions[] = {
 };
 
 int const options::symbols_cmd_exclusions[] = {
-	OPT_REPLACE, OPT_CONFLICT, OPT_DISCARD, OPT_LINE, OPT_SYSTEM,
+	OPT_REPLACE, OPT_DISCARD, OPT_LINE, OPT_SYSTEM,
 	OPT_LOCAL, OPT_BACKUP, OPT_COMPLEMENT, OPT_DIR, OPT_PREFIX, 0
 };
 
 int const options::includes_cmd_exclusions[] = {
-	OPT_REPLACE, OPT_CONFLICT, OPT_DISCARD, OPT_LINE, OPT_BACKUP,
+	OPT_REPLACE, OPT_DISCARD, OPT_LINE, OPT_BACKUP,
 	OPT_IFS, OPT_DEFS, OPT_UNDEFS, OPT_INCLUDES, OPT_COMPLEMENT,
 	OPT_EXPAND, OPT_DIR, OPT_PREFIX, OPT_EXPLAIN, OPT_SELECT,
 	OPT_LNS, 0
 };
 
 int const options::directives_cmd_exclusions[] = {
-	OPT_REPLACE, OPT_CONFLICT, OPT_DISCARD, OPT_LINE, OPT_BACKUP,
+	OPT_REPLACE, OPT_DISCARD, OPT_LINE, OPT_BACKUP,
 	OPT_IFS, OPT_DEFS, OPT_UNDEFS, OPT_INCLUDES, OPT_COMPLEMENT,
 	OPT_EXPAND, OPT_DIR, OPT_PREFIX, OPT_EXPLAIN, OPT_SELECT,
 	OPT_LNS, 0
 };
 
 int const options::defs_cmd_exclusions[] = {
-	OPT_REPLACE, OPT_CONFLICT, OPT_DISCARD, OPT_LINE, OPT_BACKUP,
+	OPT_REPLACE, OPT_DISCARD, OPT_LINE, OPT_BACKUP,
 	OPT_SYSTEM, OPT_LOCAL, OPT_IFS, OPT_DEFS, OPT_UNDEFS, OPT_INCLUDES,
 	OPT_COMPLEMENT, OPT_EXPAND, OPT_DIR, OPT_PREFIX, OPT_EXPLAIN,
 	OPT_SELECT, OPT_LNS, 0
 };
 
 int const options::pragmas_cmd_exclusions[] = {
-	OPT_REPLACE, OPT_CONFLICT, OPT_DISCARD, OPT_LINE, OPT_BACKUP,
+	OPT_REPLACE, OPT_DISCARD, OPT_LINE, OPT_BACKUP,
 	OPT_SYSTEM, OPT_LOCAL, OPT_IFS, OPT_DEFS, OPT_UNDEFS, OPT_INCLUDES,
 	OPT_COMPLEMENT, OPT_EXPAND, OPT_DIR, OPT_PREFIX, OPT_EXPLAIN,
 	OPT_SELECT, OPT_LNS, 0
 };
 
 int const options::errors_cmd_exclusions[] = {
-	OPT_REPLACE, OPT_CONFLICT, OPT_DISCARD, OPT_LINE, OPT_BACKUP,
+	OPT_REPLACE, OPT_DISCARD, OPT_LINE, OPT_BACKUP,
 	OPT_SYSTEM, OPT_LOCAL, OPT_IFS, OPT_DEFS, OPT_UNDEFS, OPT_INCLUDES,
 	OPT_COMPLEMENT, OPT_EXPAND, OPT_DIR, OPT_PREFIX, OPT_EXPLAIN,
 	OPT_SELECT, OPT_LNS, 0
 };
 
 int const options::lines_cmd_exclusions[] = {
-	OPT_REPLACE, OPT_CONFLICT, OPT_DISCARD, OPT_LINE, OPT_BACKUP,
+	OPT_REPLACE, OPT_DISCARD, OPT_LINE, OPT_BACKUP,
 	OPT_SYSTEM, OPT_LOCAL, OPT_IFS, OPT_DEFS, OPT_UNDEFS, OPT_INCLUDES,
 	OPT_COMPLEMENT, OPT_EXPAND, OPT_DIR, OPT_PREFIX, OPT_EXPLAIN,
 	OPT_SELECT, OPT_LNS, 0
@@ -406,39 +407,6 @@ void options::parse_command_args(int argc, char *argv[])
 			_parsing_file_ = false;
 			optind = save_ind; /* Restore position*/
 			break;
-		case OPT_CONFLICT: {	/* Policy for contradictions*/
-			contradiction_policy conflict_policy = CONTRADICTION_COMMENT;
-			string option_arg(optarg);
-			if (option_arg.length() > 1) {
-				if (option_arg == "delete") {
-					conflict_policy = CONTRADICTION_DELETE;
-				} else if (option_arg == "comment") {
-					conflict_policy = CONTRADICTION_COMMENT;
-				} else if (option_arg == "error") {
-					conflict_policy = CONTRADICTION_ERROR;
-				} else {
-					error_usage() << "Invalid argument for --conflict: \""
-					              << option_arg << '\"' << emit();
-				}
-			} else {
-				switch(option_arg[0]) {
-				case 'd':
-					conflict_policy = CONTRADICTION_DELETE;
-					break;
-				case 'c':
-					conflict_policy = CONTRADICTION_COMMENT;
-					break;
-				case 'e':
-					conflict_policy = CONTRADICTION_ERROR;
-					break;
-				default:
-					error_usage() << "Invalid argument for -x: \""
-					              << option_arg[0] << '\"' << emit();
-				}
-			}
-			contradiction::set_contradiction_policy(conflict_policy);
-		}
-		break;
 		case OPT_GAG: {
 			string option_arg(optarg);
 			if (option_arg.length() == 1) {
@@ -597,14 +565,18 @@ void options::parse_command_args(int argc, char *argv[])
 					for in-source #defines and #undefs */
 			_no_transients_ = true;
 			warning_no_transients_used() << "The --no-transients option "
-				<< "prohibits coan from taking account of the effects of "
-				<< "in-source #define and #undef directives. It implies --no-idempotence."
-				<< "Use at your own risk." << emit();
+				<< "prohibits coan from taking any account of the effects of "
+				<< "in-source #define and #undef directives. It implies "
+				" --no-idempotence. Use at your own risk." << emit();
 			break;
-		case OPT_NO_IDEMPOTENCE: /* Suppress recogbition of idempotence
+		case OPT_NO_IDEMPOTENCE: /* Suppress recognition of idempotence
 					constructs */
 			_no_idempotence_ = true;
 			break;
+		case OPT_NO_OVERRIDE:	/* Don't allow transient overrides of the global
+                configuration */
+            _no_override_ = true;
+            break;
 		case OPT_DIR: /* Specify the spin directory */
 			io::set_spin_dir(optarg);
 			break;
@@ -759,6 +731,10 @@ void options::finish()
 	}
 	if (_line_directives_ && _discard_policy_ != DISCARD_DROP) {
 		error_usage() << "--line is inconsistent with --discard blank|comment"
+			<< emit();
+	}
+	if (_no_transients_ && _no_override_) {
+		error_usage() << "--no-transients is inconsistent with --no-override"
 			<< emit();
 	}
 	if (_cmd_line_files_ == 0) {

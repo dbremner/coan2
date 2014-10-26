@@ -209,6 +209,12 @@ struct  options {
 	static bool no_idempotence() {
 		return	_no_idempotence_;
 	}
+	/** \brief Do we prohibit `#define` and `#undef` directives transiently
+	 *  overriding the global configuration
+	 */
+	static bool no_override() {
+		return	_no_override_;
+	}
 	/// Do we report the progressive expansion of symbol references?
 	static bool explain_references() {
 		return	_explain_references_;
@@ -270,7 +276,6 @@ private:
 		OPT_BACKUP = 'b', 		///< The `--backup` option
 		OPT_DEF = 'D', 			///< The `--define` option
 		OPT_UNDEF = 'U', 		///< The `--undefine` option
-		OPT_CONFLICT = 'x', 	///< The `--conflict` option
 		OPT_GAG = 'g', 			///< The `--gag` option
 		OPT_VERBOSE = 'V', 		///< The `--verbose` option
 		OPT_COMPLEMENT = 'c', 	///< The `--complement` option
@@ -302,7 +307,8 @@ private:
 		OPT_LNS = 11,			///< The `--lns` option
 		OPT_EXPAND_MAX = 12,	///< The `--max-expansion` option
 		OPT_ONCE_PER_FILE = 13,	///< The `--once-per-file` option
-		OPT_NO_IDEMPOTENCE = 14	///< The `--no-idempotence` option
+		OPT_NO_IDEMPOTENCE = 14,///< The `--no-idempotence` option
+		OPT_NO_OVERRIDE = 15	///< The `--no-override` option
 	};
 
 	/** \brief Array of structures specifying the valid options for all coan
@@ -490,6 +496,10 @@ private:
 	static bool _no_transients_;
 	/// Do we suppress idempotent symbol recognition?
 	static bool _no_idempotence_;
+	/** \brief Do we prohibit `#define` and `#undef` directives transiently
+	 *  overriding the global configuration
+	 */
+	static bool _no_override_;
 	/// Do we report the derivation of symbol resolutions?
 	static bool _explain_references_;
 	/// Is symbol reporting restricted to a selected set?

@@ -1,6 +1,6 @@
 /**ARGS: source -DB */
-/**SYSCODE: = 1 | 2 | 16 | 32 */
+/**SYSCODE: = 1 | 2 | 16 */
 
-// error : inserted by coan: "#undef B" contradicts -D symbol at {CWD}/test_cases/test0293.c(5)
+#undef B /* Something */
 #define C /* Something */
-
+#define B /* Something */

@@ -42,6 +42,7 @@
 #include "contradiction.h"
 #include "if_control.h"
 #include "idempotence.h"
+#include "dataset.h"
 #include <algorithm>
 #include <cstring>
 #include <cassert>
@@ -59,6 +60,9 @@ symbol::_null_("",symbol(provenance::unconfigured));
 
 map<string,symbol>
 symbol::_sym_tab_(&symbol::_null_,&symbol::_null_ + 1);
+
+map<string,symbol>
+symbol::_global_sym_tab_(&symbol::_null_,&symbol::_null_ + 1);
 
 set<string> symbol::_selected_symbols_set_;
 
@@ -124,7 +128,7 @@ bool symbol::deselected(string const & id)
 
 bool symbol::wildcard_match(string const & wildcard, string const & name)
 {
-#if CXX11_HAVE_STRING_BACK
+#if 1 //IMK check this
 	if (wildcard.back() != '*') {
 #else
 	if (*(--wildcard.end()) != '*') {
@@ -260,20 +264,29 @@ void symbol::unsubscribe() {
 
 void symbol::per_file_init()
 {
-	if (count() < size_t(_last_global_snapshot_) + 1) {
-		return;
+	if (dataset::done_files() == 0) {
+        // Cache the pristine global configuration
+	    _global_sym_tab_ = _sym_tab_;
 	}
-	// Skip the null symbol
+    // Skip the null symbol
 	auto i = ++_sym_tab_.begin();
 	// Unsubscribe all symbols
 	for ( ;i != _sym_tab_.end(); ++i) {
 		i->second.unsubscribe();
 	}
 
-	// 	Delete all transients
+	// 	Get rid of all transients
 	for (i = ++_sym_tab_.begin(); i != _sym_tab_.end();) {
 		if (i->second.origin() == provenance::transient) {
-			i = _sym_tab_.erase(i);
+            auto where = _global_sym_tab_.find(i->first);
+            if (where != _global_sym_tab_.end()) {
+                // This transient overrides a global. Reset as global
+                i->second = where->second;
+                i->second.originate(provenance::global);
+            } else {
+                // Does not override any global. Delete.
+                i = _sym_tab_.erase(i);
+            }
 		} else {
 			++i;
 		}
@@ -409,6 +422,10 @@ line_type
 symbol::digest_transient_define(formal_parameter_list const & params,
                                 string const & definition)
 {
+    if (_loc != contradiction::last_conflicted_symbol() &&
+        contradiction::flush()) {
+        return digest_transient_define(params,definition);
+    }
 	if (configured()) {
 		bool is_global = _provenance == provenance::global;
 		/* This is a re-configuration of an already configured symbol */
@@ -423,17 +440,16 @@ symbol::digest_transient_define(formal_parameter_list const & params,
 						  << id() << parameters().str()
 						  << '=' << *_defn << "\" at line "
 						  << _line << emit();
-				} else if (/*IMK if_control::if_depth() == 0*/ true) {
-					/* Differing #define contradicts -D option */
-					contradiction::flush();
-					contradiction::insert(
-                            contradiction::cause::DIFFERENTLY_REDEFING_D,id());
-					return LT_DIRECTIVE_DROP;
-				} else {
-				    string line =
-                        canonical<string>(line_despatch::cur_line().str());
-				    info_conditionally_redefining_defined() << '\"' << line <<
-                        "\" differently redefines -D symbol" << emit();
+				} else if (contradiction::flush()) {
+                    return digest_transient_define(params,definition);
+                } else { /* Differing #define contradicts -D option */
+                    contradiction::discharge(
+                        contradiction::cause::differently_redefining,
+                        !line_despatch::cur_line().must_reach(),
+                        _loc,definition);
+                    define(definition,params);
+                    _provenance = provenance::transient;
+                    return LT_DIRECTIVE_KEEP;
 				}
 			}
 			/* Definitions the same */
@@ -441,26 +457,19 @@ symbol::digest_transient_define(formal_parameter_list const & params,
 				/* #define duplicating #define */
 				return LT_DIRECTIVE_KEEP;
 			} else { /* #define duplicating -D option */
-				if (id() == contradiction::last_conflicted_symbol_id()) {
+				if (_loc == contradiction::last_conflicted_symbol()) {
 					contradiction::forget();
 				}
 				return LT_DIRECTIVE_DROP;
 			}
 		}
 		/* symbol is already undefined. */
-		else if (is_global) {
-            if (/*IMK if_control::if_depth() == 0*/ true) {
-                /* #define contradicts -U option */
-                contradiction::insert(contradiction::cause::DEFINING_U,id());
-                return LT_DIRECTIVE_DROP;
-            } else {
-                string line =
-                    canonical<string>(line_despatch::cur_line().str());
-                info_conditionally_defining_undefined() << '\"' << line <<
-                    "\" conditionally overrides -U or --implicit" << emit();
-            }
-		}
-		//* Else #define countervails #undef */
+		else if (is_global) { /* #define contradicts -U option */
+            contradiction::discharge(
+                contradiction::cause::defining_undefined,
+                !line_despatch::cur_line().must_reach(),_loc,definition);
+        }
+		//* Else #define countervails #undef. No diagnostic */
 	}
     if (options::no_transients()) {} // In this case, nothing further
 	else if (if_control::must_reach_line()) {
@@ -485,7 +494,7 @@ symbol::digest_transient_define(formal_parameter_list const & params,
                 _provenance = provenance::transient;
             }
 		}
-    } else {
+    } else if (!configured()) {
 		set_parameters(params);
 		_provenance = provenance::unconfigured;
 	}
@@ -520,29 +529,28 @@ void symbol::digest_global_undef(chewer<string> & chew)
 line_type
 symbol::digest_transient_undef()
 {
+    if (_loc != contradiction::last_conflicted_symbol() &&
+        contradiction::flush()) {
+        return digest_transient_undef();
+    }
 	if (configured()) {
 		bool is_global = _provenance == provenance::global;
 		if (_defn) { /* symbol is already defined */
 			if (!is_global) {
-				/* #undef contradicting prior #define */
-				warning_undefing_defined()
-				        << "undefining " << id() << ", after defining "
-				        << id() << parameters().str()
-				        << '=' << *_defn << " at line "
-				        << _line << emit();
-			} else if (/*IMK if_control::if_depth() == 0*/ true) {
-			    /* #undef contradicting -D option */
-				if (contradiction::last_conflicted_symbol_id() != id()) {
-					contradiction::flush();
-					contradiction::save(contradiction::cause::UNDEFING_D,id());
-				}
-				return LT_DIRECTIVE_DROP;
-			} else {
-                string line =
-                    canonical<string>(line_despatch::cur_line().str());
-                info_conditionally_undefining_defined() << '\"' << line <<
-                    "\" conditionally overrides -D symbol" << emit();
-			}
+                if (line_despatch::cur_line().must_reach()) {
+                    /* #undef contradicting prior #define */
+                    warning_undefing_defined()
+                            << "undefining " << id() << ", after defining "
+                            << id() << parameters().str()
+                            << '=' << *_defn << " at line "
+                            << _line << emit();
+                }
+			} else if (!options::no_transients()) {
+                contradiction::save(contradiction::cause::undefining_defined,
+                                    !line_despatch::cur_line().must_reach(),
+                                    _loc);
+                return LT_DIRECTIVE_DROP;
+            }
 		}
 		/* symbol is already undefined. */
 		else if (is_global) {
@@ -553,14 +561,15 @@ symbol::digest_transient_undef()
 			return LT_DIRECTIVE_KEEP;
 		}
 	}
-	if (if_control::must_reach_line() && !options::no_transients()) {
+	if (options::no_transients()) {} // In this case nothing further
+	else if (if_control::must_reach_line()) {
 		if (!configured()) {
 			warning_transient_symbol_added() << "\"-U" << id() <<
 					 "\" has been assumed for the current file" << emit();
 		}
 		undef();
 		_provenance = provenance::transient;
-	} else if (!options::no_transients()) {
+	} else if (!configured()) {
 		/* 	If we are here the symbol must be unconfigured.
 			If it were configured global then we have already returned.
 			Hence it could only be configured transient, which is not allowed.

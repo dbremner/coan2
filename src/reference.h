@@ -182,12 +182,13 @@ struct reference
 		return lookup().first->second.complete();
 	}
 
-	/// Report this reference appropriately.
+	/// Report this reference to an `std::ostream` appropriately.
 	void report() {
 		if (reportable()) {
 			do_report();
 		}
 	}
+
 
 protected:
 
@@ -242,7 +243,10 @@ protected:
 	 */
 	evaluation validate() const;
 
-	/// The `symbol_state` of the referenced symbol
+	/// Get the current source line number
+	static unsigned current_line_number();
+
+	/// Locator of the referenced symbol
 	symbol::locator _referee;
 	/// The `argument_list` of the reference
 	argument_list _args;
@@ -252,6 +256,8 @@ protected:
 	reference const * _invoker;
 	/// Key to this reference in the reference cache
 	std::string _key;
+	/// The source line number at which the reference is found.
+	unsigned _lineno = current_line_number();
 };
 
 #endif //EOF

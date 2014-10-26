@@ -115,7 +115,7 @@ struct symbol
 		}
 
 		/// Inequality
-		bool operator!=(locator & other) const {
+		bool operator!=(locator other) const {
 			return !operator==(other);
 		}
 
@@ -624,6 +624,8 @@ private:
 	static std::set<std::string> _selected_symbols_set_;
 	/// The symbol table.
 	static symbol_table _sym_tab_;
+	/// The globally configured symbol table.
+	static symbol_table _global_sym_tab_;
 	/// The table entry of the null symbol
 	static table_entry _null_;
 };

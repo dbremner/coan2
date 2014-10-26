@@ -1,5 +1,5 @@
 /**ARGS: source -DB=2 */
-/**SYSCODE: = 1 | 2 | 32 */
+/**SYSCODE: = 2 */
 
 #define A 1 /* start of comment
                       extends to next line */

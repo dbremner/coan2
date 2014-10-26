@@ -1,6 +1,6 @@
 /**ARGS: source -UG0 -UG4 */
-/**SYSCODE: = 1 | 2 | 16 | 32  */
-// error : inserted by coan: "#define G0" contradicts -U or --implicit at {CWD}/test_cases/test0459.c(4)
+/**SYSCODE: = 1 | 2 | 16  */
+#define G0
 
 	#ifndef G1
 	#define G1
@@ -23,10 +23,9 @@
 	KEEP ME G3
 	#endif
 	
-// error : inserted by coan: "#define G4" contradicts -U or --implicit at {CWD}/test_cases/test0459.c(37)
+	#define G4
 	KEEP ME G4
 	
-// error : inserted by coan: "#define G4" contradicts -U or --implicit at {CWD}/test_cases/test0459.c(44)
 	KEEP ME G4
 	
 	#if ! defined G5

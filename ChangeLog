@@ -1897,4 +1897,22 @@ coan v6.1 Mike Kinghan 2014-10-04
 	New:
 		FEA0040: The `--may` option is introduced to specify that items shall 
 		be reported only from directives not excluded by `--cant`
+
+	New:
+		RET0007: The `--conflict` option is withdrawn because it has appeared anchronistic
+		and clumsy since support for transiently configured symbols was introduced.
+	New:
+		REW0023: Conflicts between the commandline configuration and in-source directives,
+		e.g. `#define` conflicting with -UFOO, are now handled in a new way that
+		never involves diagnostic insertions into the source code. A `#define` or `#undef`
+		directive that conflicts with the commandline configuration is by default treated as a 
+		transient configuration of the affected symbol that *overrides* the
+		commandline configuration until end of file (or until it is in turn overridden).
+		A warning diagnostic is issued in these cases. The commandline configuration is
+		reinstated initially for each input file. Transient overrides of the commandline
+		configuration can be suppressed by the new `--no-override` option. When this
+		option is in effect, conflicts are diagnosed as errors.
+
+  
+ 
 		

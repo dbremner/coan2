@@ -51,6 +51,10 @@
 
 using namespace std;
 
+unsigned reference::current_line_number() {
+    return line_despatch::cur_line().num();
+}
+
 bool reference::explaining() const {
 	if (!_invoker) {
 		return
@@ -150,8 +154,7 @@ void reference::do_report()
 		return;
 	}
 	entry.set_reported();
-	bool lineno = line_despatch::cur_line().num();
-	char const * adverb = (clean || lineno == 0) ? "afresh " : "unchanged ";
+	char const * adverb = (clean || _lineno == 0) ? "afresh " : "unchanged ";
 	cout << invocation();
 	switch(_referee->origin()) {
 	case symbol::provenance::unconfigured:
@@ -200,11 +203,11 @@ void reference::do_report()
 			cout << ": insoluble";
 		}
 	}
-	if (lineno == 0) {
+	if (_lineno == 0) {
 		cout << ": in options";
 	} else if (options::list_location()) {
 		cout << ": " << io::in_file_name()
-			<< "(" << line_despatch::cur_line().num() << ")";
+			<< "(" << _lineno << ")";
 	}
 	cout << '\n';
 }

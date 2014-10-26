@@ -93,7 +93,7 @@ bool parsed_line::get()
 	_simplified = false;
 	clear();
 	got = extend();
-	set_dropping();
+	set_reach_status();
 	return got;
 }
 
@@ -136,9 +136,15 @@ template<> void parsed_line::keyword_edit<directive_type::HASH_ENDIF>() {
 	keyword_lop(TOK_ENDIF);
 }
 
-void parsed_line::set_dropping()
+void parsed_line::set_reach_status()
 {
-	_dropping = if_control::cannot_reach_line() ^ options::complement();
+    if (if_control::cannot_reach_line()) {
+        _reach_status = reach_status::cant;
+    } else if (if_control::must_reach_line()) {
+        _reach_status = reach_status::must;
+    } else {
+        _reach_status = reach_status::may;
+    }
 }
 
 void parsed_line::set_reportable()
@@ -198,11 +204,11 @@ void parsed_line::set_reportable()
 	}
 	if (verdict) {
 		if (options::list_only_cant_reach()) {
-			verdict = _dropping && !if_control::must_reach_line();
+			verdict = _reach_status == reach_status::cant;
 		} else if (options::list_only_must_reach()) {
-			verdict = !_dropping && if_control::must_reach_line();
+			verdict = _reach_status == reach_status::must;
 		} else if (options::list_only_may_reach()) {
-		    verdict = !_dropping && if_control::may_reach_line();
+		    verdict = _reach_status != reach_status::cant;
 		}
 	}
 	_reportable = verdict;

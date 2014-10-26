@@ -40,6 +40,8 @@
  **************************************************************************/
 
 #include "options.h"
+#include "reference.h"
+#include <memory>
 
 /*! \file contradiction.h
  *   This file defines class `contradiction`.
@@ -54,28 +56,23 @@
  *
  *  If, for example, a commandline `-DFOO` option is given
  *  and an `#undef FOO` directive is parsed in-source,
- *  a contradiction arises. It will be handled in accordance
- *  with the specified or default `--conflict` option.
+ *  a contradiction arises. By default the in-source
+ *  directive will transiently override the global configuration
+ *  and a warning diagnostic will be issued. The `--no-override`
+ *  option causes contradictions to be diagnosed as errors.
  */
 struct contradiction
 {
     /// Reasons for reporting a contadiction.
     enum class cause {
-        /// An in-souce \c \#define differently redefines a -D option.
-        DIFFERENTLY_REDEFING_D,
-        /// An in-souce \c \#undef contradicts a -D option.
-        UNDEFING_D,
-        /// An in-souce \c \#define contradicts a -U option.
-        DEFINING_U
+        /// An in-source `#define` differently redefines a -D option,
+        differently_redefining,
+        /// An in-source `#undef` contradicts a -D option
+        undefining_defined,
+        /// An in-source `#define` contradicts a -U option
+        defining_undefined
     };
 
-
-	/** \brief Set the operative contradiction policy.
-	 *   \param p   The contradiction policy to be applied.
-	 */
-	static void set_contradiction_policy(contradiction_policy p) {
-		_policy_ = p;
-	}
 
 	/*! \brief Forget about an apparent contradiction.
      *
@@ -103,14 +100,6 @@ struct contradiction
 	 *  comments intervening, then we forget about the pending contradiction.
 	 *  This function clears the pending diagnostic action.
      *
-	 *  \note	An `#undef` that is prima facie conflicting will always be
-	 *  be dropped, whether or not it is anulled by a following `#define`.
-	 *  If is not anulled by a following `#define`, then it will dropped
-	 *  because any of the 3 possible `--conflict` policies will require
-	 *  it either to be simply dropped, or else dropped and replaced with a
-	 *  diagnostic insertion. If the `#undef` is anulled by a following
-	 *  `#define`, then both will be dropped because the `#define` in
-	 *  isolation would be dropped.
 	 */
 	static void forget();
 
@@ -118,98 +107,109 @@ struct contradiction
      *
 	 *  When an apparent contradiction transpires to be genuine in the light of
 	 *	the following input we have a pending diagnostic action to discharge. It
-	 *  will consist of writing a warning to cerr, unless warnings are
-	 *  suppressed, and inserting a diagnostic comment or `#error` in the
-	 *  output, unless the operative `--conflict` policy is `delete`.
-	 *  This function discharges any such the pending action and otherwise
-	 *  is a no-op.
+	 *  will either be a warning that global configuration is transiently
+	 *  overridden in the current file or, if `--no-override` is in effect, an
+	 *  error diagnostic.
+	 *
+	 *  \return True if a contradiction was pending
      */
-	static void flush();
-
-	/** \brief Insert an error diagnostic into the output as a `#error`
-	 *  directive or comment.
-     *
-	 *  \param why The reason for the potential contradiction.
-	 *  \param  symname The name of symbol in the conflicting `#define` or
-	 *       `#undef`.
-     *
-	 *  The functions inserts a diagnostic as a `#error` directive or comment
-	 *  (depending on the operative `--conflict` policy)
-	 *  to replace a `#undef` or `#define` directive that conflicts with a
-	 *  `--define` or `--undef` option. The diagnostic is also written as a
-	 *  warning to cerr.
-	 */
-	static void insert(cause why, std::string const & symname);
+	static bool flush() {
+        bool discharged = _pending_.get();
+        if (_pending_) {
+            _pending_->discharge();
+            _pending_.reset();
+        }
+        return discharged;
+	}
 
 	/** \brief Save diagnostic details of a potential contradiction.
      *
-	 *  \param why The reason for the potential contradiction.
-	 *  \param  symname The name of symbol in the conflicting `#define` or
-	 *       `#undef`.
+	 *  \param why The reason for the contradiction.
+	 *  \param is_conditional Is the conreadiction conditional or unconditional?
+	 *  \param loc Locator of the conflicted symbol.
+	 *  \param defn The new conflicting definition of `sym`, if any, by
+     *      default the empty string.
      *
 	 *  A potential contradiction can require confirmation after
 	 *  parsing further input. When an `#undef` directive is read that
 	 *  conflicts with a `--define` option, we will diagnose a conflict only
 	 *  if the `#undef` is not followed by a `#define` that agrees with the
-	 *  conflicting `--define`. This function stores the relevant diagnostics
+	 *  conflicting `--define`. This function stores the relevant diagnostic
 	 *  for writing if the contradiction is confirmed. Otherwise the
 	 *  contradiction is forgotten.
 	 */
-	static void save(cause why, std::string const & symname);
+	static void
+	save(cause why, bool is_conditional, symbol::locator loc,
+            std::string const & defn = "") {
+        _pending_.reset(new contradiction(why,is_conditional,loc,defn));
+    }
 
-	/** \brief Get the name of the latest `#undef`-ed symbol.
-     *
-	 *   Return the symbol name that was undefined by the last
-	 *   `#undef` directive that conflicts with
-	 *   a `-define` option, if any.
-     *
-	 *   \return The relevant symbol name, or an empty string if none.
+    /** \brief Emit an diagnostic for a contradiction
+	 *  \param is_conditional Is the conreadiction conditional or unconditional?
+	 *  \param why The reason for the contradiction.
+	 *  \param loc Locator of the conflicted symbol.
+	 *  \param new_defn The new conflicting definition of `sym`, if any, by
+     *      default the empty string.
 	 */
-	static std::string const & last_conflicted_symbol_id() {
-		return _last_conflicted_symbol_;
+	static void
+	discharge(cause why, bool is_conditional, symbol::locator loc,
+                std::string const & new_defn = "") {
+        save(why,is_conditional,loc,new_defn);
+        _pending_->discharge();
+        _pending_.reset();
+    }
+
+
+	/** \brief Get a pointer to the latest `#undef`-ed symbol.
+     *
+	 *   Return a pointer to the symbolthat was undefined by the last
+	 *   `#undef` directive that conflicts with
+	 *   a `--define` option, if any.
+     *
+	 *   \return The address of the relevant symbol, or `nullptr` if none.
+	 */
+	static symbol::locator last_conflicted_symbol();
+
+	/// Say whether an undischarged contradiction is pending.
+	static bool pending() {
+	    return _pending_.get();
 	}
 
 private:
 
-	/** \brief Insert a stored error diagnostic into output.
-     *
-	 *  Insert a stored error diagnostic into the output as a `#error`
-	 *  directive or a comment (depending on the `--conflict` policy)
-	 *  to replace a `#undef` or `#define` directive that conflicts with a
-	 *  `--define`  option. Reiterate the diagnostic as a warning on cerr.
-     *
-	 *  If the `--conflict delete` is in force, there will be
-	 *  no diagnostic to insert in output, but the diagnostic is still
-	 *  written to `cerr`.
-	 */
-	static void insert_pending();
+    /** \brief Construct
+     *  \param cause The cause of the contradiction
+     *  \param is_conditional Is the contradiction in conditional scope?
+     *  \param loc Locator of the conflicted symbol
+     *  \param new_defn Proposed definition of conflicted symbol, if any.
+     */
+    contradiction(cause why, bool is_conditional, symbol::locator loc,
+            std::string const & new_defn = "");
 
-	/// The operative contradiction policy.
-	static contradiction_policy		_policy_;
+	/// Emit a pending diagnostic.
+ 	void discharge();
 
-	/** \brief The reason-code of diagnostics associated with the operative
-	 *  contradiction policy.
+	/// The reason-code of a pending diagnostic
+	unsigned _reason_code = 0;
+	/** \brief Number of lines over-counted as suppressed when
+	 * when a contradiction is discharged.
 	 */
-	static unsigned _policy_code_;
+    unsigned _lines_suppressed_overshoot = 0;
 
-	/** \brief Text for substitution in output.
-     *
-	 *  The substitute text that will be inserted in output
-	 *  is placed of a contradicted directive.
+	/** \brief Pointer to a reference to the latest `#undef`-ed symbol.
+	 *  potentially conflicting with a `--define` option, if any, else null
 	 */
-	static std::string _subst_text_;
+	reference _reference;
 
-	/** \brief The name of the latest `#undef`-ed symbol.
-	 *
-	 *  The symbol name that was undefined by the last
-	 *  `#undef` directive that conflicts with
-	 *  a `--define` option, if any.
-	 */
-	static std::string	_last_conflicted_symbol_;
-	/// The number of lines converted to `#error` directives.
-	static unsigned _errored_lines_;
-	/// The number of lines converted to unconditional `#error` directives.
-	static unsigned _unconditional_errored_lines_;
+	/// The cause of a pending diagnostic
+	cause _cause = cause::differently_redefining;
+
+	/// The last line conflicting with the global configuration
+	std::string _line;
+	/// Is last putative conflict conditional?
+	bool _is_conditional = false;
+	/// Pointer to the pending contradiction, if any, else NULL
+	static std::unique_ptr<contradiction> _pending_;
 };
 
 #endif /* EOF*/

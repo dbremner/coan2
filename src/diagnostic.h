@@ -590,44 +590,16 @@ using  info_symlink = info_msg<2>;
 using  info_retrospective_redefinition = info_msg<3>;
 /// Report that an idempotence construct has been detected.
 using info_idempotence_detected = info_msg<4>;
-/// Report an `#undef` conditionally overriding a -D
-using info_conditionally_undefining_defined = info_msg<5>;
-/// Report an `#define` conditionally overriding a -U
-using info_conditionally_defining_undefined = info_msg<6>;
-/// Report an `#define` conditionally redefining a -D
-using info_conditionally_redefining_defined = info_msg<7>;
+/** \brief Report (as info) a `#define` or `#undef` contradicting the global
+ * configuration
+ */
+using  info_contradiction = info_msg<5>;
 
 /** \brief Report that same argument occurs for multiple `--define` or
  *	`--undefine` options
  */
 using  warning_duplicate_args = warning_msg<1>;
 
-/** \brief Report that an input `#define` or `#undef` directive was deleted.
- *
- *  Report that an input `#define` or `#undef` directive was deleted on
- *  output because it contradicts a `--define` or `--undefine`
- *  option together with `--contradict delete`
- */
-using  warning_deleted_contradiction = warning_msg<2>;
-/** \brief Report that an input `#define` or `#undef` directive was
- *   commented out.
- *
- *  Report that an input `#define` or `#undef` directive was commented out
- *  on output because it contradicts a `--define` or `--undefine`
- *	option togther with `--contradict comment`
- */
-using  warning_commented_contradiction = warning_msg<3>;
-/** \brief Report that an input `#define` or `#undef` directive was
- *  converted to an `#error`.
- *
- *  Report that an input `#define` or `#undef` directive was converted to a
- *	`#error` on output because it contradicts a `--define` or `--undefine`
- *	option together with `--contradict error`
- */
-using warning_errored_contradiction = warning_msg<4>;
-/** \brief Report that an in-source `#define` defines a symbol differently
- *	from a prior one.
- */
 using  warning_differing_redef = warning_msg<5>;
 
 /** \brief Report that an in-source `#undef` undefines a symbol previously
@@ -647,86 +619,99 @@ private:
 		++_error_directives_operative_;
 	}
 };
-/** \brief `template struct warning_error_generated_input'
- *  encapsulates a diagnostic for `#error` directive output
- *  conditionally, i.e. within the scope of an `#if`
+/** \brief Encapsulates a diagnostic for `#error` directive output
+ *       conditionally.
+ *
+ *  Class \c warning_error_generated_input encapsulates a
+ *  diagnostic to report that an `#error` directive was output conditionally,
+ *  i.e. within the scope of an `#if`
  */
 struct warning_error_generated : warning_msg<8> {
 private:
-	/// Increment global counts appropriately.
-	void count() const override {
+	//! Increment global counts appropriately.
+	void count() const {
 		++_warnings_;
 		++_error_directives_generated_;
 	}
 };
-/** \brief `struct warning_unconditional_error_output`
- *  encapsulates a diagnostic for an `#error` directive output
+/** \brief Encapsulates a diagnostic for `#error` directive output
+ *       unconditionally.
+ *
+ *  Class \c warning_unconditional_error_output encapsulates a
+ *  diagnostic to report that an `#error` directive was output
  *  unconditionally, i.e. not in the scope of any `#if`
-*/
+ */
 struct warning_unconditional_error_output : warning_msg<9> {
 private:
-	/// Increment global counts appropriately.
-	void count() const override {
+	//! Increment global counts appropriately.
+	void count() const {
 		++_warnings_;
 		++_error_directives_operative_;
 	}
 };
+/** \brief Report (as warning) a `#define` or `#undef` contradicting the global
+ * configuration
+ */
+using  warning_contradiction = warning_msg<10>;
+
 /// Report garbage text was input following a directive
-using  warning_garbage_after_directive = warning_msg<10>;
+using  warning_garbage_after_directive = warning_msg<11>;
 /// Report a newline is missing at end of input
-using  warning_missing_eof_newline = warning_msg<11>;
+using  warning_missing_eof_newline = warning_msg<12>;
 /// Report a symbol has a circular definition
-using  warning_infinite_regress = warning_msg<12>;
+using  warning_infinite_regress = warning_msg<13>;
 /// Report the `--verbose` option is mixed with the `--gag` option
-using  warning_verbose_only = warning_msg<13>;
+using  warning_verbose_only = warning_msg<14>;
 /// Report a divide by zero was found in an expression
-using warning_zero_divide =  warning_msg<14>;
+using warning_zero_divide =  warning_msg<15>;
 /** \brief Report directory name ignored on input when `--recurse` not
  *	not specified
  */
-using  warning_dir_ignored = warning_msg<15>;
+using  warning_dir_ignored = warning_msg<16>;
 /// Report an unknown preprocessor directive
-using  warning_unknown_directive = warning_msg<16>;
+using  warning_unknown_directive = warning_msg<17>;
 /// Report a problematic argument to an \c \#include directive
-using  warning_invalid_include = warning_msg<17>;
+using  warning_invalid_include = warning_msg<18>;
 /// Report that an integer constant evaluates > \c INT_MAX
-using warning_int_overflow = warning_msg<18>;
+using warning_int_overflow = warning_msg<19>;
 /// Report missing terminator quotation
-using  warning_missing_terminator = warning_msg<19>;
+using  warning_missing_terminator = warning_msg<20>;
 /// Report negative shift count
-using warning_negative_shift = warning_msg<20>;
+using warning_negative_shift = warning_msg<21>;
 /// Report a huge integer constant forced to be unsigned
-using warning_forced_unsigned = warning_msg<21>;
+using warning_forced_unsigned = warning_msg<22>;
 /// Report integer sign changed by promotion
-using warning_sign_changed = warning_msg<22>;
+using warning_sign_changed = warning_msg<23>;
 /// Report a that shift count is >= the width of the shifted quantity
-using warning_shift_overflow = warning_msg<23>;
+using warning_shift_overflow = warning_msg<24>;
 /// Report a character constant too long for current locale
-using warning_char_constant_too_long = warning_msg<24>;
+using warning_char_constant_too_long = warning_msg<25>;
 /// Report that character constant goes multi-byte
-using  warning_mulitbyte_char_constant = warning_msg<25>;
+using  warning_mulitbyte_char_constant = warning_msg<26>;
 /// Apologize that variadic macro expansion is unsupported.
-using warning_variadic_macros_unsupported = warning_msg<26>;
+using warning_variadic_macros_unsupported = warning_msg<27>;
 /** Report that a symbol has been transiently defined or undefined for the
  *   duration of the current source file
  */
-using warning_transient_symbol_added = warning_msg<27>;
+using warning_transient_symbol_added = warning_msg<28>;
 /// Report that the commandline does not specify any `--define` or `--undef`
-using warning_no_syms = warning_msg<28>;
+using warning_no_syms = warning_msg<29>;
 /// Report that input file is a broken symbolic link
-using warning_broken_symlink = warning_msg<29>;
+using warning_broken_symlink = warning_msg<30>;
 /// Report that the unsafe `--no-transients` option is used.
-using warning_no_transients_used = warning_msg<30>;
+using warning_no_transients_used = warning_msg<31>;
 /// Report macro ref on unconfigured symbol
-using warning_calling_unconfigured = warning_msg<31>;
+using warning_calling_unconfigured = warning_msg<32>;
 /// Report a directive that lacks a required argument
-using warning_no_argument = warning_msg<32>;
+using warning_no_argument = warning_msg<33>;
 /// Report a `#line` directive with argument not a positive integer.
-using warning_not_a_line_number = warning_msg<33>;
+using warning_not_a_line_number = warning_msg<34>;
 /// Report inconsistent argument lists for unconfigured symbol references.
-using warning_inconsistent_calls = warning_msg<34>;
+using warning_inconsistent_calls = warning_msg<35>;
 /// Report a macro reference not fully expanded.
-using warning_incomplete_expansion = warning_msg<35>;
+using warning_incomplete_expansion = warning_msg<36>;
+/// Report a `#define` or `#undef` transiently overriding the global config.
+using warning_transient_override = warning_msg<37>;
 
 /// Report an orphan `#elif` was found in input
 using error_orphan_elif = error_msg<1>;
@@ -786,7 +771,10 @@ using error_stringify_non_param = error_msg<25>;
 using error_non_term = error_msg<26>;
 /// Report that token-pasting does not yield a token
 using error_bad_token_paste = error_msg<27>;
-
+/** \brief Report (as error) a `#define` or `#undef` contradicting the global
+ * configuration
+ */
+using error_contradiction = error_msg<28>;
 
 /// Report cannot open an output file
 using abend_cant_open_output = abend_msg<1>;

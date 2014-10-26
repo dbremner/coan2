@@ -1,5 +1,5 @@
 /**ARGS: source  "-DFOO=1 + 1"  */
-/**SYSCODE: = 1 | 2 | 16 | 32 */
+/**SYSCODE: = 1 | 2 | 16 */
 #define FOO 1 +/* A Commment */1
 #define FOO 2
 

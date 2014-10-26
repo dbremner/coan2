@@ -38,7 +38,13 @@ The source files might themselves contain B<#define> or B<#undef>
 directives that are active under the given configuration and which may influence
 its effects. To capture that influence, Coan temporarily adds each active 
 B<#define> or B<#undef> directive to the configuration just for the duration of 
-the source file in which it is found.   
+the source file in which it is found.
+
+B<#define> or B<#undef> directives that are active under the given configuration
+may also I<conflict> with that configuration, e.g. B<#define> I<FOO> when B<-U>I<FOO> is
+configured. By default coan allows such directives temporarily to override the
+configuration for the remainder of the current file, with a warning, but the
+B<--no-override> option can direct coan to diagnose these conflicts as errors.     
 
 Given a configuration and some source code, coan can answer a range of questions
 about how the source code would appear to the C/C++ preprocessor if that 
@@ -231,6 +237,36 @@ transiently treated as a B<-D>I<SYM> or B<-U>I<SYM> option within the source
 file where it is found. This option suppresses the default behaviour at your own
 risk.
 
+=item B<--no-idempotence>
+
+By default coan recognizes that a directive of the form B<#ifndef> I<SYM>, or
+equivalent, followed by B<#define> I<SYM> with only whitespace and comments
+intervening, is intended as an I<idempotence guard>, by virtue of the fact that
+the controlling condition shall be satisfied once and only once per file.
+Coan accordingly will evaluate the controlling condition as B<true>, even
+if `--undef FOO` is not specified (and B<#undef FOO> has not previously
+been encountered) and will proceed to parse and execute directives in the
+controlled scope, I<but will retain the controlling condition and its
+matching> B<#endif> I<in output>. Consequently coan will execute 
+the B<#define> I<SYM> directive by making I<SYM> a transiently configured
+symbol for the remainder of the file, and idempotence of the controlling
+condition will be achieved.
+
+This option suppresses the recognition of idempotence guards.
+
+=item B<--no-override>
+
+An B<#define> or B<#undef> directive that is to be executed under the specified 
+configuration might conflict with that configuration, e.g. B<#define> I<SYM>
+when B<-U>I<SYM> if configured. In such cases by default coan allows the
+conflicting directive to override the configuration, with a warning, for the
+remainder of the file.
+
+This option disables the default behavious and directs coan to diagnose
+conflicts as errors.
+
+This option suppresses the recognition of idempotence guards.     
+
 =item B<-P>, B<--pod>
 
 Apart from #-directives, input is to be treated as Plain Old Data. C or C++ 
@@ -264,19 +300,6 @@ delimited by whitespace unless enclosed in double-quotes.
 Backup each input file before replacing it, the backup file having the same name
 as the input file with I<suffix> appended to it.
 
-=item B<-x>[B<d>|B<c>|B<e>], B<--conflict> [B<delete> | B<comment> | B<error>]
-
-Select the action to be taken when a B<#define> or B<#undef> directive is encountered
-in an input file that conflicts with one of the B<-D> or B<-U> assumptions:
-
-B<d>, B<delete>: Delete the conflicting directive.
-
-B<c>, B<comment>: Replace the conflicting directive with a diagnostic comment 
-(B<default>).
-
-B<e>, B<error>: Replace the conflicting directive with a diagnostic B<#error> 
-directive.
-
 =item B<-k>[B<d>|B<b>|B<c>], B<--discard> [B<drop> | B<blank> | B<comment>]
 
 Select the policy for discarding lines from output:
@@ -294,7 +317,7 @@ numbers of retained lines.
 
 =item B<-c>, B<--complement>
 
-Ouput the lines that ought to be dropped and vice versa.
+Output the lines that ought to be dropped and vice versa.
 
 =back
 
@@ -303,19 +326,6 @@ Ouput the lines that ought to be dropped and vice versa.
 The B<--recurse> and B<--replace> options are implied for this command.
 
 =over
-
-=item B<-x>[B<d>|B<c>|B<e>], B<--conflict> [B<delete> | B<comment> | B<error>]
-
-Select the action to be taken when a B<#define> or B<#undef> directive is encountered
-in an input file that conflicts with one of the B<-D> or B<-U> assumptions:
-
-B<d>, B<delete>: Delete the conflicting directive.
-
-B<c>, B<comment>: Replace the conflicting directive with a diagnostic comment
-(B<default>).
-
-B<e>, B<error>: Replace the conflicting directive with a diagnostic B<#error> 
-directive.
 
 =item B<-k>[B<d>|B<b>|B<c>], B<--discard> [B<drop> | B<blank> | B<comment>]
 

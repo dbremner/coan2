@@ -140,11 +140,21 @@ struct parsed_line : parse_buffer
 	}
 
 	/// Record whether we are dropping the line.
-	void set_dropping();
+	void set_reach_status();
 
-	/// Are we dropping the line?
-	bool dropping() const {
-		return _dropping;
+	/// Must we reach this line under the configuration?
+	bool must_reach() const {
+		return _reach_status == reach_status::must;
+	}
+
+	/// Must we not reach this line under the configuration?
+	bool cant_reach() const {
+		return _reach_status == reach_status::cant;
+	}
+
+	/// May we reach this line consistent with the configuration?
+	bool may_reach() const {
+		return _reach_status == reach_status::may;
 	}
 
 	/// Output the line
@@ -159,6 +169,13 @@ struct parsed_line : parse_buffer
 	}
 
 protected:
+
+    /// Enumeration of reachability statuses of the line
+    enum class reach_status {
+        may, ///< May be reached consistent with the configuration
+        must, /// Must be reached under the configuration
+        cant /// Cannot be reached under the configuration
+    };
 
     /// Say whether a line extension is pending at an offset in the line.
 	size_t extension_pending(size_t off) const override {
@@ -237,7 +254,7 @@ protected:
 	/// Is this line reportable?
 	bool _reportable = false;
 	/// Are we dropping this line
-	bool _dropping = false;
+	reach_status _reach_status = reach_status::may;
 	/// Has the line been simplified?
 	bool _simplified = false;
 	/// Count of contiguous lines that are dropped together.

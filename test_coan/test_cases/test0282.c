@@ -1,5 +1,6 @@
 /**ARGS: source -m -DFOO=1 -UBAR */
-/**SYSCODE: = 1 | 2| 16 | 32 */
+/**SYSCODE: = 1 | 2 | 4 */
+/**NO-OUTPUT */
 #if BAR
 DELETE ME
 #else

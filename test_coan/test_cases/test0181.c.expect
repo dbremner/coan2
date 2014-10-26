@@ -1,10 +1,10 @@
 /**ARGS: source -DB=2 */
-/**SYSCODE: = 1 | 2 | 32 */
+/**SYSCODE: = 2 */
 
 #define A 1 /* start of comment
                       extends to next line */
 
-// error : inserted by coan:  "#define B 1" differently redefines -D symbol at {CWD}/test_cases/test0181.c(7)
+#define B /* comment */ 1
 
 #define C /* start of comment
 		extends to next line */ 1

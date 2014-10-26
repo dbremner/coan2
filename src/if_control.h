@@ -101,7 +101,7 @@ struct if_control {
 
 
 	/// Is the current line outside any `#if` scope?
-	static bool was_unconditional_line() {
+	static bool unconditional_line() {
 		return _scope_info_[_depth_]._if_state == IF_STATE_OUTSIDE;
 	}
 
@@ -158,7 +158,7 @@ struct if_control {
 private:
 
 	/// Enumeration of possible true values of `#if`s
-	enum truth_value {
+	enum class truth_value {
 	    /// Falsified by configuration
 	    False,
 	    /// Verified by configurarion
@@ -176,7 +176,7 @@ private:
         /// The line number at which the scope starts
         unsigned _start_line = 0;
         /// The true-value of the `if_state` at this scope
-        truth_value _truth_value = True;
+        truth_value _truth_value = truth_value::True;
     };
 
     /** \brief Maximum depth of hash-if nesting.
@@ -204,14 +204,14 @@ private:
 	 * `#if` or controlled by a satisfied `#if`?
 	 */
     static bool is_satisfied_scope(unsigned depth) {
-        return _scope_info_[depth]._truth_value == True;
+        return _scope_info_[depth]._truth_value == truth_value::True;
     }
 
 	/**	\brief Is the scope at a given nesting depth
      *   controlled by an unsatisfied `#if`?
 	 */
     static bool is_unsatisfied_scope(unsigned depth) {
-        return _scope_info_[depth]._truth_value == False;
+        return _scope_info_[depth]._truth_value == truth_value::False;
     }
 
 	/// State transition

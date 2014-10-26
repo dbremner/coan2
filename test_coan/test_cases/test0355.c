@@ -9,7 +9,9 @@ KEEP THIS AND IFDEF
 #endif
 
 #ifndef B
-KEEP THIS AND IFNDEF
+DROP THIS AND IFNDEF
+#else
+KEEP THIS
 #endif
 
 #if (A && 1)

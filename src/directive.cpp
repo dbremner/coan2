@@ -193,6 +193,11 @@ directive_base::eval_ifdef_or_ifndef(
 
 line_type directive_base::eval(directive_type type, chewer<parse_buffer> & chew)
 {
+	if (line_despatch::cur_line().cant_reach()) {
+		contradiction::forget();
+	} else if (type != HASH_UNDEF && type != HASH_DEFINE) {
+		contradiction::flush();
+	}
 	chew(greyspace);
 	line_despatch::cur_line().set_directive_type(type);
 	line_type retval = _evaluator_tab_[type](chew);
@@ -207,11 +212,6 @@ line_type directive_base::eval(directive_type type, chewer<parse_buffer> & chew)
 				"Superfluous \"" << bad << "\" after directive \""
 				<< good << '\"' << emit();
 		}
-	}
-	if (line_despatch::cur_line().dropping()) {
-		contradiction::forget();
-	} else if (type != HASH_UNDEF) {
-		contradiction::flush();
 	}
 	return retval;
 }
@@ -317,7 +317,7 @@ line_type directive<HASH_ENDIF>::eval(chewer<parse_buffer> &)
 template<>
 line_type directive<HASH_DEFINE>::eval(chewer<parse_buffer> & chew)
 {
-	line_type retval = line_despatch::cur_line().dropping() ?
+	line_type retval = line_despatch::cur_line().cant_reach() ?
 	                   LT_DIRECTIVE_DROP : LT_DIRECTIVE_KEEP;
 	chew(greyspace);
 	symbol::locator sloc(chew);
@@ -344,9 +344,9 @@ line_type directive<HASH_DEFINE>::eval(chewer<parse_buffer> & chew)
 		}
 		directive<HASH_DEFINE>(arg).report();
 	}
-	if (!line_despatch::cur_line().dropping()) {
+	if (retval == LT_DIRECTIVE_KEEP) {
         idempotence::at_define();
-		retval = sloc->digest_transient_define(macro_params,definition);
+        retval = sloc->digest_transient_define(macro_params,definition);
 	}
 	sloc->report();
 	diagnostic_base::discard(severity::error);
@@ -357,16 +357,18 @@ template<>
 line_type directive<HASH_UNDEF>::eval(chewer<parse_buffer> & chew)
 {
     idempotence::at_start();
-	line_type retval = line_despatch::cur_line().dropping() ?
+	line_type retval = line_despatch::cur_line().cant_reach() ?
 	                   LT_DIRECTIVE_DROP : LT_DIRECTIVE_KEEP;
 
 	chew(greyspace);
 	symbol::locator sloc(chew);
-	if (!line_despatch::cur_line().dropping()) {
+	directive<HASH_UNDEF>(sloc.id()).report();
+	if (retval == LT_DIRECTIVE_KEEP ) {
 		retval = sloc->digest_transient_undef();
 	}
-	directive<HASH_UNDEF>(sloc.id()).report();
-	sloc->report();
+	if (!contradiction::pending()) {
+        sloc->report();
+	}
 	chew(greyspace);
 	return retval;
 }
@@ -375,7 +377,7 @@ template<>
 line_type directive<HASH_INCLUDE>::eval(chewer<parse_buffer> & chew)
 {
     idempotence::at_start();
-	line_type retval = line_despatch::cur_line().dropping() ?
+	line_type retval = line_despatch::cur_line().cant_reach() ?
 	                   LT_DIRECTIVE_DROP : LT_DIRECTIVE_KEEP;
 	chew(greyspace);
 	if (!chew) {
@@ -416,9 +418,9 @@ line_type directive<HASH_ERROR>::eval(chewer<parse_buffer> & chew)
 		string str = canonical<string>(chew);
 		directive<HASH_ERROR>(str).report();
 	}
-	if (!line_despatch::cur_line().dropping()) {
+	if (!options::complement()) {
 		if (if_control::must_reach_line()) {
-			if (if_control::was_unconditional_line()) {
+			if (if_control::unconditional_line()) {
 				warning_unconditional_error_input() <<
 					"An operative #error directive was input"
 					<< emit();

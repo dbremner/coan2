@@ -1,5 +1,5 @@
 /**ARGS: source -DB */
-/**SYSCODE: = 1 | 2 | 16 | 32 */
+/**SYSCODE: = 1 | 2 | 16 */
 
 #ifdef B /* Something */
 #undef B /* Something */

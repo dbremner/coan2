@@ -42,100 +42,124 @@
 #include "if_control.h"
 #include "line_despatch.h"
 #include "canonical.h"
+#include "symbol.h"
+#include "reference.h"
+#include <iostream>
 
 /** \file contradiction.cpp
  *   This file implements class `contradiction`
  */
 using namespace std;
 
-string contradiction::_subst_text_;
-string	contradiction::_last_conflicted_symbol_;
-contradiction_policy contradiction::_policy_ = CONTRADICTION_COMMENT;
-unsigned contradiction::_policy_code_(0);
+std::unique_ptr<contradiction> contradiction::_pending_;
 
-
-void contradiction::insert_pending()
+void contradiction::discharge()
 {
-	diagnostic_base::flush(_policy_code_);
-	_policy_code_ = 0;
-	if (_policy_ != CONTRADICTION_DELETE) {
-		line_despatch::substitute(_subst_text_);
-		if (_policy_ == CONTRADICTION_ERROR) {
-			warning_error_generated() << "An #error directive was generated "
-			                          " by the --conflict policy" << emit();
-			if (if_control::must_reach_line()) {
-				warning_unconditional_error_output() <<
-					"An operative #error directive was outpout" << emit();
-			}
-		}
+	diagnostic_base::flush(_reason_code);
+    if (_cause == cause::undefining_defined) {
+        if (options::have_source_output()) {
+            cout << _line;
+            line_despatch::lines_suppressed() -= _lines_suppressed_overshoot;
+        }
+        if (!_is_conditional) {
+            auto sym = _reference.callee();
+            sym->originate(symbol::provenance::transient);
+            sym->undef();
+        }
+        _reference.report();
+    }
+}
+
+symbol::locator contradiction::last_conflicted_symbol() {
+    return _pending_ ? _pending_->_reference.callee()
+    : symbol::locator();
+}
+
+contradiction::contradiction(cause why, bool is_conditional,
+                    symbol::locator loc, string const & new_defn)
+:   _lines_suppressed_overshoot(line_despatch::cur_line().extensions() + 1),
+    _reference(loc),
+    _cause(why),
+    _line(line_despatch::cur_line().str()),
+    _is_conditional(is_conditional)
+{
+    size_t posn = _line.find_first_of("\r\n");
+    if (is_conditional) {
+		info_contradiction diagnostic;
+        switch(why) {
+        case cause::differently_redefining:
+            diagnostic << "\"" << _line.substr(0,posn)
+                << "\" conditionally contradicts \"-D" << loc->id()
+                << '=' << *loc->defn() << '\"';
+            break;
+        case cause::defining_undefined:
+            diagnostic << "\"" << _line.substr(0,posn)
+                << "\" conditionally contradicts \"-U" << loc->id() << '\"';
+            break;
+        case cause::undefining_defined:
+            diagnostic << "\"" << _line.substr(0,posn)
+                << "\" conditionally contradicts \"-D" << loc->id()
+                << '=' << *loc->defn() << '\"';
+            break;
+        default:
+            assert(false);
+        }
+		_reason_code = diagnostic.encode();
+		diagnostic << defer();
+    } else if(options::no_override()) {
+
+		error_contradiction diagnostic;
+        switch(why) {
+        case cause::differently_redefining:
+            diagnostic << "\"" << _line.substr(0,posn)
+                << "\" contradicts \"-D" << loc->id()
+                << '=' << *loc->defn() << '\"';
+            break;
+        case cause::defining_undefined:
+            diagnostic << "\"" << _line.substr(0,posn) << "\" contradicts -U"
+                << loc->id() << '\"';
+            break;
+        case cause::undefining_defined:
+            diagnostic << "\"" << _line.substr(0,posn)
+                << "\" contradicts \"-D" << loc->id()
+                << '=' << *loc->defn() << '\"';
+            break;
+        default:
+            assert(false);
+        }
+		_reason_code = diagnostic.encode();
+		diagnostic << defer();
+	} else {
+		warning_transient_override diagnostic;
+        switch(why) {
+        case cause::differently_redefining:
+            diagnostic << "\"-D" << loc->id() << '=' << new_defn
+            << "\" has been assumed for the current file, overriding \""
+            "-D" << loc->id() << '=' << *loc->defn() << '\"';
+            break;
+        case cause::defining_undefined:
+            diagnostic << "\"-D" << loc->id() << '=' << new_defn
+            << "\" has been assumed for the current file, overriding \""
+            "-U" << loc->id() << '\"';
+            break;
+        case cause::undefining_defined:
+            diagnostic << "\"-U" << loc->id()
+                << "\" has been assumed for the current file, overriding \""
+                "-D"<< loc->id() << '=' << *loc->defn() << '\"';
+            break;
+        default:
+            assert(false);
+        }
+		_reason_code = diagnostic.encode();
+		diagnostic << defer();
 	}
 }
 
-void contradiction::insert(cause why,string const & symname)
-{
-	contradiction::save(why,symname);
-	insert_pending();
-}
-
-void contradiction::flush()
-{
-	if (_policy_code_) {
-		insert_pending();
-	}
-}
-
-void contradiction::forget()
-{
-	diagnostic_base::discard(_policy_code_);
-	_policy_code_ = 0;
-}
-
-void contradiction::save(cause why, string const & symname)
-{
-	_last_conflicted_symbol_ = symname;
-	string line = canonical<string>(line_despatch::cur_line().str());
-	string gripe("\"");
-	switch(why) {
-	case cause::DIFFERENTLY_REDEFING_D:
-		gripe += line + "\" differently redefines -D symbol";
-		break;
-	case cause::DEFINING_U:
-		gripe += line + "\" contradicts -U or --implicit";
-		break;
-	case cause::UNDEFING_D:
-		gripe += line + "\" contradicts -D symbol";
-		break;
-	default:
-		assert(false);
-	}
-	stringstream ss("error : inserted by coan: ");
-	ss.seekp(0,ios_base::end);
-	ss << gripe << " at " << io::in_file_name() << '(' <<
-	   line_despatch::cur_line().num() << ")\n";
-	switch(_policy_) {
-	case CONTRADICTION_DELETE: {
-		warning_deleted_contradiction diagnostic;
-		_policy_code_ = diagnostic.encode();
-		diagnostic << gripe << defer();
-		break;
-	}
-	case CONTRADICTION_COMMENT: {
-		warning_commented_contradiction diagnostic;
-		_policy_code_ = diagnostic.encode();
-		diagnostic << gripe << defer();
-		_subst_text_ = string("// ") + ss.str();
-		break;
-	}
-	case CONTRADICTION_ERROR: {
-		warning_errored_contradiction diagnostic;
-		_policy_code_ = diagnostic.encode();
-		diagnostic << gripe << defer();
-		_subst_text_ = string("#") + ss.str();
-		break;
-	}
-	default:
-		assert(false);
-	}
+void contradiction::forget() {
+    if (_pending_) {
+        diagnostic_base::discard(_pending_->_reason_code);
+        _pending_.reset();
+    }
 }
 
 /* EOF*/

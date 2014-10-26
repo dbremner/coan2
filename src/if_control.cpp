@@ -53,16 +53,16 @@
 
 if_control::scope_info if_control::_scope_info_[MAXDEPTH];
 if_control::truth_value if_control::state_truth_values[IF_STATE_COUNT] = {
-    True, // IF_STATE_OUTSIDE,
-    False, // IF_STATE_FALSE_PREFIX,
-    True, // IF_STATE_TRUE_PREFIX,
-    Indeterminate, // IF_STATE_PASS_MIDDLE,
-    False, // IF_STATE_FALSE_MIDDLE,
-    True, // IF_STATE_TRUE_MIDDLE,
-    Indeterminate, // IF_STATE_PASS_ELSE,
-    False, // IF_STATE_FALSE_ELSE,
-    True, // IF_STATE_TRUE_ELSE,
-    False // IF_STATE_FALSE_TRAILER,
+    truth_value::True, // IF_STATE_OUTSIDE,
+    truth_value::False, // IF_STATE_FALSE_PREFIX,
+    truth_value::True, // IF_STATE_TRUE_PREFIX,
+    truth_value::Indeterminate, // IF_STATE_PASS_MIDDLE,
+    truth_value::False, // IF_STATE_FALSE_MIDDLE,
+    truth_value::True, // IF_STATE_TRUE_MIDDLE,
+    truth_value::Indeterminate, // IF_STATE_PASS_ELSE,
+    truth_value::False, // IF_STATE_FALSE_ELSE,
+    truth_value::True, // IF_STATE_TRUE_ELSE,
+    truth_value::False // IF_STATE_FALSE_TRAILER,
 };
 
 unsigned if_control::_depth_ = 0;

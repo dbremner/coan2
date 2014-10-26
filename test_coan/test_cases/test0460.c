@@ -1,4 +1,4 @@
-/**ARGS: source -UG0 -UG4 */
+/**ARGS: source -UG0 -UG4 --no-idempotence */
 /**SYSCODE: = 1 | 2 | 16  */
 #ifndef G0
 #define G0
@@ -7,12 +7,12 @@
 	#define G1
 	KEEP ME G1
 	#else
-	DELETE ME G1
+	KEEP ME G1
 	#endif
 	
 	#ifndef G1
 	#define G1
-	DELETE ME G1
+	KEEP ME G1
 	#else
 	KEEP ME G1
 	#endif
@@ -22,7 +22,7 @@
 	#define G2
 	KEEP ME G2
 	#else
-	DELETE ME G2
+	KEEP ME G2
 	#endif
 
 	#ifndef G3
