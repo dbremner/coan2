@@ -1846,7 +1846,7 @@ coan v6.0 Mike Kinghan 2014-08-15
 		`#define` or `#undef` retrospectively affects the meaning of previously
 		defined symbols.
 
-coan v6.1 Mike Kinghan 2014-10-04
+coan v7.0 Mike Kinghan 2014-10-26
 	New:
 		FEA0037: By default, coan now detects constructs of the three forms:
 

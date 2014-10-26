@@ -445,7 +445,7 @@ symbol::digest_transient_define(formal_parameter_list const & params,
                 } else { /* Differing #define contradicts -D option */
                     contradiction::discharge(
                         contradiction::cause::differently_redefining,
-                        !line_despatch::cur_line().must_reach(),
+                        !if_control::must_reach_line(),
                         _loc,definition);
                     define(definition,params);
                     _provenance = provenance::transient;
@@ -467,7 +467,7 @@ symbol::digest_transient_define(formal_parameter_list const & params,
 		else if (is_global) { /* #define contradicts -U option */
             contradiction::discharge(
                 contradiction::cause::defining_undefined,
-                !line_despatch::cur_line().must_reach(),_loc,definition);
+                !if_control::must_reach_line(),_loc,definition);
         }
 		//* Else #define countervails #undef. No diagnostic */
 	}
@@ -537,7 +537,7 @@ symbol::digest_transient_undef()
 		bool is_global = _provenance == provenance::global;
 		if (_defn) { /* symbol is already defined */
 			if (!is_global) {
-                if (line_despatch::cur_line().must_reach()) {
+                if (if_control::must_reach_line()) {
                     /* #undef contradicting prior #define */
                     warning_undefing_defined()
                             << "undefining " << id() << ", after defining "
@@ -547,7 +547,7 @@ symbol::digest_transient_undef()
                 }
 			} else if (!options::no_transients()) {
                 contradiction::save(contradiction::cause::undefining_defined,
-                                    !line_despatch::cur_line().must_reach(),
+                                    !if_control::must_reach_line(),
                                     _loc);
                 return LT_DIRECTIVE_DROP;
             }

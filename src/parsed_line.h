@@ -139,24 +139,6 @@ struct parsed_line : parse_buffer
 		return _dtype;
 	}
 
-	/// Record whether we are dropping the line.
-	void set_reach_status();
-
-	/// Must we reach this line under the configuration?
-	bool must_reach() const {
-		return _reach_status == reach_status::must;
-	}
-
-	/// Must we not reach this line under the configuration?
-	bool cant_reach() const {
-		return _reach_status == reach_status::cant;
-	}
-
-	/// May we reach this line consistent with the configuration?
-	bool may_reach() const {
-		return _reach_status == reach_status::may;
-	}
-
 	/// Output the line
 	void output();
 
@@ -253,8 +235,6 @@ protected:
 	directive_type _dtype = HASH_UNKNOWN;
 	/// Is this line reportable?
 	bool _reportable = false;
-	/// Are we dropping this line
-	reach_status _reach_status = reach_status::may;
 	/// Has the line been simplified?
 	bool _simplified = false;
 	/// Count of contiguous lines that are dropped together.

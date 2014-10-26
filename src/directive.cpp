@@ -193,7 +193,7 @@ directive_base::eval_ifdef_or_ifndef(
 
 line_type directive_base::eval(directive_type type, chewer<parse_buffer> & chew)
 {
-	if (line_despatch::cur_line().cant_reach()) {
+	if (if_control::cannot_reach_line()) {
 		contradiction::forget();
 	} else if (type != HASH_UNDEF && type != HASH_DEFINE) {
 		contradiction::flush();
@@ -317,7 +317,7 @@ line_type directive<HASH_ENDIF>::eval(chewer<parse_buffer> &)
 template<>
 line_type directive<HASH_DEFINE>::eval(chewer<parse_buffer> & chew)
 {
-	line_type retval = line_despatch::cur_line().cant_reach() ?
+	line_type retval = if_control::cannot_reach_line() ?
 	                   LT_DIRECTIVE_DROP : LT_DIRECTIVE_KEEP;
 	chew(greyspace);
 	symbol::locator sloc(chew);
@@ -357,7 +357,7 @@ template<>
 line_type directive<HASH_UNDEF>::eval(chewer<parse_buffer> & chew)
 {
     idempotence::at_start();
-	line_type retval = line_despatch::cur_line().cant_reach() ?
+	line_type retval = if_control::cannot_reach_line() ?
 	                   LT_DIRECTIVE_DROP : LT_DIRECTIVE_KEEP;
 
 	chew(greyspace);
@@ -377,7 +377,7 @@ template<>
 line_type directive<HASH_INCLUDE>::eval(chewer<parse_buffer> & chew)
 {
     idempotence::at_start();
-	line_type retval = line_despatch::cur_line().cant_reach() ?
+	line_type retval = if_control::cannot_reach_line() ?
 	                   LT_DIRECTIVE_DROP : LT_DIRECTIVE_KEEP;
 	chew(greyspace);
 	if (!chew) {
