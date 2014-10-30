@@ -262,10 +262,8 @@ when B<-U>I<SYM> if configured. In such cases by default coan allows the
 conflicting directive to override the configuration, with a warning, for the
 remainder of the file.
 
-This option disables the default behavious and directs coan to diagnose
+This option disables the default behaviour and directs coan to diagnose
 conflicts as errors.
-
-This option suppresses the recognition of idempotence guards.     
 
 =item B<-P>, B<--pod>
 

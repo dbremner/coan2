@@ -45,6 +45,7 @@
  **************************************************************************/
 #include "line_type.h"
 #include <cstddef>
+#include <algorithm>
 
 /** \file if_control.h
  *   This file defines `struct if_control`
@@ -95,36 +96,41 @@ struct if_control {
 	 *  \param	linetype	The linetype of the last evaluated input line.
 	 */
 	static void transition(line_type linetype) {
-        if_state state = _scope_info_[_depth_]._if_state;
+        if_state state = _pscope_info_[_depth_]._if_state;
         transition_table[state][linetype]();
     }
 
 
 	/// Is the current line outside any `#if` scope?
 	static bool unconditional_line() {
-		return _scope_info_[_depth_]._if_state == IF_STATE_OUTSIDE;
+		return _pscope_info_[_depth_]._if_state == IF_STATE_OUTSIDE;
 	}
 
 	/**	\brief Is the current line outside any `#if` scope or in the scope of
 	 *  only satisfied `#if`s?
 	 */
-	static bool must_reach_line();
+	static bool must_reach_line() {
+        return _pscope_info_[_depth_]._aggregate_truth_value ==
+            truth_value::True;
+    }
 
 	/// Is the current line in the scope of some unsatisfied `#if?
     static bool cannot_reach_line() {
-        return is_unsatisfied_scope(_depth_);
+        return _pscope_info_[_depth_]._aggregate_truth_value ==
+            truth_value::False;
     }
 
 	/**	\brief Is the current line in the scope of some `#if` whose
 	 *  truth-value is undetermined.
 	 */
     static bool may_reach_line() {
-        return !is_unsatisfied_scope(_depth_);
+        return _pscope_info_[_depth_]._aggregate_truth_value !=
+            truth_value::False;
     }
 
 	/// Get the starting line number of the current `#if` sequence.
 	static size_t if_start_line() {
-		return _scope_info_[_depth_]._start_line;
+		return _pscope_info_[_depth_]._start_line;
 	}
 
 	/// Get the current depth of `#if`-nesting.
@@ -134,20 +140,23 @@ struct if_control {
 
 	/// Get the current `#if`-state.
 	static if_state state() {
-		return _scope_info_[_depth_]._if_state;
+		return _pscope_info_[_depth_]._if_state;
 	}
 
 	/// Set the `#if`-state at the current nesting depth.
 	static void set_state(if_state is) {
-	    scope_info * psi = _scope_info_ + _depth_;
-		psi->_if_state = is;
-		psi->_truth_value = state_truth_values[is];
-
+        scope_info * psi = _pscope_info_ + _depth_ - 1;
+        truth_value agg_tv = psi++->_truth_value;
+        psi->_if_state = is;
+        truth_value tv = state_truth_values[is];
+        psi->_truth_value = tv;
+        psi->_aggregate_truth_value =
+            truth_value(std::min(int(tv),int(agg_tv)));
 	}
 
 	/// Set the idempotence flag at the current nesting depth.
 	static void set_idempotence(bool idempotent = true) {
-		_scope_info_[_depth_]._by_idempotence = idempotent;
+		_pscope_info_[_depth_]._by_idempotence = idempotent;
 	}
 
 	/// Reset the depth of `#if`-nesting to 0.
@@ -158,13 +167,13 @@ struct if_control {
 private:
 
 	/// Enumeration of possible true values of `#if`s
-	enum class truth_value {
+	enum class truth_value : int {
 	    /// Falsified by configuration
-	    False,
+	    False = 0,
 	    /// Verified by configurarion
-	    True,
+	    Indeterminate = 1,
 	    /// Neither falsified nor verified by configuration
-	    Indeterminate
+	    True = 2
 	};
 
     /// Characteristics of the scope at a given level if nesting
@@ -177,6 +186,8 @@ private:
         unsigned _start_line = 0;
         /// The true-value of the `if_state` at this scope
         truth_value _truth_value = truth_value::True;
+        /// The truth-value of the aggregated `if_state`s at this_scope
+        truth_value _aggregate_truth_value = truth_value::True;
     };
 
     /** \brief Maximum depth of hash-if nesting.
@@ -199,20 +210,6 @@ private:
 
 	/// Increment the `#if`-nesting depth.
 	static void nest();
-
-	/**	\brief Is the scope at a given nesting depth either outside any
-	 * `#if` or controlled by a satisfied `#if`?
-	 */
-    static bool is_satisfied_scope(unsigned depth) {
-        return _scope_info_[depth]._truth_value == truth_value::True;
-    }
-
-	/**	\brief Is the scope at a given nesting depth
-     *   controlled by an unsatisfied `#if`?
-	 */
-    static bool is_unsatisfied_scope(unsigned depth) {
-        return _scope_info_[depth]._truth_value == truth_value::False;
-    }
 
 	/// State transition
 	static void Strue();
@@ -293,7 +290,11 @@ private:
 	static void early_eof();
 
 	/// Array of `scope_info` indexed by nesting depth
-	static scope_info _scope_info_[MAXDEPTH];
+	static scope_info _scope_info_[MAXDEPTH + 1];
+	/** \brief pointer to the logically first element of the `scope_info` array.
+	 * The actual first element is reserved as an optimization accessory
+	 */
+	static scope_info * _pscope_info_;
 	/// Current depth of `#if`-nesting
 	static unsigned	_depth_;
 

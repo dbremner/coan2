@@ -51,7 +51,8 @@
  *   This file implements `struct if_control`
  */
 
-if_control::scope_info if_control::_scope_info_[MAXDEPTH];
+if_control::scope_info if_control::_scope_info_[MAXDEPTH + 1];
+if_control::scope_info * if_control::_pscope_info_ = _scope_info_ + 1;
 if_control::truth_value if_control::state_truth_values[IF_STATE_COUNT] = {
     truth_value::True, // IF_STATE_OUTSIDE,
     truth_value::False, // IF_STATE_FALSE_PREFIX,
@@ -123,10 +124,10 @@ void if_control::Delse()
 
 void if_control::Dendif()
 {
-	if (!_scope_info_[_depth_]._by_idempotence) {
+	if (!_pscope_info_[_depth_]._by_idempotence) {
         line_despatch::drop();
 	} else {
-        _scope_info_[_depth_]._by_idempotence = false;
+        _pscope_info_[_depth_]._by_idempotence = false;
         line_despatch::print();
 	}
 	--_depth_;
@@ -321,18 +322,7 @@ void if_control::nest()
 	if (++_depth_ >= MAXDEPTH) {
 		error_too_deep() << "Too many levels of nesting" << emit();
 	}
-	_scope_info_[_depth_]._start_line = line_despatch::cur_line().num();
+	_pscope_info_[_depth_]._start_line = line_despatch::cur_line().num();
 }
-
-bool if_control::must_reach_line()
-{
-    for (unsigned depth = 0; depth <= _depth_; ++depth) {
-        if (!is_satisfied_scope(depth)) {
-            return false;
-        }
-    }
-    return true;
-}
-
 
 /* EOF*/
