@@ -1,11 +1,13 @@
-/**ARGS: source -DFOO */
+/**ARGS: symbols --explain -DFOO=1 --locate -DBAR=FOO -DSYM=BAR -UVAL -DVAR=VAL */
 /**SYSCODE: = 0 */
-/* Test case for sourceforge bug 3514752 */
-
-#include "test.hpp"
-static char complete_message[] = "/*";
-#if defined (FIRST)
-int first;
-#else /* FIRST */
-int other;
+#if SYM  == 1
+KEEP ME
+#else
+DELETE ME
+#endif
+#if defined(BAR)
+KEEP ME
+#endif
+#ifndef VAR
+DELETE ME
 #endif

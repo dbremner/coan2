@@ -1,7 +1,9 @@
-/**ARGS: source '-DFOO(x,y)=(x+y)' */
-/**SYSCODE: = 16 | 1 */
-#if FOO(/**/1/**/,/**/2/**/)/**/==/**/3
+/**ARGS: source -DFOO -UBAR */
+/**SYSCODE: = 4 */
+/**NO-OUTPUT */
+#if defined(FOO) ? FOO : BAR
 KEEP ME
 #else
 DELETE ME
 #endif
+

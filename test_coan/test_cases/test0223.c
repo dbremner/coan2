@@ -1,5 +1,5 @@
-/**ARGS: source "-DA=(B+C)" -DB=0x1 -DC=2 */
+/**ARGS: source -DFOO */
 /**SYSCODE: = 1 | 16 */
-#if A > B
+#if 4294967296 > 0
 KEEP ME
 #endif

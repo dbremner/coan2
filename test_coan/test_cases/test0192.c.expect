@@ -1,1 +1,1 @@
-#include "foo.h": {CWD}/test_cases/test0192.c(3)
+#include FOO: symbolic argument, expands as >><foo.h><<: {CWD}/test_cases/test0192.c(3)

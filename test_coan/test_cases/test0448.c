@@ -1,8 +1,9 @@
-/**ARGS: source  -DX */
-/**SYSCODE: = 16 | 2 | 1 */
-#define FOO(xx,yyyy) xx##yyyy 
-#if FOO(00,1) == 1
+/**ARGS: symbols --explain */
+/**SYSCODE: = 6 */
+/**NO-OUTPUT */
+#define FOO(x,y) x##y
+#if FOO('a','b')
 KEEP ME
 #else
-DELETE_ME
+KEEP ME
 #endif

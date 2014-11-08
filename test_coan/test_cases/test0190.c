@@ -1,7 +1,3 @@
-/**ARGS: source -DA */
-/**SYSCODE: = 1 | 16 */
-#if\
-\
-def A
-KEEP ME
-#endif
+/**ARGS: includes --locate */
+/**SYSCODE: = 0 */
+#include /* "foo.h" */ "foo.h"

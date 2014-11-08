@@ -1,8 +1,7 @@
-/**ARGS: source -DFOO */
-/**SYSCODE: = 4 */
-/**NO-OUTPUT **/
-#if 1 && || 2 
+/**ARGS: source '-DFOO(x,y)=(x+y)' */
+/**SYSCODE: = 16 | 1 */
+#if FOO(/**/1/**/,/**/2/**/)/**/==/**/3
 KEEP ME
 #else
-KEEP ME
+DELETE ME
 #endif

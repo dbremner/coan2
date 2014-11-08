@@ -1,15 +1,10 @@
-/**ARGS: source --discard comment -DFOO1 -UFOO2 -DBAR1 -UBAR2 */
-/**SYSCODE: = 1 | 32 */
-//coan < #ifdef FOO1
-//coan < 	#ifndef FOO2
-	KEEP ME
-//coan < 	#else
-//coan < 	DELETE ME
-//coan < 	#endif
-//coan < #else
-//coan < 	#ifdef BAR1
-//coan < 	DELETE ME
-//coan < 	#else
-//coan < 	DELETE ME
-//coan < 	#endif
-//coan < #endif 
+BAR: transient: {CWD}/test_cases/altfiles/test0164-1.c(1)
+X: transient: {CWD}/test_cases/altfiles/test0164-1.c(2)
+FOO1: unconfigured: {CWD}/test_cases/altfiles/test0164-1.c(3)
+FOO2: unconfigured: {CWD}/test_cases/altfiles/test0164-1.c(6)
+FOO3: unconfigured: {CWD}/test_cases/altfiles/test0164-1.c(8)
+FOO4: unconfigured: {CWD}/test_cases/altfiles/test0164-1.c(8)
+FOO5: unconfigured: {CWD}/test_cases/altfiles/test0164-1.c(10)
+BAR: transient: {CWD}/test_cases/altfiles/test0164-2.c(1)
+X: transient: {CWD}/test_cases/altfiles/test0164-2.c(2)
+FOO6: unconfigured: {CWD}/test_cases/altfiles/test0164-2.c(10)

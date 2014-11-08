@@ -1,5 +1,5 @@
-/**ARGS: source "-DFOO=4>>2" */
-/**SYSCODE: = 1 | 16 */
-KEEP ME
-KEEP ME
-
+FOO1: unconfigured: {CWD}/test_cases/test0163.c(3)
+FOO2: unconfigured: {CWD}/test_cases/test0163.c(6)
+FOO3: unconfigured: {CWD}/test_cases/test0163.c(8)
+FOO4: unconfigured: {CWD}/test_cases/test0163.c(8)
+FOO5: unconfigured: {CWD}/test_cases/test0163.c(10)

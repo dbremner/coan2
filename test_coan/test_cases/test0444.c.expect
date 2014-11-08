@@ -1,1 +1,4 @@
-/* No output */
+/**ARGS: source  -DX */
+/**SYSCODE: = 16 | 2 | 1 */
+#define FOO(xx,yyyy) xx##yyyy 
+KEEP ME

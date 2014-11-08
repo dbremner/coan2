@@ -1,3 +1,4 @@
-/**ARGS: source -DFOO=1 -DBAR=0 */
-/**SYSCODE: = 4 */
+/**ARGS: source -DFOO */
+/**SYSCODE: = 6 */
 
+/* EOF in C comment

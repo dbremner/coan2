@@ -1,13 +1,13 @@
-/**ARGS: symbols --explain --locate --select SYM -DFOO=1  -DBAR=FOO -DSYM=BAR -UVAL -DVAR=VAL */
-/**SYSCODE: = 0 */
-#if SYM  == 1
-KEEP ME
+/**ARGS: symbols -L --must --explain --select C*,F* */
+/**SYSCODE: = 2 */
+
+#define AB 2
+#define BC (AB + AB)
+#define CD (BC * AB)
+#define DE 8
+#if CD == DE
+#define EF DE
 #else
-DELETE ME
+#define FG
 #endif
-#if defined(BAR)
-KEEP ME
-#endif
-#ifndef VAR
-DELETE ME
-#endif
+

@@ -1,5 +1,7 @@
-/**ARGS: source -P -DFOO */
+/**ARGS: source -DFOO */
 /**SYSCODE: = 1 | 16 */
-/* Not to be parsed as comment
 KEEP ME
-*/
+KEEP ME
+KEEP ME
+KEEP ME
+

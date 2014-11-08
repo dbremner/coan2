@@ -1,3 +1,3 @@
-/**ARGS: includes --locate "-DFOO=<foo.h" */
+/**ARGS: includes --locate */
 /**SYSCODE: = 2 */
-#include FOO
+#include

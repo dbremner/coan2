@@ -1,9 +1,6 @@
-/**ARGS: source -DX=1U -DY=-1 */
-/**SYSCODE: = 1 | 2 | 16 */
-#if (X * Y) == -1
-KEEP ME
+/**ARGS: symbols --expand --locate --once-only -DX=A "-DA=(((1UL * -2) + -2U) / 3LLU)"  */
+/**SYSCODE: = 2 */
+#if X
 #endif
-#if X * Y < 0
-KEEP ME
-#endif
+
 

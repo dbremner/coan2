@@ -1,6 +1,7 @@
-/**ARGS: source -DB=1 --line */
-/**SYSCODE: = 1 | 32 */
-#define B /* comment */ 1
-#if 1
+/**ARGS: source -DA */
+/**SYSCODE: = 1 | 16 */
+#if\
+\
+def A
 KEEP ME
 #endif

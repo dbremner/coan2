@@ -46,6 +46,8 @@
 #include "line_despatch.h"
 #include "chew.h"
 #include "io.h"
+#include "trivalent_truth_vals.h"
+#include "options.h"
 
 /**	\file if_control.cpp
  *   This file implements `struct if_control`
@@ -53,7 +55,7 @@
 
 if_control::scope_info if_control::_scope_info_[MAXDEPTH + 1];
 if_control::scope_info * if_control::_pscope_info_ = _scope_info_ + 1;
-if_control::truth_value if_control::state_truth_values[IF_STATE_COUNT] = {
+int if_control::state_truth_values[IF_STATE_COUNT] = {
     truth_value::True, // IF_STATE_OUTSIDE,
     truth_value::False, // IF_STATE_FALSE_PREFIX,
     truth_value::True, // IF_STATE_TRUE_PREFIX,
@@ -64,6 +66,12 @@ if_control::truth_value if_control::state_truth_values[IF_STATE_COUNT] = {
     truth_value::False, // IF_STATE_FALSE_ELSE,
     truth_value::True, // IF_STATE_TRUE_ELSE,
     truth_value::False // IF_STATE_FALSE_TRAILER,
+};
+
+void (*if_control::_despatcher_[truth_value::n_values])() = {
+    line_despatch::drop,
+    line_despatch::print,
+    line_despatch::print
 };
 
 unsigned if_control::_depth_ = 0;
@@ -194,7 +202,7 @@ if_control::transition_table[IF_STATE_COUNT][LT_SENTINEL] = {
 		orphan_elif,
 		orphan_else,
 		orphan_endif,
-		line_despatch::print,
+		despatch_plain,
 		diagnostic_base::flush_all
 	},
 	/* IF_STATE_FALSE_PREFIX*/
@@ -207,7 +215,7 @@ if_control::transition_table[IF_STATE_COUNT][LT_SENTINEL] = {
 		Sfalse,
 		Selse,
 		Dendif,
-		line_despatch::drop,
+		despatch_plain,
 		early_eof
 	},
 	/* IF_STATE_TRUE_PREFIX*/
@@ -220,7 +228,7 @@ if_control::transition_table[IF_STATE_COUNT][LT_SENTINEL] = {
 		Dfalse,
 		Delse,
 		Dendif,
-		line_despatch::print,
+		despatch_plain,
 		early_eof
 	},
 	/* IF_STATE_PASS_MIDDLE*/
@@ -233,7 +241,7 @@ if_control::transition_table[IF_STATE_COUNT][LT_SENTINEL] = {
 		Delif,
 		Pelse,
 		Pendif,
-		line_despatch::print,
+		despatch_plain,
 		early_eof
 	},
 	/* IF_STATE_FALSE_MIDDLE*/
@@ -246,7 +254,7 @@ if_control::transition_table[IF_STATE_COUNT][LT_SENTINEL] = {
 		Delif,
 		Pelse,
 		Pendif,
-		line_despatch::drop,
+		despatch_plain,
 		early_eof
 	},
 	/* IF_STATE_TRUE_MIDDLE*/
@@ -259,7 +267,7 @@ if_control::transition_table[IF_STATE_COUNT][LT_SENTINEL] = {
 		Melif,
 		Melse,
 		Pendif,
-		line_despatch::print,
+		despatch_plain,
 		early_eof
 	},
 	/* IF_STATE_PASS_ELSE*/
@@ -272,7 +280,7 @@ if_control::transition_table[IF_STATE_COUNT][LT_SENTINEL] = {
 		orphan_elif,
 		orphan_else,
 		Pendif,
-		line_despatch::print,
+		despatch_plain,
 		early_eof
 	},
 	/* IF_STATE_FALSE_ELSE*/
@@ -285,7 +293,7 @@ if_control::transition_table[IF_STATE_COUNT][LT_SENTINEL] = {
 		orphan_elif,
 		orphan_else,
 		Dendif,
-		line_despatch::drop,
+		despatch_plain,
 		early_eof
 	},
 	/* IF_STATE_TRUE_ELSE*/
@@ -298,7 +306,7 @@ if_control::transition_table[IF_STATE_COUNT][LT_SENTINEL] = {
 		orphan_elif,
 		orphan_else,
 		Dendif,
-		line_despatch::print,
+		despatch_plain,
 		early_eof
 	},
 	/* IF_STATE_FALSE_TRAILER*/
@@ -311,7 +319,7 @@ if_control::transition_table[IF_STATE_COUNT][LT_SENTINEL] = {
 		Dfalse,
 		Delse,
 		Dendif,
-		line_despatch::drop,
+		despatch_plain,
 		early_eof
 	}
 	/*IF     TRUE   FALSE  ELIF   ELTRUE ELFALSE ELSE  ENDIF  PLAIN  EOF*/
@@ -324,5 +332,23 @@ void if_control::nest()
 	}
 	_pscope_info_[_depth_]._start_line = line_despatch::cur_line().num();
 }
+
+void if_control::select_plain_line_despatchers(line_selector opt)
+{
+    if (opt == line_selector::must) {
+        _despatcher_[truth_value::True] = line_despatch::print;
+        _despatcher_[truth_value::False] = line_despatch::drop;
+        _despatcher_[truth_value::Indeterminate] = line_despatch::drop;
+    } else if (opt == line_selector::cant) {
+        _despatcher_[truth_value::True] = line_despatch::drop;
+        _despatcher_[truth_value::False] = line_despatch::print;
+        _despatcher_[truth_value::Indeterminate] = line_despatch::drop;
+    } else {
+        _despatcher_[truth_value::True] = line_despatch::print;
+        _despatcher_[truth_value::False] = line_despatch::drop;
+        _despatcher_[truth_value::Indeterminate] = line_despatch::print;
+    }
+}
+
 
 /* EOF*/

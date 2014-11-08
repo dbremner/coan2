@@ -1,5 +1,7 @@
-/**ARGS: source "-DFOO(x)=(x+1)" */
+/**ARGS: source -DBIG=2147483648UL */
+/**WORDSIZE=32 */
 /**SYSCODE: = 1 | 16 */
-#if FOO(0)
+#if ( BIG == 2147483648UL )
 KEEP ME
 #endif
+

@@ -1,3 +1,10 @@
-/**ARGS: includes --locate -DFOO=BAR */
-/**SYSCODE: = 2 */
-#include FOO
+/**ARGS: includes --locate -DFOO */
+/**SYSCODE: = 0 */
+#ifdef FOO
+#include <foo*&bar.h>
+#elif 1
+//KEEP ME
+#endif
+
+
+

@@ -1,11 +1,7 @@
-/**ARGS: pragmas  --must --locate -DFOO -UBAR */
-/**SYSCODE: = 0 */
-#ifdef FOO
-#pragma This /* comment
-comment */\
-is a   pragma
-#endif
-#ifndef BAR
-#pragma This is   a pragma 
+/**ARGS: symbols --expand --locate "-DFOO=(1+1)" -DBAR=3  */
+/**SYSCODE: = 2 */
+#define SYM (FOO And (FOO SYM BAR) And BAR)
+#if SYM
+KEEP ME
 #endif
 

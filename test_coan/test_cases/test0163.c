@@ -1,14 +1,16 @@
-/**ARGS: source "-DFOO=4>>2" */
-/**SYSCODE: = 1 | 16 */
-#if 1 << 2 == 4
+/**ARGS: symbols --locate --once-only */
+/**SYSCODE: = 0 */
+#ifdef FOO1
 KEEP ME
-#else
-DELETE ME
 #endif
-#if FOO == 1
+#if defined(FOO2) && defined(FOO2)
 KEEP ME
-#else
-DELETE ME
+#elif defined FOO3 || defined FOO4
+KEEP ME
+#elif FOO5
+KEEP ME
+#elif FOO1
+KEEP ME
+#elif FOO5
+KEEP ME
 #endif
-
-

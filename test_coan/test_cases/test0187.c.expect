@@ -1,2 +1,1 @@
-/**ARGS: source -UA -UB */
-/**SYSCODE: = 1 | 16 */
+#include <foo.h>: {CWD}/test_cases/test0187.c(3)

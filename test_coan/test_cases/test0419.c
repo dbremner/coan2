@@ -1,6 +1,8 @@
-/**ARGS: symbols --explain */
-/**SYSCODE: = 2 */
-#define type_comb2(T1, T2) __typeof__(0 ? (T1)0 : (T2)0)
-#define type_comb3(T1, T2, T3) type_comb2(T1, type_comb2(T2, T3))
-#define type_comb4(T1, T2, T3, T4)				\
-	type_comb2(T1, type_comb2(T2, type_comb2(T3, T4)))
+/**ARGS: source -DX */
+/**SYSCODE: = 16 | 2 | 1 */
+#define FOO(x,y) (x) + (y)
+#if FOO(FOO(1,2),FOO(1,2)) == 6
+KEEP ME
+#else
+DELETE_ME
+#endif

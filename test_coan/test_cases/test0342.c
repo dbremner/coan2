@@ -1,7 +1,21 @@
-/**ARGS: source -DFOO */
-/**SYSCODE: = 4 */
-/**NO-OUTPUT */
+/**ARGS: source -DFOO=1 */
+/**SYSCODE: = 1 | 2 | 16 | 32 */
 
+#define XXXX(ftbl, rval, func, ...) (ftbl,rval,func,...)
 
-#define PRINTF_4(xx_fmt, xx_arg1, xx_arg2, xx_arg3, \
-                                                    xx_arg4 ); \
+#if XXXX(ftbl,rval,func,arg)
+KEEP_ME PLUS ENDIF
+#endif
+
+#if (XXXX(ftbl,rval,func,arg) + 2) 
+KEEP_ME PLUS ENDIF
+#endif
+
+#if (XXXX(ftbl,rval,func,arg) || FOO) 
+KEEP_ME
+#endif
+
+#if (FOO && XXXX(ftbl,rval,func,arg)) 
+KEEP_ME PLUS ENDIF
+#endif
+

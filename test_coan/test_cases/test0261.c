@@ -1,6 +1,9 @@
-/**ARGS: source -DBIG=9223372036854775808L */
-/**SYSCODE: = 2 */
-#if ( BIG == 9223372036854775808L )
+/**ARGS: source -DX=-1 -DY=2U */
+/**SYSCODE: = 1 | 2 | 16 */
+#if ( -1 > 2U )
 KEEP ME
+#endif
+#if ( Y > X )
+DELETE ME
 #endif
 

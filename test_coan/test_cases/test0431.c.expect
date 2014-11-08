@@ -1,12 +1,12 @@
 /**ARGS: source -DX */
 /**SYSCODE: = 0 */
-#if defined(UNK)
+#if 1
 KEEP ME
 #else
 KEEP ME
 #endif
-#if UNK(1)
+#if 0
 KEEP ME
 #else
 KEEP ME
-#endif 
+#endif

@@ -48,11 +48,13 @@
 #include "io.h"
 #include "dataset.h"
 #include "line_despatch.h"
+#include "if_control.h"
 #include "help.h"
 #include "version.h"
 #include <fstream>
 #include <iostream>
 #include <iterator>
+#include <cassert>
 
 using namespace std;
 
@@ -66,9 +68,6 @@ bool	options::_replace_ = false;
 bool	options::_list_locate_ = false;
 bool	options::_list_only_once_ = false;
 bool 	options::_list_once_per_file_ = false;
-bool	options::_list_only_must_reach_ = false ;
-bool	options::_list_only_cant_reach_ = false;
-bool	options::_list_only_may_reach_ = false;
 bool	options::_list_symbols_in_ifs_ = false;
 bool	options::_list_symbols_in_defs_ = false;
 bool	options::_list_symbols_in_undefs_ = false;
@@ -76,13 +75,12 @@ bool	options::_list_symbols_in_includes_ = false;
 bool	options::_list_symbols_in_lines_ = false;
 bool	options::_list_system_includes_ = false;
 bool	options::_list_local_includes_ = false;
-bool	options::_complement_ = false;
 bool	options::_eval_wip_ = false;
 bool	options::_expand_references_ = false;
 bool	options::_explain_references_ = false;
 bool	options::_selected_symbols_ = false;
 //! \cond NO_DOXYGEN
-enum discard_policy	options::_discard_policy_ = DISCARD_DROP;
+enum discard_policy	options::_discard_policy_ = discard_policy::drop;
 //! \endcond
 bool	options::_line_directives_ = false;
 bool	options::_plaintext_ = false;
@@ -93,6 +91,8 @@ bool	options::_no_transients_ = false;
 bool	options::_no_idempotence_ = false;
 bool	options::_no_override_ = false;
 int		options::_diagnostic_filter_ = 0;
+line_selector	options::_line_selector_ = line_selector(0);
+
 bool    options::_parsing_file_ = false;
 vector<string> options::_argfile_argv_;
 int		options::_cmd_line_files_ = 0;
@@ -106,7 +106,6 @@ struct option options::long_options [] = {
 	{ "undef", required_argument, nullptr, OPT_UNDEF },
 	{ "gag", required_argument, nullptr, OPT_GAG },
 	{ "verbose", no_argument, nullptr, OPT_VERBOSE },
-	{ "complement", no_argument, nullptr, OPT_COMPLEMENT },
 	{ "eval-wip", no_argument, nullptr, OPT_EVALWIP },
 	{ "discard", required_argument, nullptr, OPT_DISCARD },
 	{ "line", no_argument, nullptr, OPT_LINE },
@@ -164,63 +163,56 @@ struct cmd_option options::commands [] = {
 
 int const options::source_cmd_exclusions[] = {
 	OPT_IFS, OPT_DEFS, OPT_UNDEFS, OPT_INCLUDES, OPT_LOCATE,
-	OPT_ONCE, OPT_SYSTEM, OPT_LOCAL, OPT_MUST_REACH, OPT_CANT_REACH,
-	OPT_MAY_REACH, OPT_EXPAND, OPT_PREFIX, OPT_EXPLAIN, OPT_SELECT, OPT_LNS,
+	OPT_ONCE, OPT_SYSTEM, OPT_LOCAL, OPT_EXPAND, OPT_PREFIX, OPT_EXPLAIN,
+	OPT_SELECT, OPT_LNS,
 	OPT_ONCE_PER_FILE, 0
 };
 
 int const options::symbols_cmd_exclusions[] = {
 	OPT_REPLACE, OPT_DISCARD, OPT_LINE, OPT_SYSTEM,
-	OPT_LOCAL, OPT_BACKUP, OPT_COMPLEMENT, OPT_DIR, OPT_PREFIX, 0
+	OPT_LOCAL, OPT_BACKUP, OPT_DIR, OPT_PREFIX, 0
 };
 
 int const options::includes_cmd_exclusions[] = {
 	OPT_REPLACE, OPT_DISCARD, OPT_LINE, OPT_BACKUP,
-	OPT_IFS, OPT_DEFS, OPT_UNDEFS, OPT_INCLUDES, OPT_COMPLEMENT,
-	OPT_EXPAND, OPT_DIR, OPT_PREFIX, OPT_EXPLAIN, OPT_SELECT,
-	OPT_LNS, 0
+	OPT_IFS, OPT_DEFS, OPT_UNDEFS, OPT_INCLUDES, OPT_EXPAND, OPT_DIR,
+	OPT_PREFIX, OPT_EXPLAIN, OPT_SELECT, OPT_LNS, 0
 };
 
 int const options::directives_cmd_exclusions[] = {
 	OPT_REPLACE, OPT_DISCARD, OPT_LINE, OPT_BACKUP,
-	OPT_IFS, OPT_DEFS, OPT_UNDEFS, OPT_INCLUDES, OPT_COMPLEMENT,
-	OPT_EXPAND, OPT_DIR, OPT_PREFIX, OPT_EXPLAIN, OPT_SELECT,
-	OPT_LNS, 0
+	OPT_IFS, OPT_DEFS, OPT_UNDEFS, OPT_INCLUDES, OPT_EXPAND, OPT_DIR,
+	OPT_PREFIX, OPT_EXPLAIN, OPT_SELECT, OPT_LNS, 0
 };
 
 int const options::defs_cmd_exclusions[] = {
 	OPT_REPLACE, OPT_DISCARD, OPT_LINE, OPT_BACKUP,
 	OPT_SYSTEM, OPT_LOCAL, OPT_IFS, OPT_DEFS, OPT_UNDEFS, OPT_INCLUDES,
-	OPT_COMPLEMENT, OPT_EXPAND, OPT_DIR, OPT_PREFIX, OPT_EXPLAIN,
-	OPT_SELECT, OPT_LNS, 0
+	OPT_EXPAND, OPT_DIR, OPT_PREFIX, OPT_EXPLAIN, OPT_SELECT, OPT_LNS, 0
 };
 
 int const options::pragmas_cmd_exclusions[] = {
 	OPT_REPLACE, OPT_DISCARD, OPT_LINE, OPT_BACKUP,
 	OPT_SYSTEM, OPT_LOCAL, OPT_IFS, OPT_DEFS, OPT_UNDEFS, OPT_INCLUDES,
-	OPT_COMPLEMENT, OPT_EXPAND, OPT_DIR, OPT_PREFIX, OPT_EXPLAIN,
-	OPT_SELECT, OPT_LNS, 0
+	OPT_EXPAND, OPT_DIR, OPT_PREFIX, OPT_EXPLAIN, OPT_SELECT, OPT_LNS, 0
 };
 
 int const options::errors_cmd_exclusions[] = {
 	OPT_REPLACE, OPT_DISCARD, OPT_LINE, OPT_BACKUP,
 	OPT_SYSTEM, OPT_LOCAL, OPT_IFS, OPT_DEFS, OPT_UNDEFS, OPT_INCLUDES,
-	OPT_COMPLEMENT, OPT_EXPAND, OPT_DIR, OPT_PREFIX, OPT_EXPLAIN,
-	OPT_SELECT, OPT_LNS, 0
+	OPT_EXPAND, OPT_DIR, OPT_PREFIX, OPT_EXPLAIN, OPT_SELECT, OPT_LNS, 0
 };
 
 int const options::lines_cmd_exclusions[] = {
 	OPT_REPLACE, OPT_DISCARD, OPT_LINE, OPT_BACKUP,
 	OPT_SYSTEM, OPT_LOCAL, OPT_IFS, OPT_DEFS, OPT_UNDEFS, OPT_INCLUDES,
-	OPT_COMPLEMENT, OPT_EXPAND, OPT_DIR, OPT_PREFIX, OPT_EXPLAIN,
-	OPT_SELECT, OPT_LNS, 0
+	OPT_EXPAND, OPT_DIR, OPT_PREFIX, OPT_EXPLAIN, OPT_SELECT, OPT_LNS, 0
 };
 
 int const options::spin_cmd_exclusions[] = {
 	OPT_IFS, OPT_DEFS, OPT_UNDEFS, OPT_INCLUDES, OPT_LOCATE,
-	OPT_ONCE, OPT_SYSTEM, OPT_LOCAL, OPT_MUST_REACH, OPT_CANT_REACH,
-	OPT_MAY_REACH, OPT_BACKUP, OPT_EXPAND, OPT_EXPLAIN, OPT_SELECT, OPT_LNS,
-	OPT_ONCE_PER_FILE, 0
+	OPT_ONCE, OPT_SYSTEM, OPT_LOCAL, OPT_BACKUP, OPT_EXPAND, OPT_EXPLAIN,
+	OPT_SELECT, OPT_LNS, OPT_ONCE_PER_FILE, 0
 };
 
 struct exclusion_list const options::cmd_exclusion_lists[] = {
@@ -453,9 +445,6 @@ void options::parse_command_args(int argc, char *argv[])
 			sloc->digest_global_undef(chew);
 		}
 		break;
-		case OPT_COMPLEMENT: /* treat -D as -U and vice versa*/
-			_complement_ = true;
-			break;
 		case OPT_REPLACE:
 			_replace_ = true;
 			break;
@@ -469,11 +458,11 @@ void options::parse_command_args(int argc, char *argv[])
 			string option_arg(optarg);
 			if (option_arg.length() > 1) {
 				if (option_arg == "drop") {
-					_discard_policy_ = DISCARD_DROP;
+					_discard_policy_ = discard_policy::drop;
 				} else if (option_arg == "blank") {
-					_discard_policy_ = DISCARD_BLANK;
+					_discard_policy_ = discard_policy::blank;
 				} else if (option_arg == "comment") {
-					_discard_policy_ = DISCARD_COMMENT;
+					_discard_policy_ = discard_policy::comment;
 				} else {
 					error_usage() << "Invalid argument for --discard: \""
 					              << optarg << '\"' << emit();
@@ -481,13 +470,13 @@ void options::parse_command_args(int argc, char *argv[])
 			} else {
 				switch(option_arg[0]) {
 				case 'd':
-					_discard_policy_ = DISCARD_DROP;
+					_discard_policy_ = discard_policy::drop;
 					break;
 				case 'b':
-					_discard_policy_ = DISCARD_BLANK;
+					_discard_policy_ = discard_policy::blank;
 					break;
 				case 'c':
-					_discard_policy_ = DISCARD_COMMENT;
+					_discard_policy_ = discard_policy::comment;
 					break;
 				default:
 					error_usage() << "Invalid argument for -k: \""
@@ -503,13 +492,9 @@ void options::parse_command_args(int argc, char *argv[])
 			_list_locate_ = true;
 			break;
 		case OPT_MUST_REACH:
-			_list_only_must_reach_ = true;
-			break;
 		case OPT_CANT_REACH:
-			_list_only_cant_reach_ = true;
-			break;
 		case OPT_MAY_REACH:
-			_list_only_may_reach_ = true;
+		    set_reachability_opt(opt);
 			break;
 		case OPT_EXPAND:
 			_expand_references_ = true;
@@ -716,20 +701,11 @@ void options::finish()
 	int cmd_code = _command_->cmd_code;
 	bool input_is_stdin = false;
 
-	if (_list_only_must_reach_ && _list_only_cant_reach_) {
-		error_usage() << "--must is inconsistent with --cant" << emit();
-	}
-	if (_list_only_must_reach_ && _list_only_may_reach_) {
-		error_usage() << "--must is inconsistent with --may" << emit();
-	}
-	if (_list_only_cant_reach_ && _list_only_may_reach_) {
-		error_usage() << "--cant is inconsistent with --may" << emit();
-	}
 	if (_list_only_once_ && _list_once_per_file_) {
 		error_usage()
 			<< "--once-only is inconsistent with --once-per-file" << emit();
 	}
-	if (_line_directives_ && _discard_policy_ != DISCARD_DROP) {
+	if (_line_directives_ && _discard_policy_ != discard_policy::drop) {
 		error_usage() << "--line is inconsistent with --discard blank|comment"
 			<< emit();
 	}
@@ -795,5 +771,42 @@ bool options::diagnostic_gagged(unsigned reason)
 	       options::_diagnostic_filter_ &&
 	       (((reason >> 8) & options::_diagnostic_filter_) != 0);
 }
+
+void options::set_reachability_opt(int opt)
+{
+    if (int(_line_selector_)) {
+        error_mutually_exclusive_options({"--must","--may","--cant"});
+    }
+    switch(opt) {
+    case OPT_CANT_REACH:
+        _line_selector_ = line_selector::cant;
+        break;
+    case OPT_MAY_REACH:
+        _line_selector_ = line_selector::may;
+        break;
+    case OPT_MUST_REACH:
+        _line_selector_ = line_selector::must;
+        break;
+    default:
+        assert(false);
+    }
+    if_control::select_plain_line_despatchers(_line_selector_);
+}
+
+void options::error_mutually_exclusive_options(vector<string> optnames)
+{
+    size_t nopts = optnames.size();
+    if (nopts < 2) {
+        return;
+    }
+    error_usage gripe;
+    gripe << "At most one of ";
+    unsigned i = 0;
+    for (; i < nopts - 1; ++i) {
+        gripe << optnames[i] << '|';
+    }
+    gripe << optnames[i] << " may be specified" << emit();
+}
+
 
 /* EOF*/

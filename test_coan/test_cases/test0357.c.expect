@@ -1,7 +1,9 @@
-FOO: global: expands afresh as >><<: in options
-A: unconfigured: insoluble: {CWD}/test_cases/test0357.c(4)
-B: unconfigured: insoluble: {CWD}/test_cases/test0357.c(5)
-A: unconfigured: insoluble: {CWD}/test_cases/test0357.c(7)
-B: unconfigured: insoluble: {CWD}/test_cases/test0357.c(11)
-FOO: global: expands unchanged as >><<: {CWD}/test_cases/test0357.c(15)
-E: unconfigured: insoluble: {CWD}/test_cases/test0357.c(16)
+/**ARGS: source -DFOO */
+/**SYSCODE: = 16 | 2 | 1 */
+/* Test case for sourceforge bug 3531311 */
+
+#define TOKEN/*comment*/1//Comment
+KEEP ME
+#define MAC(x)/*comment*/((x)+(x))/**///
+KEEP ME
+

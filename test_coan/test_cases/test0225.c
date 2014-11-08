@@ -1,11 +1,12 @@
-/**ARGS: source -DA=1 -DB=0 "-DC=(1 && 0)" */
-/**SYSCODE: = 1 | 16 */
-#if (A || B)
-KEEP ME
+/**ARGS: symbols --locate -i -d -DFOO -UBAR */
+/**SYSCODE: = 2 */
+#ifdef FOO
+#undef FOO
+#else
+#define FOO 1
 #endif
-#if (A && B)
-DELETE ME
-#endif
-#if C
-DELETE ME
+#ifndef BAR
+#define BAR 1
+#else
+#undef BAR 
 #endif

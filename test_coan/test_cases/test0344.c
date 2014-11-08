@@ -1,12 +1,7 @@
-/**ARGS: symbols --must -L --expand -DXX=A */
-/**SYSCODE: = 3 */
+/**ARGS: source -DFOO=1 -DBAR=0 */
+/**SYSCODE: = 4 */
 
-#define YY XX
-#define ZZ YY
-#define BB A
-#define A 1
-#if YY == BB
-#undef A
-#else
-#undef BB
+#if (FOO ? 1)
+KEEP_ME
 #endif
+

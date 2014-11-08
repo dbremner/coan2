@@ -1,4 +1,5 @@
-/**ARGS: source -DFOO=1 -DBAR=1+1 */
+/**ARGS: source "-DFOO=4>>2" */
 /**SYSCODE: = 1 | 16 */
+KEEP ME
 KEEP ME
 

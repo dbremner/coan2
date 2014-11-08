@@ -1848,6 +1848,11 @@ coan v6.0 Mike Kinghan 2014-08-15
 
 coan v7.0 Mike Kinghan 2014-10-26
 	New:
+		RET0008: The warning diagostics for input of an unconditional error
+		directive and output of an unconditional error directive are not
+		importantly distinct. They are withdrawn and replaced by one new
+		warning for the presence of an unconditional error directive. 
+	New:
 		FEA0037: By default, coan now detects constructs of the three forms:
 
 			#ifndef FOO

@@ -1,8 +1,18 @@
-/**ARGS: source -DBIG=9223372036854775808UL */
-/**WORDSIZE=64 */
-/**NOT-WINDOWS */
-/**SYSCODE: = 1 | 16 */
-#if ( BIG == 9223372036854775808UL )
+/**ARGS: source -DX=1 -DY=32 */
+/**SYSCODE: = 16 | 2 | 1 */
+#if ( X << Y )
+KEEP ME
+#endif
+#if ( X >> Y )
+KEEP ME
+#endif
+#if 1L << 64
+KEEP ME
+#endif
+#if 1 << -2
+KEEP ME
+#endif
+#if 1 << -2U
 KEEP ME
 #endif
 

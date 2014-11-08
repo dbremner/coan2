@@ -1,1 +1,1 @@
-#include FOO: symbolic argument, expands as >>BAR<<: {CWD}/test_cases/test0201.c(3)
+#include <foo*&bar.h>: {CWD}/test_cases/test0201.c(4)

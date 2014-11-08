@@ -1,7 +1,8 @@
-/**ARGS: source --eval-wip -DFOO1 -UFOO2 */
-/**SYSCODE: = 1 | 32 */
-#if defined(UNKNOWN) && 1
+/**ARGS: source -E -DFOO1 -UFOO2 */
+/**SYSCODE: = 1 | 16 */
+/* Left(true,elim) || Right(true,elim) := Elim */ 
+#if defined(FOO1) || 1
 KEEP ME
 #else
-KEEP ME
+DELETE ME
 #endif

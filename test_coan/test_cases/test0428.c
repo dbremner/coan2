@@ -1,4 +1,8 @@
-/**ARGS: symbols --expand --locate */
+/**ARGS: source -DX */
 /**SYSCODE: = 4 */
-/**NO-OUTPUT */
-#define FOO((w+x),y*z) (w x y z) 
+/**NO-OUTPUT*/
+#if <stdlib.h>
+KEEP ME
+#else
+KEEP ME
+#endif

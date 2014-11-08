@@ -1,8 +1,9 @@
-/**ARGS: includes --locate -DFOO "-DHDR(name)=<name.h>" */
-/**SYSCODE: = 0 */
-#ifdef FOO
-#include HDR(limits)
-#elif 1
-//KEEP ME
+/**ARGS: source -DFOO=1 -DBAR=0  */
+/**SYSCODE: = 4 */
+#if (FOO || &%nonsense)
+KEEP ME
+#endif
+#if (BAR && &%nonsense)
+DELETE ME
 #endif
 

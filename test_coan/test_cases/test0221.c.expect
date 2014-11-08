@@ -1,2 +1,3 @@
-FOO: transient: {CWD}/test_cases/test0221.c(6)
-BAR: transient: {CWD}/test_cases/test0221.c(11)
+/**ARGS: source -DA=1 -DB=0 "-DC=(1 && 0)" */
+/**SYSCODE: = 1 | 16 */
+KEEP ME

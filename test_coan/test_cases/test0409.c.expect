@@ -1,3 +1,4 @@
-/**ARGS: source -DFOO=3 -UBAR*/
-/**SYSCODE: = 16 | 1 */
-KEEP ME
+FOO(x,y): transient: expands afresh as >>(1 + BAR(x,y))<<: {CWD}/test_cases/test0409.c(3)
+BAR(x,y): transient: insoluble, because of infinite regress: {CWD}/test_cases/test0409.c(4)
+BAR(1,2): transient: insoluble, because of infinite regress: {CWD}/test_cases/test0409.c(5)
+FOO(1,2): transient: insoluble, because of infinite regress: {CWD}/test_cases/test0409.c(10)

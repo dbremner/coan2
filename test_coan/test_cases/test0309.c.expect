@@ -1,2 +1,2 @@
-UNDEF1: unconfigured
-UNDEF2: unconfigured
+#include "bar.h"
+

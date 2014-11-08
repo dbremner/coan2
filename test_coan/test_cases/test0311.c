@@ -1,8 +1,12 @@
-/**ARGS: symbols -L -d -u --expand --cant -DFOO -DSTR=string */
-/**SYSCODE: = 2 */
+/**ARGS: includes -l --cant -DFOO --locate --once-only */
+/**SYSCODE: = 0 */
 #ifdef FOO
-#define FOO 1
-#define STR
+#include <foo.h>
+#include "bar.h"
+#include <foo.h>
 #else
-#define BAR
+#include "bar.h"
+#include <foo.h>
+#include "bar.h"
 #endif
+ 

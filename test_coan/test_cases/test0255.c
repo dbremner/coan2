@@ -1,6 +1,6 @@
-/**ARGS: symbols --locate */
-/**SYSCODE: = 0 */
-#if FOO
-/* Missing newline at end of this file */
+/**ARGS: source -DBIG=18446744073709551615 */
+/**SYSCODE: = 1 | 2 | 16 */
+#if ( BIG == 18446744073709551615 )
 KEEP ME
 #endif
+

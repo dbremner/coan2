@@ -1,11 +1,6 @@
-/**ARGS: source -DFOO */
+/**ARGS: source -DB */
 /**SYSCODE: = 1 | 2 | 16 */
 
-#define B 1
-#ifdef A
-KEEP ME
-#endif
-KEEP ME
-#ifdef C
-KEEP ME
-#endif
+#define A 1
+#undef A
+

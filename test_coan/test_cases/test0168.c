@@ -1,3 +1,7 @@
-/**ARGS: symbols -o -L "-DY=(A+B)" */
-/**ALTFILES: ./test_cases/altfiles/test0168-1.c ./test_cases/altfiles/test0168-2.c */
-/**SYSCODE: = 2 */
+/**ARGS: source -DFOO */
+/**SYSCODE: = 0 */
+#if UNKNOWN
+KEEP ME
+#else
+KEEP ME
+#endif

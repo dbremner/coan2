@@ -1,1 +1,1 @@
-#include FOO: symbolic argument, expands as >><<: {CWD}/test_cases/test0202.c(3)
+#include bar(x,y,z): symbolic argument, insoluble, because unconfigured: {CWD}/test_cases/test0202.c(4)

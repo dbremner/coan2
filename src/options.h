@@ -39,34 +39,14 @@
  *                                                                         *
  **************************************************************************/
 
+#include "discard_policy_vals.h"
+#include "line_selector_vals.h"
 #include <string>
 #include <vector>
 
 /** \file options.h
  *   This file defines `struct options`
  */
-
-/// Symbolic constants denoting policies for discarding lines
-enum discard_policy {
-    DISCARD_DROP,	///< Drop discarded lines
-    DISCARD_BLANK,	///< Blank discarded lines
-    DISCARD_COMMENT ///< Comment discarded lines
-};
-
-/** \brief Symbolic constants denoting policies for handling contradictions.
- *
- *   Symbolic constants denoting policies for handling contradictions
- *   between commandline `--define` and `--undef` options and
- *   in-source `#define` and `#undef` directives.
- */
-enum contradiction_policy {
-    /// Delete a contradicted directive
-    CONTRADICTION_DELETE,
-    /// Comment out a contradicted directive
-    CONTRADICTION_COMMENT,
-    /// Replace a contradicted directive with an `#error`
-    CONTRADICTION_ERROR
-};
 
 /// Sequential symbolic constants for coan commands
 enum command_code {
@@ -121,17 +101,17 @@ struct  options {
 	static bool list_once_per_file() {
 		return _list_once_per_file_;
 	}
-	/// Do we list items only from reachable directives?
+	/// Do we list items only from reachable lines?
 	static bool list_only_must_reach() {
-		return _list_only_must_reach_;
+		return _line_selector_ == line_selector::must;
 	}
-	/// Do we list items only from unreachable directives?
+	/// Do we list items only from unreachable lines?
 	static bool list_only_cant_reach() {
-		return _list_only_cant_reach_;
+		return _line_selector_ == line_selector::cant;
 	}
-	/// Do we list items only from not-unreachable directives?
+	/// Do we list items only from not-unreachable lines?
 	static bool list_only_may_reach() {
-		return _list_only_may_reach_;
+		return _line_selector_ == line_selector::may;
 	}
 	/// Do we list items only from conditional directives?
 	static bool list_symbols_in_ifs() {
@@ -160,10 +140,6 @@ struct  options {
 	/// Do we list local `#include` directives?
 	static bool list_local_includes() {
 		return _list_local_includes_;
-	}
-	/// Are we to output lines instead of dropping them and vice versa?
-	static bool complement() {
-		return _complement_;
 	}
 	/** \brief Do we evaluate constants in truth-functional contexts or treat
 	 *   them as unknowns.
@@ -261,6 +237,13 @@ struct  options {
 	/// Say whether a diagnostic reason code is gagged.
 	static bool diagnostic_gagged(unsigned reason);
 
+	/// Set the reachability option, diagnosing multiple settings
+	static void set_reachability_opt(int opt);
+
+	/// Diagnose violation of mutually exclusive options
+    static void
+    error_mutually_exclusive_options(std::vector<std::string> optnames);
+
 	/** \brief Analyse the class global state after parsing the commandline.
      *
 	 *   Diagnose any errors and draw final conclusions.
@@ -278,7 +261,7 @@ private:
 		OPT_UNDEF = 'U', 		///< The `--undefine` option
 		OPT_GAG = 'g', 			///< The `--gag` option
 		OPT_VERBOSE = 'V', 		///< The `--verbose` option
-		OPT_COMPLEMENT = 'c', 	///< The `--complement` option
+		//OPT_COMPLEMENT = 'c', 	///< The `--complement` option
 		OPT_EVALWIP = 'E', 	    ///< The `--eval-wip` option
 		OPT_DISCARD = 'k', 		///< The `--discard` option
 		OPT_LINE = 1,			///< The `--line` option
@@ -450,12 +433,6 @@ private:
 	static bool	_list_only_once_;
 	/// Do we report only the first occurrence per file of listed items?
 	static bool	_list_once_per_file_;
-	/// Do we list items only from reachable lines?
-	static bool	_list_only_must_reach_;
-	/// Do list items only from unreachable lines?
-	static bool	_list_only_cant_reach_;
-	/// Do list items only from non-unreachable lines?
-	static bool	_list_only_may_reach_;
 	/// Do we list symbols in `#if/else/endif directives?
 	static bool	_list_symbols_in_ifs_;
 	/// Do we list symbols in `#define` directives?
@@ -470,8 +447,6 @@ private:
 	static bool	_list_system_includes_;
 	/// Do we list local `#include` directives?
 	static bool	_list_local_includes_;
-	/// Are to output lines instead of dropping tem and vice versa?
-	static bool	_complement_;
 	/** \brief Do we evaluate constants in truth-functional contexts or treat
 	 *   them as unknowns?
 	 */
@@ -508,7 +483,8 @@ private:
 	static unsigned _max_expansion_;
 	/// Bitmask of diagnostic filters
 	static int	_diagnostic_filter_;
-
+	/// The reachability filter `--must/--may/--cant`
+	static line_selector _line_selector_;
 	/// Array of options read from `--file ARGFILE`
 	static std::vector<std::string > _argfile_argv_;
 	/// Read whole `ARGFILE` into this storage

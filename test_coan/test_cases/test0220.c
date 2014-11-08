@@ -1,12 +1,5 @@
-/**ARGS: symbols --locate --defs --must -DFOO -UBAR */
-/**SYSCODE: = 2 */
-#ifdef FOO
-#define FOO 1
-#else
-#undef FOO
-#endif
-#ifndef BAR
-#define BAR 1
-#else
-#undef BAR 
+/**ARGS: source "-DA=(1+2)" -DB=1 */
+/**SYSCODE: = 1 | 16 */
+#if A > B
+KEEP ME
 #endif

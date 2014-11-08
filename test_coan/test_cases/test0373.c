@@ -1,5 +1,8 @@
-/**ARGS: symbols --explain --select S* -DFOO=1+1 -DBAR=3 -DSYM=FOO+BAR */
-/**SYSCODE: = 0 */
-#if SYM
+/**ARGS: source -DBIG=4294967295UL */
+/**WORDSIZE=64 */
+/**NOT-LINUX */
+/**SYSCODE: = 1 | 16 */
+#if ( BIG == 4294967295UL )
 KEEP ME
 #endif
+

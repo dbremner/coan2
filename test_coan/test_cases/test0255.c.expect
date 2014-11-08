@@ -1,1 +1,4 @@
-FOO: unconfigured: {CWD}/test_cases/test0255.c(3)
+/**ARGS: source -DBIG=18446744073709551615 */
+/**SYSCODE: = 1 | 2 | 16 */
+KEEP ME
+

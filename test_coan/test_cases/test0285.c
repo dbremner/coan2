@@ -1,7 +1,9 @@
-/**ARGS: source -USYS2 */
-/**SYSCODE: = 1 | 32 */
+/**ARGS: source */
+/**SYSCODE: = 1 | 2 | 16 */
 
-#if (defined(SYS1) && defined(ATTR1)) || defined(SYS2) || (defined(ATTR1) && defined(SYS3)) 
-KEEP ME
+#define A 1
+#undef  A
+#ifdef A
+DELETE ME
 #endif
 

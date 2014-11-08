@@ -1,9 +1,9 @@
-/**ARGS: source -UMACOSX */
+/**ARGS: source -UPYGMALION -UABELONE */
 /**SYSCODE: = 1 | 32 */
 
-#if (defined UNIX && defined PYGMALION) || (defined LINUX && defined ABELONE)
+#if  defined MACOSX && defined ABYSSINIA
 extern int i;
 #endif
-#if defined UNIX && defined PYGMALION 
+#if  defined MACOSX && defined ABYSSINIA
 extern int j;
 #endif

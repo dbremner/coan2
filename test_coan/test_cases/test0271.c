@@ -1,6 +1,5 @@
-/**ARGS: source -DX=A "-DA=(((1UL * -2) + -2U) / 3LLU)"  */
-/**SYSCODE: = 1 | 2 | 16 */
-#if X == (((1UL * -2) + -2U) / 3LLU)
+/**ARGS: source "-DFOO(x)=(x+1)" */
+/**SYSCODE: = 1 | 16 */
+#if FOO(0)
 KEEP ME
 #endif
-

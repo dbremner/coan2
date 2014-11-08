@@ -1,14 +1,13 @@
-/**ARGS: symbols --expand --locate */
-/**SYSCODE: = 3 */
-#define FOO(x,y) (1 + BAR(x,y))
-#define BAR(x,y) (1 + FOO(x,y))
-#if BAR(1,2)
-KEEP_ME
+/**ARGS: source --implicit */
+/**SYSCODE: = 4 */
+/**NO-OUTPUT */
+#if FOO(1)
+KEEP ME 1
 #else
-DELETE ME
+KEEP ME 2
 #endif
-#if FOO(1,2)
-KEEP_ME
+#if FOO
+KEEP ME 3
 #else
-DELETE ME
+KEEP ME 4
 #endif

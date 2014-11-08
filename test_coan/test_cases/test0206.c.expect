@@ -1,1 +1,6 @@
-#include bar(x,y,z): symbolic argument, insoluble, because unconfigured: {CWD}/test_cases/test0206.c(4)
+FOO: global: {CWD}/test_cases/test0206.c(3)
+FOO1: unconfigured: {CWD}/test_cases/test0206.c(4)
+FOO2: unconfigured: {CWD}/test_cases/test0206.c(7)
+BAR: global: {CWD}/test_cases/test0206.c(10)
+BAR1: unconfigured: {CWD}/test_cases/test0206.c(11)
+BAR2: unconfigured: {CWD}/test_cases/test0206.c(14)

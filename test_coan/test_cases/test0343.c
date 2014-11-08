@@ -1,6 +1,20 @@
-/**ARGS: source -DFOO */
-/**SYSCODE: = 2 */
+/**ARGS: source -DFOO=1 -DBAR=0 */
+/**SYSCODE: = 1 | 16 */
 
-#define PRINTF_4(xx_fmt, xx_arg1, xx_arg2, xx_arg3, \
-                                                    xx_arg4 ); \
+#if (FOO ? 1 : 0)
+KEEP_ME
+#endif
 
+#if (FOO ? (BAR ? 1 : 0) : 1)
+DELETE_ME
+#endif
+
+#if (!defined (FOO) || FOO < 1 || \
+     BAR < (defined (FOO) ? 1 : 0))
+KEEP_ME
+#endif
+
+#if (!defined (FOO) || FOO < 1 || \
+     BAR < (defined (FOO) ? 0 : 1))
+DELETE_ME
+#endif

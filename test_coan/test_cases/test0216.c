@@ -1,16 +1,12 @@
-/**ARGS: includes -L --must --once-only -DFOO -UBAR */
-/**SYSCODE: = 0 */
+/**ARGS: symbols --locate --defs --must -DFOO -UBAR */
+/**SYSCODE: = 2 */
 #ifdef FOO
-#include <foo.h>
-#include <foo.h>
+#define FOO 1
 #else
-#include <foo.h>
-#include <foo.h>
+#undef FOO
 #endif
 #ifndef BAR
-#include "bar.h"
-#include "bar.h"
+#define BAR 1
 #else
-#include "bar.h"
-#include "bar.h"
+#undef BAR 
 #endif

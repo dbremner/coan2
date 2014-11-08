@@ -1,2 +1,5 @@
-A: global: expands afresh as >>(((1UL * -2) + -2U) / 3LLU)<<: evaluates to 1431655764: in options
-X: global: expands afresh as >>(((1UL * -2) + -2U) / 3LLU)<<: evaluates to 1431655764: in options
+/**ARGS: source -DFOO */
+/**SYSCODE: = 1 | 2 | 16 */
+#define BAR(param) (param < 5)
+KEEP ME
+

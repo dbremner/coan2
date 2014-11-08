@@ -1,12 +1,9 @@
-/**ARGS: symbols --locate --undefs --cant -DFOO -UBAR */
+/**ARGS: symbols  --expand --must "-DFOO=1 + 1" */
 /**SYSCODE: = 2 */
 #ifdef FOO
-#define FOO 1
+#define FOO 1 +/* A Commment */1
+#define FOO 2
 #else
-#undef FOO
+#define FOO 3
 #endif
-#ifndef BAR
-#define BAR 1
-#else
-#undef BAR 
-#endif
+

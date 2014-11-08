@@ -1,7 +1,7 @@
-FOO1: unconfigured
-FOO2: unconfigured
-FOO2: unconfigured
-FOO3: unconfigured
-FOO4: unconfigured
-FOO5: unconfigured
-FOO1: unconfigured
+/**ARGS: source -DFOO1 -UFOO2 */
+/**SYSCODE: = 0 */
+#if 1
+KEEP ME
+#else
+KEEP ME
+#endif

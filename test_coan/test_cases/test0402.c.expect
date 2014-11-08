@@ -1,10 +1,7 @@
-/**ARGS: source -DFOO -UBAR */
-/**SYSCODE: = 16 | 1 */
+/**ARGS: source -DFOO=1 */
+/**SYSCODE: = 32 | 1 */
+#if BAR
 KEEP ME
-KEEP ME
-KEEP ME
-KEEP ME
-KEEP ME
-KEEP ME
-KEEP ME
-KEEP ME
+#else
+DELETE ME
+#endif

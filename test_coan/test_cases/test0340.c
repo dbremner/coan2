@@ -1,4 +1,12 @@
-/**ARGS: source -DFOO */
-/**SYSCODE: = 2 */
+/**ARGS: symbols --must -L --expand -DXX=A */
+/**SYSCODE: = 3 */
 
-#define ENABLE_ODD_EVEN_CHECK() (enable_odd_even_check(TRUE))
+#define YY XX
+#define ZZ YY
+#define BB A
+#define A 1
+#if YY == BB
+#undef A
+#else
+#undef BB
+#endif

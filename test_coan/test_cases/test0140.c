@@ -1,7 +1,7 @@
-/**ARGS: source -DFOO1 -UFOO2 */
-/**SYSCODE: = 1 | 16 */
-#if !0
+/**ARGS: source -E -DFOO1=BAR */
+/**SYSCODE: = 1 | 32 */
+#if !(1 && FOO1)
 KEEP ME
 #else
-DELETE ME
+KEEP ME
 #endif

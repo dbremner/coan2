@@ -418,18 +418,10 @@ line_type directive<HASH_ERROR>::eval(chewer<parse_buffer> & chew)
 		string str = canonical<string>(chew);
 		directive<HASH_ERROR>(str).report();
 	}
-	if (!options::complement()) {
-		if (if_control::must_reach_line()) {
-			if (if_control::unconditional_line()) {
-				warning_unconditional_error_input() <<
-					"An operative #error directive was input"
-					<< emit();
-			} else {
-				warning_unconditional_error_output() <<
-					 "An operative #error directive was output" << emit();
-			}
-		}
-	}
+    if (if_control::must_reach_line()) {
+        warning_unconditional_error_directive() <<
+            "An #error directive must be reached" << emit();
+    }
 	return LT_PLAIN;
 }
 

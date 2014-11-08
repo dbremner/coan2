@@ -1,7 +1,8 @@
-/**ARGS: errors  */
-/**SYSCODE: = 2 | 128 */
-#error An  /* comment */\
- error  /* a \
-comment */   message
-#error An/* Comment */error/**/message
-
+/**ARGS: source  -DFOO=1 */
+/**SYSCODE: = 1 | 16 */
+#if FOO  /* "A quoted
+string witin quotation" */ == 1 
+KEEP ME
+#else
+DELETE ME
+#endif

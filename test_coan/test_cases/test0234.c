@@ -1,3 +1,15 @@
-/**ARGS: source  -DFOO=1+1  */
-/**SYSCODE: = 2 */
-#define FOO 1+/* A Commment */1
+/**ARGS: source -DFOO=1  -DBAR */
+/**SYSCODE: = 1 | 16 */
+#if /* "comment" */ FOO /* 'comment'
+more comments */ == 1
+KEEP ME
+#else /* coments
+more comments
+and "more
+comments " */
+DELETE ME
+#endif
+#if /* Comments "
+more comments */ defined(BAR)
+KEEP ME
+#endif

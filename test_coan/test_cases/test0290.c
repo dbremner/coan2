@@ -1,8 +1,15 @@
-/**ARGS: source */
-/**SYSCODE: = 2 */
+/**ARGS: source -kb -UDEFINE1 -UDEFINE2 -UDEFINE3 */
+/**SYSCODE: = 1 | 32 */
 
-#define A 1
-#define A 2
-#undef A
-#define A 3
+uint32 var; 
+ 
+#if defined(DEFINE1)              || \
+     defined(DEFINE2)              || \
+     defined(DEFINE3)
+uint32 var = 0;
+#endif
 
+void main()
+{
+    return var;
+}

@@ -1,12 +1,9 @@
-/**ARGS: source -DFOO  -DBAR  */
-/**SYSCODE: = 1 | 2 | 16 */
+/**ARGS: symbols -L -d -u --expand --must -DFOO -DSTR=string */
+/**SYSCODE: = 2 */
 #ifdef FOO
-#define A " /* comment within quotation \
-is not comment. And escaped \" does not close quotation */ "
-#endif
-#if defined(BAR)
-#define B '\
-"\
-\
-' /* B is defined as '"'. Quotation is not opened */
+#define FOO 1
+#define STR
+#undef BAR
+#else
+#define BAR
 #endif

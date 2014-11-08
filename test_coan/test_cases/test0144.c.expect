@@ -1,7 +1,5 @@
-/**ARGS: source -E -DFOO1=BAR */
-/**SYSCODE: = 1 | 32 */
-#if ! FOO1
+/**ARGS: source -P -DFOO */
+/**SYSCODE: = 1 | 16 */
+/* Not to be parsed as comment
 KEEP ME
-#else
-KEEP ME
-#endif
+*/

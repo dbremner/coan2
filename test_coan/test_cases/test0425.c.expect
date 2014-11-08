@@ -1,6 +1,20 @@
-/**ARGS: source -DZ */
-/**SYSCODE: = 16 | 2 | 1 */
-#define X 1
-#define Y 2
-#define FOO(X,Y) (X+Y)
-KEEP ME
+Y(1,2): global: {CWD}/test_cases/altfiles/test0425-1.c(1)
+Y(3,4): global: {CWD}/test_cases/altfiles/test0425-1.c(4)
+BAR(A,B): transient: {CWD}/test_cases/altfiles/test0425-1.c(7)
+X: transient: {CWD}/test_cases/altfiles/test0425-1.c(8)
+BAR(1,2): transient: {CWD}/test_cases/altfiles/test0425-1.c(9)
+BAR(0,1): transient: {CWD}/test_cases/altfiles/test0425-1.c(12)
+UNK(2): unconfigured: {CWD}/test_cases/altfiles/test0425-1.c(13)
+UNK(3): unconfigured: {CWD}/test_cases/altfiles/test0425-1.c(16)
+FOO1: unconfigured: {CWD}/test_cases/altfiles/test0425-1.c(21)
+FOO2: unconfigured: {CWD}/test_cases/altfiles/test0425-1.c(24)
+FOO3: unconfigured: {CWD}/test_cases/altfiles/test0425-1.c(26)
+FOO4: unconfigured: {CWD}/test_cases/altfiles/test0425-1.c(26)
+FOO5: unconfigured: {CWD}/test_cases/altfiles/test0425-1.c(28)
+Y(4,5): global: {CWD}/test_cases/altfiles/test0425-2.c(4)
+BAR(A,B): transient: {CWD}/test_cases/altfiles/test0425-2.c(7)
+X: transient: {CWD}/test_cases/altfiles/test0425-2.c(8)
+BAR(1,2): transient: {CWD}/test_cases/altfiles/test0425-2.c(9)
+BAR(3,4): transient: {CWD}/test_cases/altfiles/test0425-2.c(12)
+UNK(4): unconfigured: {CWD}/test_cases/altfiles/test0425-2.c(16)
+FOO6: unconfigured: {CWD}/test_cases/altfiles/test0425-2.c(28)

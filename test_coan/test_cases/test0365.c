@@ -1,5 +1,6 @@
-/**ARGS: symbols --explain -DFOO=1+1 -DBAR=3 -DSYM=FOO+BAR */
-/**SYSCODE: = 0 */
-#if SYM
-KEEP ME
+/**ARGS: symbols --explain --locate --once-only -DX=A "-DA=(((1UL * -2) + -2U) / 3LLU)"  */
+/**SYSCODE: = 2 */
+#if X
 #endif
+
+

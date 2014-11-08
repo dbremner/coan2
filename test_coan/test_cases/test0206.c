@@ -1,8 +1,16 @@
-/**ARGS: includes --locate -DFOO*/
-/**SYSCODE: = 2 */
+/**ARGS: symbols --locate -DFOO -UBAR*/
+/**SYSCODE: = 0 */
 #ifdef FOO
-#include bar(x,y,z)
-#elif 1
-//KEEP ME
+#if FOO1 == 1
 #endif
-
+#else
+#if FOO2 == 1
+#endif
+#endif
+#ifndef BAR
+#if BAR1 == 1
+#endif
+#else
+#if BAR2 == 1
+#endif
+#endif

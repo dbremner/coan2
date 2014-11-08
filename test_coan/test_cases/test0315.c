@@ -1,12 +1,6 @@
-/**ARGS: includes -l --cant -DFOO --locate --once-only */
-/**SYSCODE: = 0 */
+/**ARGS: source -DFOO -DFOO=1 */
+/**SYSCODE: = 4 */
+/**NO-OUTPUT */
 #ifdef FOO
-#include <foo.h>
-#include "bar.h"
-#include <foo.h>
-#else
-#include "bar.h"
-#include <foo.h>
-#include "bar.h"
+DELETE ME
 #endif
- 

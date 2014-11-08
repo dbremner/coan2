@@ -1,17 +1,5 @@
-/**ARGS: symbols --locate --ifs --cant -DFOO=0 -UBAR */
-/**SYSCODE: = 0 */
-#ifdef FOO
-#if FOO == 1
+/**ARGS: source "-DA=(B+C)" -DB=0x1 -DC=2 */
+/**SYSCODE: = 1 | 16 */
+#if A > B
+KEEP ME
 #endif
-#else
-#if FOO == 1
-#endif
-#endif
-#ifndef BAR
-#if BAR == 1
-#endif
-#else
-#if BAR == 1
-#endif
-#endif
- 

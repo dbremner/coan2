@@ -1,1 +1,12 @@
-FOO(x): transient: expands afresh as >>(x + 1)<<: {CWD}/test_cases/test0427.c(3)
+/**ARGS: source -DX */
+/**SYSCODE: = 0 */
+#if defined(UNK)
+KEEP ME
+#else
+KEEP ME
+#endif
+#if UNK(1)
+KEEP ME
+#else
+KEEP ME
+#endif 

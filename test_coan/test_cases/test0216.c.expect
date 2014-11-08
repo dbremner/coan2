@@ -1,2 +1,2 @@
-#include <foo.h>: {CWD}/test_cases/test0216.c(4)
-#include "bar.h": {CWD}/test_cases/test0216.c(11)
+FOO: transient: {CWD}/test_cases/test0216.c(4)
+BAR: transient: {CWD}/test_cases/test0216.c(9)

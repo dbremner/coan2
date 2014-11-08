@@ -1,7 +1,5 @@
-/**ARGS: source  --implicit */
-/**SYSCODE: = 4 */
-/**NO-OUTPUT */
-#if MACRO(VALUE1 | VALUE2)
-KEEP ME
+/**ARGS: source -DFOO */
+/**SYSCODE: = 0 */
+#if( __has_include( "SomeHeader.h" ) )
+	#include "SomeHeader.h"
 #endif
-

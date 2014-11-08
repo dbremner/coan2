@@ -1,3 +1,8 @@
-/**ARGS: symbols -o -L --filter h */
-/**ALTFILES: ./test_cases/altfiles/test0168-1.c ./test_cases/altfiles/test0168-2.c */
-/**SYSCODE: = 4 */
+/**ARGS: symbols -L -d -u --expand --cant -DFOO -DSTR=string */
+/**SYSCODE: = 2 */
+#ifdef FOO
+#define FOO 1
+#define STR
+#else
+#define BAR
+#endif

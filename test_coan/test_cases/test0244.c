@@ -1,9 +1,11 @@
-/**ARGS: symbols -L -d -u --expand --must -DFOO -DSTR=string */
-/**SYSCODE: = 2 */
+/**ARGS: pragmas  --must --locate -DFOO -UBAR */
+/**SYSCODE: = 0 */
 #ifdef FOO
-#define FOO 1
-#define STR
-#undef BAR
-#else
-#define BAR
+#pragma This /* comment
+comment */\
+is a   pragma
 #endif
+#ifndef BAR
+#pragma This is   a pragma 
+#endif
+

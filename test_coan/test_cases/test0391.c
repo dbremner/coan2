@@ -1,3 +1,8 @@
-/**ARGS: includes */
-/**SYSCODE: = 2 */
-#include _NTO_CPU_HDR_(smpxchg.h)
+/**ARGS: source -DFOO */
+/**SYSCODE: = 4 */
+/**NO-OUTPUT **/
+#if 1 && || 2 
+KEEP ME
+#else
+KEEP ME
+#endif

@@ -1,18 +1,15 @@
 /**ARGS: source */
-/**SYSCODE: = 1 | 2 | 16 */
+/**SYSCODE: = 2 */
+/* Problem code from Tony Whitely */
 
-#define MACRO(x,y) (x) + (y)
-#define FOO 1
-#define BAR 1
-
-#if MACRO((FOO + 1),(BAR))
-KEEP ME
-#endif
-#if MACRO((FOO - 1),(BAR - 1))
-DELETE_ME
-#endif
-#if MACRO(FOO,BAR) == (FOO + BAR)
-KEEP_ME
+#if (T_XXXXX && FL)
 #endif
 
+#if ( T_XXXXX && FL )
+#endif
 
+#if (T_XXXXX && L_M)
+#endif
+
+#if ( T_XXXXX && L_M )
+#endif

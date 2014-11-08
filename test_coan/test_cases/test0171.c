@@ -1,8 +1,8 @@
-/**ARGS: source -UFOO1 */
-/**SYSCODE: = 1 | 32 */
-#if defined(FOO3) || defined(FOO2) || defined(FOO1)
-KEEP ME
+/**ARGS: source -DFOO=1 */
+/**SYSCODE: = 4 */
+#if (FOO
+ABORT
 #else
-KEEP ME
+ABORT
 #endif
 

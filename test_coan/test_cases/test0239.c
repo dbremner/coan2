@@ -1,13 +1,12 @@
-/**ARGS: symbols --expand -DFOO=1  -DBAR=FOO -DSYM=BAR -UVAL -DVAR=VAL */
-/**SYSCODE: = 0 */
-#if SYM  == 1
-KEEP ME
+/**ARGS: symbols --locate --undefs --cant -DFOO -UBAR */
+/**SYSCODE: = 2 */
+#ifdef FOO
+#define FOO 1
 #else
-DELETE ME
+#undef FOO
 #endif
-#if defined(BAR)
-KEEP ME
-#endif
-#ifndef VAR
-DELETE ME
+#ifndef BAR
+#define BAR 1
+#else
+#undef BAR 
 #endif

@@ -1,8 +1,8 @@
-/**ARGS: source -DFOO */
+/**ARGS: source '-DFOO=3 && || 4' */
 /**SYSCODE: = 4 */
 /**NO-OUTPUT **/
-#if 1 || && 2 
+#if FOO
 KEEP ME
 #else
-KEEP ME
+DELETE ME
 #endif

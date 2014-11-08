@@ -1,6 +1,11 @@
-/**ARGS: source  */
-/**SYSCODE: = 2 */
-#if MACRO(VALUE1 | VALUE2)
-KEEP ME
+/**ARGS: includes -s --must -DFOO */
+/**SYSCODE: = 0 */
+#ifdef FOO
+#include <foo.h>
+#include "bar.h"
+#include <foo.h>
+#else
+#include <foo.h>
+#include "bar.h"
 #endif
-
+ 

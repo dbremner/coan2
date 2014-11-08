@@ -1,4 +1,1 @@
-/**ARGS: source -DA */
-/**SYSCODE: = 1 | 16 */
-KEEP ME
-
+#include "foo.h": {CWD}/test_cases/test0190.c(3)

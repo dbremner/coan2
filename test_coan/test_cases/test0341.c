@@ -1,8 +1,4 @@
-/**ARGS: source -DFOO */
+/**ARGS: symbols -o -L --expand */
 /**SYSCODE: = 2 */
+#define XXXX(ftbl, rval, func, ...) (ftbl,rval,func,...)
 
-#define DECODE(msg_ptr, msg_pos_ptr)\
-{\
-  (msg_ptr)->.num = g(src, (msg_pos_ptr), LEN);\
-  BAND((msg_ptr)->arf);\
-}

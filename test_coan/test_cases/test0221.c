@@ -1,12 +1,11 @@
-/**ARGS: symbols -L -u --cant -DFOO -UBAR */
-/**SYSCODE: = 2 */
-#ifdef FOO
-#define FOO 1
-#else
-#undef FOO
+/**ARGS: source -DA=1 -DB=0 "-DC=(1 && 0)" */
+/**SYSCODE: = 1 | 16 */
+#if (A || B)
+KEEP ME
 #endif
-#ifndef BAR
-#define BAR 1
-#else
-#undef BAR 
+#if (A && B)
+DELETE ME
+#endif
+#if C
+DELETE ME
 #endif

@@ -1,4 +1,2 @@
-/**ARGS: source -DFOO=1 -DFOO=1 */
-/**SYSCODE: = 1 | 2 | 16 */
-KEEP ME
+/* No output */
 

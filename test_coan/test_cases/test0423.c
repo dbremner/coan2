@@ -1,8 +1,4 @@
-/**ARGS: source -DX */
-/**SYSCODE: = 16 | 2 | 1 */
-#define FOO(x,y) (x) + (y)
-#if FOO(FOO(1,2),FOO(1,2)) == 6
-KEEP ME
-#else
-DELETE_ME
-#endif
+/**ARGS: symbols --expand --locate */
+/**SYSCODE: = 4 | 2 */
+#define FOO(x) (x + 1)
+#define BAR(x,y) FOO(x,y)

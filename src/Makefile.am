@@ -60,6 +60,7 @@ noinst_HEADERS = \
 	directory.h \
 	directory_nix.h \
 	directory_win.h \
+	discard_policy_vals.h \
 	eol.h \
 	evaluation.h \
 	expansion_base.h \
@@ -79,6 +80,7 @@ noinst_HEADERS = \
 	io.h \
 	lexicon.h \
 	line_despatch.h \
+	line_selector_vals.h \
 	line_type.h \
 	options.h \
 	parameter_list_base.h \
@@ -93,6 +95,7 @@ noinst_HEADERS = \
 	symbol.h \
 	syserr.h \
 	traits.h \
+	trivalent_truth_vals.h \
 	unexplained_expansion.h \
 	version.h
 

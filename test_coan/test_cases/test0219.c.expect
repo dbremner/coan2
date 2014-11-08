@@ -1,2 +1,3 @@
-FOO: global: {CWD}/test_cases/test0219.c(7)
-BAR: global: {CWD}/test_cases/test0219.c(14)
+/**ARGS: source "-DA=(B+C)" -DB=0x1 -DC=2 */
+/**SYSCODE: = 1 | 16 */
+KEEP ME

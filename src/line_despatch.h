@@ -46,6 +46,7 @@
 
 #include "line_type.h"
 #include "parsed_line.h"
+#include "trivalent_truth_vals.h"
 #include <string>
 #include <memory>
 

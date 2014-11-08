@@ -1,2 +1,2 @@
-FOO: transient: {CWD}/test_cases/test0228.c(4)
-BAR: transient: {CWD}/test_cases/test0228.c(9)
+#error An error message
+#error An error message

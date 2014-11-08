@@ -1,11 +1,24 @@
-/**ARGS: includes --locate -DFOO=BAR "-DBAR=bar(x,y,z" */
-/**SYSCODE: = 4 */
-/**NO-OUTPUT */
+/**ARGS: symbols --locate --must -DFOO=0 -UBAR */
+/**SYSCODE: = 0 */
 #ifdef FOO
-#include FOO
-#elif 1
-//KEEP ME
+#if FOO == 1
 #endif
-
-
-
+#if FOO == 2
+#endif
+#else
+#if FOO == 1
+#endif
+#if FOO == 2
+#endif
+#endif
+#ifndef BAR
+#if BAR == 1
+#endif
+#if BAR == 2
+#endif
+#else
+#if BAR == 1
+#endif
+#if BAR == 2
+#endif
+#endif

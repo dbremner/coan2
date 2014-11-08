@@ -1,16 +1,17 @@
-/**ARGS: includes -L --cant -DFOO -UBAR */
+/**ARGS: symbols --locate --ifs --cant -DFOO=0 -UBAR */
 /**SYSCODE: = 0 */
 #ifdef FOO
-#include <foo.h>
-#include <foo.h>
+#if FOO == 1
+#endif
 #else
-#include <foo.h>
-#include <foo.h>
+#if FOO == 1
+#endif
 #endif
 #ifndef BAR
-#include "bar.h"
-#include "bar.h"
-#else
-#include "bar.h"
-#include "bar.h"
+#if BAR == 1
 #endif
+#else
+#if BAR == 1
+#endif
+#endif
+ 

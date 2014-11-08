@@ -1,3 +1,2 @@
-/**ARGS: source "-DA=(1+2)" -DB=1 */
-/**SYSCODE: = 1 | 16 */
-KEEP ME
+FOO: transient: {CWD}/test_cases/test0224.c(4)
+BAR: transient: {CWD}/test_cases/test0224.c(9)

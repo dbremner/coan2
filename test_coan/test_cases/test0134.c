@@ -1,7 +1,7 @@
 /**ARGS: source -E -DFOO1 -UFOO2 */
 /**SYSCODE: = 1 | 16 */
-#if defined(FOO1) || 0
-KEEP ME
-#else
+#if 0 || defined(FOO2)
 DELETE ME
+#else
+KEEP ME
 #endif

@@ -1,18 +1,11 @@
-/**ARGS: symbols -UFOO --no-transients --locate --expand --cant */
-/**SYSCODE: = 2 */
-
-#define A 1
-#undef B
-
-#ifdef A
-#define C
-#endif
-
-#ifndef B
-#define D
-#endif
-
-#ifdef FOO
-#define E
+/**ARGS: source -D c=0  */
+/**SYSCODE: = 32 | 1  */
+// Test preservation of indentation
+#if( a )
+	#if( b && !c )
+		#define X		1
+	#else
+		#define X		2
+	#endif
 #endif
 

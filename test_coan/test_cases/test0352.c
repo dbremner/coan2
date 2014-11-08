@@ -1,4 +1,14 @@
-/**ARGS: source -DFOO */
+/**ARGS: symbols --no-transients --locate --expand */
 /**SYSCODE: = 2 */
-//EOF in #define
-#define BAR definition
+
+#define A 1
+#undef B
+
+#ifdef A
+#define C
+#endif
+
+#ifndef B
+#define D
+#endif
+

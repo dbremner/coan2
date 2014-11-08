@@ -215,11 +215,11 @@ void parsed_line::write_slow()
 	string output = citable(!options::plaintext(),*this,i);
 	line_despatch::lines_changed() += _extensions + 1;
 	*_out << output << '\n';
-	if (options::get_discard_policy() == DISCARD_BLANK) {
+	if (options::get_discard_policy() == discard_policy::blank) {
 		for (	; _extensions; --_extensions) {
 			*_out << '\n';
 		}
-	} else if (options::get_discard_policy() == DISCARD_COMMENT) {
+	} else if (options::get_discard_policy() == discard_policy::comment) {
 		for (	; _extensions; --_extensions) {
 			*_out << "//coan <\n";
 		}
@@ -260,16 +260,16 @@ void parsed_line::write()
 
 void parsed_line::write(bool keep)
 {
-	if (keep ^ options::complement()) {
+	if (keep) {
 		write();
 	} else {
-		if (options::get_discard_policy() == DISCARD_BLANK) {
+		if (options::get_discard_policy() == discard_policy::blank) {
 			line_despatch::lines_changed() += _extensions + 1;
 			*_out << '\n';
 			for (	; _extensions; --_extensions) {
 				*_out << '\n';
 			}
-		} else if (options::get_discard_policy() == DISCARD_DROP) {
+		} else if (options::get_discard_policy() == discard_policy::drop) {
 			line_despatch::lines_suppressed() += _extensions + 1;
 		} else {
 			write_commented_out();

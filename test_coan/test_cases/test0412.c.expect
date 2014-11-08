@@ -1,3 +1,2 @@
-/**ARGS: source "-DFOO(T1,T2)=(T1+T2)" "-DBAR(T1,T2,T3)=FOO(T1,FOO(T2,T3))" */
-/**SYSCODE: = 16 | 1 */
-KEEP_ME
+FOO(x,y): transient: expands afresh as >>"FOO(x,y)"<<
+FOO(1,2): transient: expands unchanged as >>"FOO(x,y)"<<

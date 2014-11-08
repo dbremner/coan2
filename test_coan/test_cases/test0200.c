@@ -1,4 +1,4 @@
-/**ARGS: includes --locate -DBAR='"foo.h' -DFOO=BAR */
+/**ARGS: includes --locate */
 /**SYSCODE: = 2 */
-/**NOT-WINDOWS */
-#include FOO
+#include */qwerty
+

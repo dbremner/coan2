@@ -1,6 +1,2 @@
-FOO: global: {CWD}/test_cases/test0212.c(3)
-FOO: global: {CWD}/test_cases/test0212.c(4)
-FOO: global: {CWD}/test_cases/test0212.c(6)
-BAR: global: {CWD}/test_cases/test0212.c(14)
-BAR: global: {CWD}/test_cases/test0212.c(15)
-BAR: global: {CWD}/test_cases/test0212.c(17)
+#include <foo.h>: {CWD}/test_cases/test0212.c(4)
+#include "bar.h": {CWD}/test_cases/test0212.c(11)

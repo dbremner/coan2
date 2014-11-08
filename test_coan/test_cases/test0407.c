@@ -1,8 +1,7 @@
-/**ARGS: source -DFOO=1 -DBAR=1*/
-/**SYSCODE: = 16 | 1 */
-#if defined(FOO) ? (defined(BAR) ? FOO : BAR) : 0
-KEEP ME
-#else
-DELETE ME
-#endif
+/**ARGS: symbols --explain --locate */
+/**SYSCODE: = 2 */
+#define type_comb2(T1, T2) __typeof__(0 ? (T1)0 : (T2)0)
+#define type_comb3(T1, T2, T3) type_comb2(T1, type_comb2(T2, T3))
+
+
 

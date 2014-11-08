@@ -1,6 +1,6 @@
 /**ARGS: source -DFOO1 -UFOO2 */
-/**SYSCODE: = 1 | 16 */
-#if 1 || defined(UNKNOWN)
+/**SYSCODE: = 0 */
+#if 0
 KEEP ME
 #else
 KEEP ME

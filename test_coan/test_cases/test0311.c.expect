@@ -1,3 +1,1 @@
-FOO: global: expands afresh as >><<: in options
-STR: global: expands afresh as >>string<<: in options
-BAR: unconfigured: insoluble: {CWD}/test_cases/test0311.c(7)
+#include "bar.h": {CWD}/test_cases/test0311.c(8)

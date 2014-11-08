@@ -1,9 +1,8 @@
 /**ARGS: source  -DX */
 /**SYSCODE: = 6 */
 /**NO-OUTPUT */
-#define FOO(x) # \
-x
-#if FOO("ab\ab")
+#define FOO  #x 
+#if FOO
 KEEP ME
 #else
 KEEP ME

@@ -1,28 +1,7 @@
-/**ARGS: source -m -DFOO=1  */
-/**SYSCODE: = 1 | 16 */
-#if BAR
-DELETE ME
-#else
+/**ARGS: source -USYS2 */
+/**SYSCODE: = 1 | 32 */
+
+#if (defined(SYS1) && defined(ATTR1)) || defined(SYS2) || (defined(ATTR1) && defined(SYS3)) 
 KEEP ME
-#endif
-#if defined(BAR)
-DELETE ME
-#else
-KEEP ME
-#endif
-#if !(BAR)
-KEEP ME
-#else
-DELETE ME
-#endif
-#if BAR && FOO
-DELETE ME
-#else
-KEEP ME
-#endif
-#if BAR < FOO
-KEEP ME
-#else
-DELETE ME
 #endif
 

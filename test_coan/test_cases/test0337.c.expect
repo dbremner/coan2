@@ -1,15 +1,8 @@
-/**ARGS: source */
+/**ARGS: source -DFOO */
 /**SYSCODE: = 2 */
-/* Problem code from Tony Whitely */
 
-#if (T_XXXXX && FL)
-#endif
-
-#if ( T_XXXXX && FL )
-#endif
-
-#if (T_XXXXX && L_M)
-#endif
-
-#if ( T_XXXXX && L_M )
-#endif
+#define DECODE(msg_ptr, msg_pos_ptr)\
+{\
+  (msg_ptr)->.num = g(src, (msg_pos_ptr), LEN);\
+  BAND((msg_ptr)->arf);\
+}

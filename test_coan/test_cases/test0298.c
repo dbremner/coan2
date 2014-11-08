@@ -1,15 +1,9 @@
-/**ARGS: source -kc -UDEFINE1 -UDEFINE3 */
+/**ARGS: source -ULINUX */
 /**SYSCODE: = 1 | 32 */
 
-uint32 var; 
- 
-#if defined(DEFINE1)              || \
-     defined(DEFINE2)              || \
-     defined(DEFINE3)
-uint32 var = 0;
+#if (defined UNIX && defined PYGMALION) || (defined LINUX && defined ABELONE) || (defined MACOSX && defined ABYSSINIA)
+extern int i;
 #endif
-
-void main()
-{
-    return var;
-}
+#if (defined UNIX && defined PYGMALION) || (defined MACOSX && defined ABYSSINIA)
+extern int j;
+#endif

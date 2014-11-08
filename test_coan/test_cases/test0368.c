@@ -1,6 +1,13 @@
-/**ARGS: symbols --explain "-DFOO=(1+1)" -DBAR=3 */
-/**SYSCODE: = 2 */
-#define SYM ((FOO) And (FOO SYM BAR) And (BAR))
-#if SYM
+/**ARGS: symbols --explain --locate --select SYM -DFOO=1  -DBAR=FOO -DSYM=BAR -UVAL -DVAR=VAL */
+/**SYSCODE: = 0 */
+#if SYM  == 1
 KEEP ME
+#else
+DELETE ME
+#endif
+#if defined(BAR)
+KEEP ME
+#endif
+#ifndef VAR
+DELETE ME
 #endif

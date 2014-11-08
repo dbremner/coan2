@@ -1,2 +1,6 @@
-#pragma This is a pragma: {CWD}/test_cases/test0248.c(6)
-#pragma This is a pragma: {CWD}/test_cases/test0248.c(9)
+BAR: global: expands afresh as >>3<<: evaluates to 3: in options
+FOO: global: expands afresh as >>(1+1)<<: evaluates to 2: in options
+FOO: global: expands unchanged as >>(1+1)<<: evaluates to 2: {CWD}/test_cases/test0248.c(3)
+BAR: global: expands unchanged as >>3<<: evaluates to 3: {CWD}/test_cases/test0248.c(3)
+SYM: transient: insoluble, because of infinite regress: {CWD}/test_cases/test0248.c(3)
+SYM: transient: insoluble, because of infinite regress: {CWD}/test_cases/test0248.c(4)

@@ -1,17 +1,5 @@
-/**ARGS: source -DFOO */
-/**SYSCODE: = 1 | 16 */
-#if 1 + 2
-KEEP ME
-#endif
-#if 1 - 1
-KEEP ME
-#endif
-#if 1 * 1
-KEEP ME
-#endif
-#if 1 / 1
-KEEP ME
-#endif
-#if 3 % 2
+/**ARGS: source -DFOO=1 */
+/**SYSCODE: = 1 | 32 */
+#if (1 + BAR) && defined(FOO)
 KEEP ME
 #endif

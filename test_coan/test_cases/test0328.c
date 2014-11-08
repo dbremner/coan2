@@ -1,4 +1,12 @@
-/**ARGS: source -DFOO ./test_cases/no_such_file.txt */
-/**SYSCODE: = 8 */
-/**NO-OUTPUT */
+/**ARGS: source  */
+/**SYSCODE: = 1 | 2 | 16 */
+
+#define FOO 1
+#define MACRO(x) x
+
+#if FOO || BAR
+#if MACRO((FOO) || (BAR))
+KEEP ME
+#endif
+#endif
 

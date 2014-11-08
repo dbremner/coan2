@@ -1,9 +1,8 @@
 /**ARGS: source  -DX */
 /**SYSCODE: = 6 */
 /**NO-OUTPUT */
-#define FOO(xx) # xx
-#define BAR(yyy) #yyy
-#if FOO(BAR(aaa)) 
+#define FOO(x) #x
+#if FOO(1 2)
 KEEP ME
 #else
 KEEP ME

@@ -1,15 +1,7 @@
-/**ARGS: source -kb -UDEFINE1 -UDEFINE3 */
-/**SYSCODE: = 1 | 32 */
+/**ARGS: symbols --expand */
+/**SYSCODE: = 0 */
 
-uint32 var; 
- 
-#if defined(DEFINE1)              || \
-     defined(DEFINE2)              || \
-     defined(DEFINE3)
-uint32 var = 0;
+#if SYM
+KEEP ME
 #endif
 
-void main()
-{
-    return var;
-}

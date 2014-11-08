@@ -1,126 +1,116 @@
-/**ARGS: symbols --once-only --expand --locate */
-/**SYSCODE: = 3 */
-/*===---- float.h - Characteristics of floating point types ----------------===
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- *===-----------------------------------------------------------------------===
- */
+/**ARGS: symbols --once-only  */
+/**SYSCODE: = 6 */
+/**NO-OUTPUT */
+// RUN: %clang_cc1 -std=c++11 -verify %s -fms-extensions -triple x86_64-apple-darwin9.0.0
 
-#ifndef __FLOAT_H
-#define __FLOAT_H
+// A ud-suffix cannot be used on string literals in a whole bunch of contexts:
 
-/* If we're on MinGW, fall back to the system's float.h, which might have
- * additional definitions provided for Windows.
- * For more details see http://msdn.microsoft.com/en-us/library/y0ybw9fy.aspx
- */
-#if (defined(__MINGW32__) || defined(_MSC_VER)) && \
-    defined(__has_include_next) && __has_include_next(<float.h>)
-#  include_next <float.h>
-
-/* Undefine anything that we'll be redefining below. */
-#  undef FLT_EVAL_METHOD
-#  undef FLT_ROUNDS
-#  undef FLT_RADIX
-#  undef FLT_MANT_DIG
-#  undef DBL_MANT_DIG
-#  undef LDBL_MANT_DIG
-#  undef DECIMAL_DIG
-#  undef FLT_DIG
-#  undef DBL_DIG
-#  undef LDBL_DIG
-#  undef FLT_MIN_EXP
-#  undef DBL_MIN_EXP
-#  undef LDBL_MIN_EXP
-#  undef FLT_MIN_10_EXP
-#  undef DBL_MIN_10_EXP
-#  undef LDBL_MIN_10_EXP
-#  undef FLT_MAX_EXP
-#  undef DBL_MAX_EXP
-#  undef LDBL_MAX_EXP
-#  undef FLT_MAX_10_EXP
-#  undef DBL_MAX_10_EXP
-#  undef LDBL_MAX_10_EXP
-#  undef FLT_MAX
-#  undef DBL_MAX
-#  undef LDBL_MAX
-#  undef FLT_EPSILON
-#  undef DBL_EPSILON
-#  undef LDBL_EPSILON
-#  undef FLT_MIN
-#  undef DBL_MIN
-#  undef LDBL_MIN
-#  if __STDC_VERSION__ >= 201112L || !defined(__STRICT_ANSI__)
-#    undef FLT_TRUE_MIN
-#    undef DBL_TRUE_MIN
-#    undef LDBL_TRUE_MIN
-#  endif
+#include "foo"_bar // expected-error {{expected "FILENAME" or <FILENAME>}}
+#line 1 "foo"_bar // expected-error {{user-defined suffix cannot be used here}}
+# 1 "foo"_bar 1 // expected-error {{user-defined suffix cannot be used here}}
+#ident "foo"_bar // expected-error {{user-defined suffix cannot be used here}}
+_Pragma("foo"_bar) // expected-error {{user-defined suffix cannot be used here}}
+#pragma comment(lib, "foo"_bar) // expected-error {{user-defined suffix cannot be used here}}
+_Pragma("comment(lib, \"foo\"_bar)") // expected-error {{user-defined suffix cannot be used here}}
+#pragma message "hi"_there // expected-error {{user-defined suffix cannot be used here}} expected-warning {{hi}}
+#pragma push_macro("foo"_bar) // expected-error {{user-defined suffix cannot be used here}}
+#if __has_warning("-Wan-island-to-discover"_bar) // expected-error {{user-defined suffix cannot be used here}}
+#elif __has_include("foo"_bar) // expected-error {{expected "FILENAME" or <FILENAME>}}
 #endif
 
-/* Characteristics of floating point types, C99 5.2.4.2.2 */
+extern "C++"_x {} // expected-error {{user-defined suffix cannot be used here}} expected-error {{unknown linkage language}}
 
-#define FLT_EVAL_METHOD __FLT_EVAL_METHOD__
-#define FLT_ROUNDS (__builtin_flt_rounds())
-#define FLT_RADIX __FLT_RADIX__
+int f() {
+  asm("mov %eax, %rdx"_foo); // expected-error {{user-defined suffix cannot be used here}}
+}
 
-#define FLT_MANT_DIG __FLT_MANT_DIG__
-#define DBL_MANT_DIG __DBL_MANT_DIG__
-#define LDBL_MANT_DIG __LDBL_MANT_DIG__
+static_assert(true, "foo"_bar); // expected-error {{user-defined suffix cannot be used here}}
 
-#define DECIMAL_DIG __DECIMAL_DIG__
+int cake() __attribute__((availability(macosx, unavailable, message = "is a lie"_x))); // expected-error {{user-defined suffix cannot be used here}}
 
-#define FLT_DIG __FLT_DIG__
-#define DBL_DIG __DBL_DIG__
-#define LDBL_DIG __LDBL_DIG__
-
-#define FLT_MIN_EXP __FLT_MIN_EXP__
-#define DBL_MIN_EXP __DBL_MIN_EXP__
-#define LDBL_MIN_EXP __LDBL_MIN_EXP__
-
-#define FLT_MIN_10_EXP __FLT_MIN_10_EXP__
-#define DBL_MIN_10_EXP __DBL_MIN_10_EXP__
-#define LDBL_MIN_10_EXP __LDBL_MIN_10_EXP__
-
-#define FLT_MAX_EXP __FLT_MAX_EXP__
-#define DBL_MAX_EXP __DBL_MAX_EXP__
-#define LDBL_MAX_EXP __LDBL_MAX_EXP__
-
-#define FLT_MAX_10_EXP __FLT_MAX_10_EXP__
-#define DBL_MAX_10_EXP __DBL_MAX_10_EXP__
-#define LDBL_MAX_10_EXP __LDBL_MAX_10_EXP__
-
-#define FLT_MAX __FLT_MAX__
-#define DBL_MAX __DBL_MAX__
-#define LDBL_MAX __LDBL_MAX__
-
-#define FLT_EPSILON __FLT_EPSILON__
-#define DBL_EPSILON __DBL_EPSILON__
-#define LDBL_EPSILON __LDBL_EPSILON__
-
-#define FLT_MIN __FLT_MIN__
-#define DBL_MIN __DBL_MIN__
-#define LDBL_MIN __LDBL_MIN__
-
-#if __STDC_VERSION__ >= 201112L || !defined(__STRICT_ANSI__)
-#  define FLT_TRUE_MIN __FLT_DENORM_MIN__
-#  define DBL_TRUE_MIN __DBL_DENORM_MIN__
-#  define LDBL_TRUE_MIN __LDBL_DENORM_MIN__
+// A ud-suffix cannot be used on character literals in preprocessor constant
+// expressions:
+#if 'x'_y - u'x'_z // expected-error 2{{character literal with user-defined suffix cannot be used in preprocessor constant expression}}
+#error error
 #endif
 
-#endif /* __FLOAT_H */
+// A ud-suffix cannot be used on integer literals in preprocessor constant
+// expressions:
+#if 0_foo // expected-error {{integer literal with user-defined suffix cannot be used in preprocessor constant expression}}
+#error error
+#endif
+
+// But they can appear in expressions.
+constexpr char operator"" _id(char c) { return c; }
+constexpr wchar_t operator"" _id(wchar_t c) { return c; }
+constexpr char16_t operator"" _id(char16_t c) { return c; }
+constexpr char32_t operator"" _id(char32_t c) { return c; }
+
+using size_t = decltype(sizeof(int));
+constexpr const char operator"" _id(const char *p, size_t n) { return *p; }
+constexpr const wchar_t operator"" _id(const wchar_t *p, size_t n) { return *p; }
+constexpr const char16_t operator"" _id(const char16_t *p, size_t n) { return *p; }
+constexpr const char32_t operator"" _id(const char32_t *p, size_t n) { return *p; }
+
+constexpr unsigned long long operator"" _id(unsigned long long n) { return n; }
+constexpr long double operator"" _id(long double d) { return d; }
+
+template<int n> struct S {};
+S<"a"_id> sa;
+S<L"b"_id> sb;
+S<u8"c"_id> sc;
+S<u"d"_id> sd;
+S<U"e"_id> se;
+
+S<'w'_id> sw;
+S<L'x'_id> sx;
+S<u'y'_id> sy;
+S<U'z'_id> sz;
+
+S<100_id> sn;
+S<(int)1.3_id> sf;
+
+void h() {
+  (void)"test"_id "test" L"test";
+}
+
+// Test source location for suffix is known
+const char *p =
+  "foo\nbar" R"x(
+  erk
+  flux
+  )x" "eep\x1f"\
+_no_such_suffix // expected-error {{'operator "" _no_such_suffix'}}
+"and a bit more"
+"and another suffix"_no_such_suffix;
+
+char c =
+  '\x14'\
+_no_such_suffix; // expected-error {{'operator "" _no_such_suffix'}}
+
+int &r =
+1234567\
+_no_such_suffix; // expected-error {{'operator "" _no_such_suffix'}}
+
+int k =
+1234567.89\
+_no_such_suffix; // expected-error {{'operator "" _no_such_suffix'}}
+
+// Make sure we handle more interesting ways of writing a string literal which
+// is "" in translation phase 7.
+void operator "\
+" _foo(unsigned long long); // ok
+
+void operator R"xyzzy()xyzzy" _foo(long double); // ok
+
+void operator"" "" R"()" "" _foo(const char *); // ok
+
+void operator ""_no_space(const char *); // ok
+
+// Ensure we diagnose the bad cases.
+void operator "\0" _non_empty(const char *); // expected-error {{must be '""'}}
+void operator L"" _not_char(const char *); // expected-error {{cannot have an encoding prefix}}
+void operator "" ""
+U"" // expected-error {{cannot have an encoding prefix}}
+"" _also_not_char(const char *);
+void operator "" u8"" "\u0123" "hello"_all_of_the_things ""(const char*); // expected-error {{must be '""'}}

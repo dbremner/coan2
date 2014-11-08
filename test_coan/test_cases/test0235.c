@@ -1,8 +1,13 @@
-/**ARGS: source  -DFOO=1 */
-/**SYSCODE: = 1 | 16 */
-#if FOO  /* "A quoted
-string witin quotation" */ == 1 
+/**ARGS: symbols --expand -DFOO=1  -DBAR=FOO -DSYM=BAR -UVAL -DVAR=VAL */
+/**SYSCODE: = 0 */
+#if SYM  == 1
 KEEP ME
 #else
+DELETE ME
+#endif
+#if defined(BAR)
+KEEP ME
+#endif
+#ifndef VAR
 DELETE ME
 #endif

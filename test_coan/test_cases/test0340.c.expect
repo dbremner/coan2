@@ -1,4 +1,10 @@
-/**ARGS: source -DFOO */
-/**SYSCODE: = 2 */
-
-#define ENABLE_ODD_EVEN_CHECK() (enable_odd_even_check(TRUE))
+XX: global: expands afresh as >>A<<: in options
+XX: global: expands unchanged as >>A<<: {CWD}/test_cases/test0340.c(4)
+YY: transient: expands afresh as >>A<<: {CWD}/test_cases/test0340.c(4)
+YY: transient: expands unchanged as >>A<<: {CWD}/test_cases/test0340.c(5)
+ZZ: transient: expands afresh as >>A<<: {CWD}/test_cases/test0340.c(5)
+BB: transient: expands afresh as >>A<<: {CWD}/test_cases/test0340.c(6)
+A: transient: expands afresh as >>1<<: evaluates to 1: {CWD}/test_cases/test0340.c(7)
+YY: transient: expands afresh as >>1<<: evaluates to 1: {CWD}/test_cases/test0340.c(8)
+BB: transient: expands afresh as >>1<<: evaluates to 1: {CWD}/test_cases/test0340.c(8)
+A: transient: expands afresh as >>0<<: evaluates to 0: {CWD}/test_cases/test0340.c(9)

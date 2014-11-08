@@ -1,5 +1,11 @@
-/**ARGS: source -DFOO */
-/**SYSCODE: = 0 */
-#if defined(UNK1) || defined(UNK2) || defined(UNK3)
-KEEP_ME
+/**ARGS: source -DC=1 */
+/**SYSCODE: = 1 | 2 | 16 */
+
+#define A 1 /* start of comment
+                      extends to next line */
+#define B /* comment */ 1
+#undef D  /* start of comment
+             extends to next line */
+#ifdef E   /* start of comment
+            extends to next line */
 #endif

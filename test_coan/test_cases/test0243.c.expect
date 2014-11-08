@@ -1,2 +1,4 @@
-FOO: transient: {CWD}/test_cases/test0243.c(6)
-BAR: transient: {CWD}/test_cases/test0243.c(11)
+FOO: global: expands afresh as >>1 + 1<<: evaluates to 2: in options
+FOO: global: expands unchanged as >>1 + 1<<: evaluates to 2
+FOO: global: expands unchanged as >>1 + 1<<: evaluates to 2
+FOO: transient: expands afresh as >>2<<: evaluates to 2

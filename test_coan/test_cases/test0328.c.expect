@@ -1,1 +1,8 @@
-/* No output expected */
+/**ARGS: source  */
+/**SYSCODE: = 1 | 2 | 16 */
+
+#define FOO 1
+#define MACRO(x) x
+
+KEEP ME
+

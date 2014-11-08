@@ -1,11 +1,5 @@
-/**ARGS: source -D c=0  */
-/**SYSCODE: = 32 | 1  */
-// Test preservation of indentation
-#if( a )
-	#if( b && !c )
-		#define X		1
-	#else
-		#define X		2
-	#endif
+/**ARGS: symbols --explain "-DFOO=(1+1)" -DBAR=3 -DAND=And "-DSYM=(FOO AND (FOO And BAR) And BAR)" */
+/**SYSCODE: = 4 */
+#if SYM
+KEEP ME
 #endif
-

@@ -1,1 +1,3 @@
-#include _NTO_CPU_HDR_(smpxchg.h): symbolic argument, insoluble, because unconfigured
+/**ARGS: source -DFOO */
+/**SYSCODE: = 4 */
+/**NO-OUTPUT **/

@@ -1,7 +1,6 @@
 /**ARGS: source -DFOO1 -UFOO2 */
 /**SYSCODE: = 1 | 16 */
-/* Left(unk) && Right(false,elim) := Elim */
-#if 0 && defined(FOO2)
+#if 0 && defined(UNKNOWN)
 DELETE ME
 #else
 KEEP ME

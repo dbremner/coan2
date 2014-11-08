@@ -1,9 +1,8 @@
 /**ARGS: source  -DX */
-/**SYSCODE: = 6 */
-/**NO-OUTPUT */
-#define FOO(x,y)  #x # y 
-#if FOO(aa,bbbb)
+/**SYSCODE: = 16 | 2 | 1 */
+#define FOO(xx,yyyy) xx##yyyy 
+#if FOO(00,1) == 1
 KEEP ME
 #else
-KEEP ME
+DELETE_ME
 #endif

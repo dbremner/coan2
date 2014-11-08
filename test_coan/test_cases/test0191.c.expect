@@ -1,1 +1,1 @@
-#include <foo.h>: {CWD}/test_cases/test0191.c(3)
+#include "foo.h": {CWD}/test_cases/test0191.c(4)

@@ -1,11 +1,7 @@
 /**ARGS: source -DFOO1 -UFOO2 */
-/**SYSCODE: = 1 | 16 */
-#ifdef UNKNOWN
+/**SYSCODE: = 1 | 32 */
+#if (!defined(FOO1) || !defined(UNKNOWN)) && (defined(UNKNOWN) || defined(FOO1))
 KEEP ME
-#define FOO2
-#endif
-#ifdef FOO2
-DELETE ME
 #else
 KEEP ME
 #endif

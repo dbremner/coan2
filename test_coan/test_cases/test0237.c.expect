@@ -1,1 +1,2 @@
-#include <stddef.h>
+#error " Whoops ": {CWD}/test_cases/test0237.c(3)
+

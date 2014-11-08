@@ -1,15 +1,16 @@
-/**ARGS: source -m -DFOO=1 -UBAR */
-/**SYSCODE: = 1 | 2 | 4 */
-/**NO-OUTPUT */
-#if BAR
-DELETE ME
-#else
+/**ARGS: source -DFOO */
+/**SYSCODE: = 1 | 2 | 16 */
+
+#define A "def a"
+#define B "def b"
+#undef C
+#ifdef A
 KEEP ME
 #endif
-#define BAR
-#if BAR
+#ifndef A
 DELETE ME
-#else
-KEEP ME
+#endif
+#ifdef C
+DELETE ME
 #endif
 

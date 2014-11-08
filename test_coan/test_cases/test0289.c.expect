@@ -1,8 +1,6 @@
-/**ARGS: source */
+/**ARGS: source -DB */
 /**SYSCODE: = 1 | 2 | 16 */
 
-#define A 1
-#undef  A
-
-
-
+#undef B /* Something */
+#define C /* Something */
+#define B /* Something */

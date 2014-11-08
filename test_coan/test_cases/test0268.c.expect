@@ -1,4 +1,2 @@
-/**ARGS: source -DX=1U -DY=-1 */
-/**SYSCODE: = 1 | 2 | 16 */
-KEEP ME
-
+A: global: expands afresh as >>(((1UL * -2) + -2U) / 3LLU)<<: evaluates to 1431655764: in options
+X: global: expands afresh as >>(((1UL * -2) + -2U) / 3LLU)<<: evaluates to 1431655764: in options

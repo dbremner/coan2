@@ -1,16 +1,8 @@
-/**ARGS: symbols --locate --once-only */
-/**SYSCODE: = 0 */
-#ifdef FOO1
+/**ARGS: source -UFOO1 */
+/**SYSCODE: = 1 | 32 */
+#if defined(FOO3) || defined(FOO2) || defined(FOO1)
+KEEP ME
+#else
 KEEP ME
 #endif
-#if defined(FOO2) && defined(FOO2)
-KEEP ME
-#elif defined FOO3 || defined FOO4
-KEEP ME
-#elif FOO5
-KEEP ME
-#elif FOO1
-KEEP ME
-#elif FOO5
-KEEP ME
-#endif
+

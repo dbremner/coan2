@@ -1,8 +1,12 @@
-/**ARGS: symbols -L --explain -DFOO=1 */
-/**SYSCODE: = 2 */
+/**ARGS: symbols --must -L --explain --select YY*,Z*,A -DXX=A */
+/**SYSCODE: = 3 */
 
-#define BAR (FOO ? 1 : 0)
-#if BAR
-#undef BAR
+#define YY XX
+#define ZZ YY
+#define BB A
+#define A 1
+#if YY == BB
+#undef A
+#else
+#undef BB
 #endif
-

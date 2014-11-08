@@ -1,7 +1,1 @@
-/**ARGS: source -DBIG=4294967295UL */
-/**WORDSIZE=64 */
-/**NOT-LINUX */
-/**SYSCODE: = 1 | 16 */
-KEEP ME
-
-
+__cplusplus: unconfigured

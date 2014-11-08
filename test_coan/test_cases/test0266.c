@@ -1,18 +1,7 @@
-/**ARGS: source -DX=1 -DY=32 */
-/**SYSCODE: = 16 | 2 | 1 */
-#if ( X << Y )
-KEEP ME
-#endif
-#if ( X >> Y )
-KEEP ME
-#endif
-#if 1L << 64
-KEEP ME
-#endif
-#if 1 << -2
-KEEP ME
-#endif
-#if 1 << -2U
+/**ARGS: source -DX=A "-DA=(((-1L * 2) + -2U) / 3LLU)"  */
+/**WORDSIZE=64 */
+/**SYSCODE: = 1 | 16 */
+#if X == (((-1L * 2) + -2U) / 3LLU)
 KEEP ME
 #endif
 

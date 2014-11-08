@@ -1,3 +1,1 @@
-/**ARGS: source '-DFOO(x,y)=(x+y)' */
-/**SYSCODE: = 16 | 1 */
-KEEP ME
+/* No output */

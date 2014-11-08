@@ -1,11 +1,8 @@
-/**ARGS: includes -s --must -DFOO */
-/**SYSCODE: = 0 */
-#ifdef FOO
-#include <foo.h>
-#include "bar.h"
-#include <foo.h>
-#else
-#include <foo.h>
-#include "bar.h"
-#endif
- 
+/**ARGS: includes --locate --once-only --system */
+/**SYSCODE: = 2 */
+#define HDR "bar.h"
+#include HDR
+#undef HDR
+#define HDR <foo.h>
+#include HDR
+

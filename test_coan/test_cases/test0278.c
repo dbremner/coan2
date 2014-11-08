@@ -1,5 +1,15 @@
-/**ARGS: source -DFOO=1 -DFOO=1 */
-/**SYSCODE: = 1 | 2 | 16 */
-#if FOO
+/**ARGS: source -m -DFOO=1 -UBAR */
+/**SYSCODE: = 1 | 2 | 4 */
+/**NO-OUTPUT */
+#if BAR
+DELETE ME
+#else
 KEEP ME
 #endif
+#define BAR
+#if BAR
+DELETE ME
+#else
+KEEP ME
+#endif
+

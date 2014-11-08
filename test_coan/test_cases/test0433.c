@@ -1,9 +1,9 @@
-/**ARGS: source -DX */
+/**ARGS: source  -DX */
 /**SYSCODE: = 6 */
 /**NO-OUTPUT */
-#define A() F
-#define B() OO
-#define FOO 2
-#if A()B() == 2
+#define FOO(x) #x
+#if FOO(1)
+KEEP ME
+#else
 KEEP ME
 #endif

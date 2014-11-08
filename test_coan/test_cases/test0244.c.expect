@@ -1,5 +1,2 @@
-FOO: global: expands afresh as >><<: in options
-STR: global: expands afresh as >>string<<: in options
-FOO: transient: expands afresh as >>1<<: evaluates to 1: {CWD}/test_cases/test0244.c(4)
-STR: transient: expands afresh as >><<: {CWD}/test_cases/test0244.c(5)
-BAR: transient: expands afresh as >>0<<: evaluates to 0: {CWD}/test_cases/test0244.c(6)
+#pragma This is a pragma: {CWD}/test_cases/test0244.c(6)
+#pragma This is a pragma: {CWD}/test_cases/test0244.c(9)

@@ -1,12 +1,15 @@
-/**ARGS: symbols --locate */
-/**SYSCODE: = 0 */
-#ifdef FOO1
+/**ARGS: source --pod -DFOO -DBAR */
+/**SYSCODE: = 16 | 2 | 1 */
+#ifdef FOO
+/* Not to be parsed as comment
+#if defined(BAR)
 KEEP ME
+#else
+DELETE ME
 #endif
-#if defined(FOO2) && defined(FOO2)
-KEEP ME
-#elif defined FOO3 || defined FOO4
-KEEP ME
-#elif FOO5
-KEEP ME
+end */
+" Not to be parsed as quotation
+#else
+DELETE ME
 #endif
+end "

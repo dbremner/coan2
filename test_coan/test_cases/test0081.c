@@ -1,5 +1,5 @@
-/**ARGS: source -DFOO1=0 -UFOO2 -DBAR1 -UBAR2 */
-/**SYSCODE: = 1 | 16  */
-#if FOO1
+/**ARGS: source -DFOO */
+/**SYSCODE: = 1 | 16 */
+#if 1 < 2
 KEEP ME
 #endif

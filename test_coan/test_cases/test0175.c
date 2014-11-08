@@ -1,8 +1,5 @@
-/**ARGS: source -DFOO=1 */
-/**SYSCODE: = 4 */
-#if (FOO
-ABORT
-#else
-ABORT
+/**ARGS: source -DFOO */
+/**SYSCODE: = 0 */
+#if defined(UNK1) || defined(UNK2) || defined(UNK3)
+KEEP_ME
 #endif
-

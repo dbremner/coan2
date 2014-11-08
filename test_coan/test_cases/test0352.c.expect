@@ -1,4 +1,6 @@
-/**ARGS: source -DFOO */
-/**SYSCODE: = 2 */
-//EOF in #define
-#define BAR definition
+A: unconfigured: insoluble: {CWD}/test_cases/test0352.c(4)
+B: unconfigured: insoluble: {CWD}/test_cases/test0352.c(5)
+A: unconfigured: insoluble: {CWD}/test_cases/test0352.c(7)
+C: unconfigured: insoluble: {CWD}/test_cases/test0352.c(8)
+B: unconfigured: insoluble: {CWD}/test_cases/test0352.c(11)
+D: unconfigured: insoluble: {CWD}/test_cases/test0352.c(12)

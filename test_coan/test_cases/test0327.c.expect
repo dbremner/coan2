@@ -1,1 +1,7 @@
-#include HDR(limits): symbolic argument, expands as >><limits&&h><<: {CWD}/test_cases/test0327.c(4)
+/**ARGS: source -DFOO  */
+/**SYSCODE: = 1 | 2 | 16 */
+
+#define LOCAL_MACRO
+#undef UNDEF_LOCAL_MACRO
+does_coan_keep_this_1();
+

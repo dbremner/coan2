@@ -1,5 +1,5 @@
-/**ARGS: source  "-DFOO=1 + 1"  */
-/**SYSCODE: = 1 | 2 | 16 */
-#define FOO 1 +/* A Commment */1
-#define FOO 2
-
+/**ARGS: symbols --expand -DFOO=1+1 -DBAR=3 -DSYM=FOO+BAR */
+/**SYSCODE: = 0 */
+#if SYM
+KEEP ME
+#endif

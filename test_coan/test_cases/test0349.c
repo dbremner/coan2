@@ -1,7 +1,4 @@
-/**ARGS: source -DFOO=1 -DBAR=0 */
-/**SYSCODE: = 4 */
+/**ARGS: source -DFOO */
+/**SYSCODE: = 6 */
 
-#if (FOO : 1)
-KEEP_ME
-#endif
-
+/* EOF in C comment

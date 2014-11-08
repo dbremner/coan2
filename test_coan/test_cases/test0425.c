@@ -1,10 +1,3 @@
-/**ARGS: source -DZ */
-/**SYSCODE: = 16 | 2 | 1 */
-#define X 1
-#define Y 2
-#define FOO(X,Y) (X+Y)
-#if FOO(3,4) == 7
-KEEP ME
-#else
-DELETE ME
-#endif
+/**ARGS: symbols -o -L "-DY(A,B)=(A+B)" */
+/**ALTFILES: ./test_cases/altfiles/test0425-1.c ./test_cases/altfiles/test0425-2.c */
+/**SYSCODE: = 2 */

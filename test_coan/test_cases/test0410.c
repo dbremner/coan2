@@ -1,7 +1,3 @@
-/**ARGS: source -DFOO=X -UBAR*/
-/**SYSCODE: = 32 | 1 */
-#if (defined(FOO) ? defined(BAR) ? BAR : FOO : 2) == 3
-KEEP ME
-#else
-DELETE ME
-#endif
+/**ARGS: symbols --expand --lns -DFOO=5 */
+/**SYSCODE: = 0 */
+#line FOO + 1

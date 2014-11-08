@@ -1,12 +1,7 @@
-/**ARGS: source --line -DFOO */
-/**SYSCODE: = 1 | 16 | 32 */
-#ifdef FOO
+/**ARGS: source -DFOO=1 */
+/**SYSCODE: = 1 | 16 */
+#if FOO
 KEEP ME
 #else
 DELETE ME
-DELETE ME
-DELETE ME
-#endif
-#ifdef FOO
-KEEP ME
 #endif

@@ -1,20 +1,64 @@
-/**ARGS: symbols --explain --locate */
-/**SYSCODE: = 2 */
-#define A (1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1)
-#define B (A + A + A + A + A + A + A + A + A + A + A + A + A + A + A + A)
-#define C (B + B + B + B + B + B + B + B + B + B + B + B + B + B + B + B)
-#define D (C + C + C + C + C + C + C + C + C + C + C + C + C + C + C + C)
-#define E (D + D + D + D + D + D + D + D + D + D + D + D + D + D + D + D)
-#define F (E + E + E + E + E + E + E + E + E + E + E + E + E + E + E + E)
-#define G (F + F + F + F + F + F + F + F + F + F + F + F + F + F + F + F)
-#define H (G + G + G + G + G + G + G + G + G + G + G + G + G + G + G + G)
-#if H
-#define I 1 
-#else
-#define J 0 
-#endif
-#if !H
-#define K 1 
-#else
-#define L 0 
+/**ARGS: source -DFOO --no-idempotence */
+/**SYSCODE: = 0 */
+#ifndef G0
+#define G0
+
+	#ifndef G1
+	#define G1
+	KEEP ME
+	#else
+	DELETE ME
+	#endif
+	
+	#ifndef G1
+	#define G1
+	DELETE ME
+	#else
+	KEEP ME
+	#endif
+	
+	#ifndef G2
+	// A comment
+	#define G2
+	KEEP ME
+	#else
+	DELETE ME
+	#endif
+
+	#ifndef G3
+	#undef G3
+	#define G3
+	KEEP ME
+	#else
+	KEEP ME
+	#endif
+	
+	#if ! defined(G4)
+	#define G4
+	KEEP ME
+	#else
+	DELETE ME
+	#endif
+	
+	#if ! defined(G4)
+	#define G4
+	DELETE ME
+	#else
+	KEEP ME
+	#endif
+	
+	#if ! defined G5
+	#define G5
+	KEEP ME
+	#else
+	DELETE ME
+	#endif
+	
+	#if ! defined G5
+	#define G5
+	DELETE ME
+	#else
+	KEEP ME
+	#endif
+
 #endif

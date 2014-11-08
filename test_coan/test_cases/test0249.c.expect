@@ -1,10 +1,6 @@
-#include HDR: symbolic argument, expands as >><time.h><<: {CWD}/test_cases/test0249.c(4)
-#pragma This is a pragma: {CWD}/test_cases/test0249.c(8)
-#error Whoops error: {CWD}/test_cases/test0249.c(9)
-#define SYM 12345: {CWD}/test_cases/test0249.c(10)
-#define STR "1\2345": {CWD}/test_cases/test0249.c(12)
-#define FOO 12345: {CWD}/test_cases/test0249.c(14)
-#undef HDR: {CWD}/test_cases/test0249.c(16)
-#include <time.h>: {CWD}/test_cases/test0249.c(21)
-#define SYM 123\45: {CWD}/test_cases/test0249.c(29)
-#line 99: {CWD}/test_cases/test0249.c(32)
+BAR: global: expands afresh as >>3<<: evaluates to 3: in options
+FOO: global: expands afresh as >>(1+1)<<: evaluates to 2: in options
+FOO: global: expands unchanged as >>(1+1)<<: evaluates to 2
+BAR: global: expands unchanged as >>3<<: evaluates to 3
+SYM: transient: insoluble, because of infinite regress
+SYM: transient: insoluble, because of infinite regress

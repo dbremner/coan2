@@ -1,6 +1,5 @@
-/**ARGS: symbols --explain --select X* "-DFOO=(1+1)" -DBAR=3 -DAND=And "-DSYM=(FOO AND (FOO And BAR) And BAR)" */
-/**SYSCODE: = 4 */
-/**NO-OUTPUT*/
-#if SYM
-KEEP ME
+/**ARGS: symbols --once-only  */
+/**SYSCODE: = 0 */
+#if __has_include(<strstream>)
+#include <strstream>
 #endif

@@ -1,5 +1,14 @@
-/**ARGS: source -DFOO=1 -DBAR=1+1 */
+/**ARGS: source "-DFOO=4>>2" */
 /**SYSCODE: = 1 | 16 */
-#if (1 + BAR) && defined(FOO)
+#if 1 << 2 == 4
 KEEP ME
+#else
+DELETE ME
 #endif
+#if FOO == 1
+KEEP ME
+#else
+DELETE ME
+#endif
+
+

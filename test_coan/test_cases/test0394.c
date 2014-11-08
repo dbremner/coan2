@@ -1,8 +1,7 @@
 /**ARGS: source -DFOO */
-/**SYSCODE: = 4 */
-/**NO-OUTPUT **/
-#if 1 && && 2 
+/**SYSCODE: = 16 | 1 */
+#if defined/**/(/**/FOO/**/)/**/ 
 KEEP ME
 #else
-KEEP ME
+DELETE ME
 #endif

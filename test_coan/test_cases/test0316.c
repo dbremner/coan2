@@ -1,11 +1,6 @@
-/**ARGS: symbols --locate --once-only --expand */
-/**SYSCODE: = 2 */
-#define FOO 1
-#define FOO 1
-#define BAR 2
-#define BAR 2
-#undef FOO
-#define FOO 3
-#undef BAR
-#define BAR 4
-
+/**ARGS: source -DFOO=1 -DFOO*/
+/**SYSCODE: = 4 */
+/**NO-OUTPUT */
+#ifdef FOO
+DELETE ME
+#endif

@@ -1,6 +1,6 @@
-/**ARGS: source -DFOO=3 -DBAR=0 */
-/**SYSCODE: = 1 | 16 */
-KEEP ME
-KEEP ME
-KEEP ME
-KEEP ME
+FOO1: unconfigured: {CWD}/test_cases/test0162.c(3)
+FOO2: unconfigured: {CWD}/test_cases/test0162.c(6)
+FOO2: unconfigured: {CWD}/test_cases/test0162.c(6)
+FOO3: unconfigured: {CWD}/test_cases/test0162.c(8)
+FOO4: unconfigured: {CWD}/test_cases/test0162.c(8)
+FOO5: unconfigured: {CWD}/test_cases/test0162.c(10)

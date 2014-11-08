@@ -1,3 +1,3 @@
-/**ARGS: includes --locate -DFOO=BAR "-DBAR=<foo.h>" */
-/**SYSCODE: = 0 */
+/**ARGS: includes --locate -DFOO=BAR */
+/**SYSCODE: = 2 */
 #include FOO

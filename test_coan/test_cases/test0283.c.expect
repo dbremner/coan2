@@ -1,9 +1,11 @@
-/**ARGS: source -kc -UBAR */
-/**SYSCODE: = 1 | 32 */
+/**ARGS: source -DFOO */
+/**SYSCODE: = 1 | 2 | 16 */
 
-//coan < #ifdef BAR
-//coan < /* A
-//coan < multiline
-//coan < comment */
-//coan < #endif
-
+#define B 1
+#ifdef A
+KEEP ME
+#endif
+KEEP ME
+#ifdef C
+KEEP ME
+#endif

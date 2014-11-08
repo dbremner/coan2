@@ -1,12 +1,12 @@
-/**ARGS: symbols */
-/**SYSCODE: = 0 */
-#ifdef FOO1
+/**ARGS: source --line -DFOO */
+/**SYSCODE: = 1 | 16 | 32 */
+#ifdef FOO
 KEEP ME
+#else
+DELETE ME
+DELETE ME
+DELETE ME
 #endif
-#if defined(FOO2) && defined(FOO2)
-KEEP ME
-#elif defined FOO3 || defined FOO4
-KEEP ME
-#elif FOO5
+#ifdef FOO
 KEEP ME
 #endif

@@ -1,14 +1,11 @@
-/**ARGS: symbols --no-transients --locate --expand */
-/**SYSCODE: = 2 */
+/**ARGS: source -DFOO */
+/**SYSCODE: = 0 */
+/* Test case for sourceforge bug 3514752 */
 
-#define A 1
-#undef B
-
-#ifdef A
-#define C
+#include "test.hpp"
+static char complete_message[] = "/*";
+#if defined (FIRST)
+int first;
+#else /* FIRST */
+int other;
 #endif
-
-#ifndef B
-#define D
-#endif
-

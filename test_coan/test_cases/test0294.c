@@ -1,4 +1,4 @@
-/**ARGS: source -kb -UDEFINE1 -UDEFINE2 -UDEFINE3 */
+/**ARGS: source -kc -UDEFINE1 -UDEFINE3 */
 /**SYSCODE: = 1 | 32 */
 
 uint32 var; 

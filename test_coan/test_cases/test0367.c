@@ -1,7 +1,8 @@
-/**ARGS: symbols --explain --locate "-DFOO=(1+1)" -DBAR=3 */
+/**ARGS: symbols -L --explain -DFOO=1 */
 /**SYSCODE: = 2 */
-#define SYM (FOO And (FOO SYM BAR) And BAR)
-#if SYM
-KEEP ME
+
+#define BAR (FOO ? 1 : 0)
+#if BAR
+#undef BAR
 #endif
 

@@ -1,1 +1,3 @@
-#define B " Definition 2 "
+/**ARGS: source  "-DFOO=1 + 1"  */
+/**SYSCODE: = 1 | 2 | 16 */
+#define FOO 2

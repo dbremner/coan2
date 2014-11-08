@@ -1,8 +1,6 @@
-/**ARGS: source */
+/**ARGS: source -DB */
 /**SYSCODE: = 1 | 2 | 16 */
 
-#define A (1 - 0)
-#define B (A + A)
-KEEP ME
-
+#undef B
+#define B 1
 

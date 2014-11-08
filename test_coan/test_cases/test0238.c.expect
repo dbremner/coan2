@@ -1,5 +1,1 @@
-/**ARGS: source -DFOO=1  -DBAR */
-/**SYSCODE: = 1 | 16  */
-KEEP ME
-KEEP ME
-
+#define B " Definition 2 "

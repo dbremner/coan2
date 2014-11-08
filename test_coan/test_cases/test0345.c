@@ -1,4 +1,7 @@
-/**ARGS: symbols -o -L --expand */
-/**SYSCODE: = 2 */
-#define XXXX(ftbl, rval, func, ...) (ftbl,rval,func,...)
+/**ARGS: source -DFOO=1 -DBAR=0 */
+/**SYSCODE: = 4 */
+
+#if (FOO : 1)
+KEEP_ME
+#endif
 

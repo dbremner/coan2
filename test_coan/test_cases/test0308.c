@@ -1,19 +1,5 @@
-/**ARGS: source -UUNDEF  */
-/**SYSCODE: = 1 | 2 | 16 */
-
-#ifdef UNKNOWN
-#define FOO
-#endif
-
-#ifndef UNDEF
-#define BAR
-#endif
-
-#ifdef FOO
-KEEP ME
-#endif
-
-#ifdef BAR
-KEEP ME
-#endif
-
+/**ARGS: includes --system */
+/**SYSCODE: = 0 */
+#include <foo.h>
+#include "bar.h"
+ 

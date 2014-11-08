@@ -1,11 +1,8 @@
-/**ARGS: source --eval-wip -DX */
-/**SYSCODE: = 16 | 1 */
-#if 1
-KEEP ME
-#else
-KEEP ME
-#endif
-#if 0
+/**ARGS: source  -DX */
+/**SYSCODE: = 6 */
+/**NO-OUTPUT */
+#define FOO(x) # x
+#if FOO("ab\ab")
 KEEP ME
 #else
 KEEP ME

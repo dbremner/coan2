@@ -1,1 +1,2 @@
-#include HDR(limits): symbolic argument, expands as >><limits.h><<: {CWD}/test_cases/test0326.c(4)
+/**ARGS: source -DFOO=1 -DBAR=0  */
+/**SYSCODE: = 4 */

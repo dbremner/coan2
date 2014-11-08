@@ -1,12 +1,3 @@
-/**ARGS: source -DC=1 --line */
-/**SYSCODE: = 1 | 2 | 16 | 32 */
-
-#define A 1 /* start of comment
-                      extends to next line */
-#define B /* comment */ 1
-#line 10
-#undef D  /* start of comment
-             extends to next line */
-#ifdef E   /* start of comment
-            extends to next line */
-#endif
+/**ARGS: source -DA -UB */
+/**SYSCODE: = 1 | 16 */
+KEEP ME

@@ -1,4 +1,5 @@
-/**ARGS: includes    */
-/**SYSCODE: = 2 */
-#include <stddef.h> garbage
+/**ARGS: errors --once-only --locate */
+/**SYSCODE: = 2 | 128 */
+#error /* comment */ " Whoops "
+
 

@@ -1,3 +1,9 @@
-/**ARGS: symbols -o -L "-DY(A,B)=(A+B)" */
-/**ALTFILES: ./test_cases/altfiles/test0429-1.c ./test_cases/altfiles/test0429-2.c */
-/**SYSCODE: = 2 */
+/**ARGS: source -DX */
+/**SYSCODE: = 6 */
+/**NO-OUTPUT */
+#define A() F
+#define B() OO
+#define FOO 2
+#if A()B() == 2
+KEEP ME
+#endif

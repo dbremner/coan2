@@ -1,24 +1,10 @@
-/**ARGS: source --no-transients -DB */
-/**SYSCODE: = 32 | 16 | 2 | 1 */
+/**ARGS: source -UFOO */
+/**SYSCODE: = 32 | 1 */
 
-#define A 1
-#undef B
-
-#ifdef A
-KEEP THIS AND IFDEF
+#if(defined(BAR)||defined(FOO))
+KEEP ME
 #endif
-
-#ifndef B
-DROP THIS AND IFNDEF
-#else
-KEEP THIS
-#endif
-
-#if (A && 1)
-KEEP THIS AND IF
-#endif
-
-#if (!A && 1)
-KEEP THIS AND IF
+#if((defined(BAR))||(defined(FOO)))
+KEEP ME
 #endif
 

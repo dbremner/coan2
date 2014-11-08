@@ -44,6 +44,8 @@
  *                                                                         *
  **************************************************************************/
 #include "line_type.h"
+#include "trivalent_truth_vals.h"
+#include "line_selector_vals.h"
 #include <cstddef>
 #include <algorithm>
 
@@ -85,6 +87,7 @@ struct if_control {
 	    IF_STATE_COUNT
 	};
 
+
 	/**	\brief Transition the if-control state given an evaluated
 	 *   line type.
      *
@@ -99,12 +102,6 @@ struct if_control {
         if_state state = _pscope_info_[_depth_]._if_state;
         transition_table[state][linetype]();
     }
-
-
-	/// Is the current line outside any `#if` scope?
-	static bool unconditional_line() {
-		return _pscope_info_[_depth_]._if_state == IF_STATE_OUTSIDE;
-	}
 
 	/**	\brief Is the current line outside any `#if` scope or in the scope of
 	 *  only satisfied `#if`s?
@@ -146,12 +143,11 @@ struct if_control {
 	/// Set the `#if`-state at the current nesting depth.
 	static void set_state(if_state is) {
         scope_info * psi = _pscope_info_ + _depth_ - 1;
-        truth_value agg_tv = psi++->_truth_value;
+        int agg_tv = psi++->_truth_value;
         psi->_if_state = is;
-        truth_value tv = state_truth_values[is];
+        int tv = state_truth_values[is];
         psi->_truth_value = tv;
-        psi->_aggregate_truth_value =
-            truth_value(std::min(int(tv),int(agg_tv)));
+        psi->_aggregate_truth_value = std::min(tv,agg_tv);
 	}
 
 	/// Set the idempotence flag at the current nesting depth.
@@ -164,17 +160,21 @@ struct if_control {
 		_depth_ = 0;
 	}
 
-private:
+    /** \brief Select the line despatcher function for plain line
+     *  at each reachability status
+     *
+     *  A line despatcher function for lines of type `LT_PLAIN`
+     *  is assigned for each reachability status:
+     *  - must reach line
+     *  - may reach line
+     *  - cannot reach line
+     *
+     *  depending on the reachability option `--must`, `--may`
+     *  `--cant`
+     */
+	static void select_plain_line_despatchers(line_selector opt);
 
-	/// Enumeration of possible true values of `#if`s
-	enum class truth_value : int {
-	    /// Falsified by configuration
-	    False = 0,
-	    /// Verified by configurarion
-	    Indeterminate = 1,
-	    /// Neither falsified nor verified by configuration
-	    True = 2
-	};
+private:
 
     /// Characteristics of the scope at a given level if nesting
     struct scope_info {
@@ -185,9 +185,9 @@ private:
         /// The line number at which the scope starts
         unsigned _start_line = 0;
         /// The true-value of the `if_state` at this scope
-        truth_value _truth_value = truth_value::True;
+        int _truth_value = truth_value::True;
         /// The truth-value of the aggregated `if_state`s at this_scope
-        truth_value _aggregate_truth_value = truth_value::True;
+        int _aggregate_truth_value = truth_value::True;
     };
 
     /** \brief Maximum depth of hash-if nesting.
@@ -206,7 +206,7 @@ private:
 	static transition_t * const transition_table[IF_STATE_COUNT][LT_SENTINEL];
 
 	/// Lookup table of truth-values corresponding to if_states
-	static truth_value state_truth_values[IF_STATE_COUNT];
+	static int state_truth_values[IF_STATE_COUNT];
 
 	/// Increment the `#if`-nesting depth.
 	static void nest();
@@ -277,6 +277,16 @@ private:
 	/// State transition
 	static void Melse();
 
+	/** \brief Despatch a plain line.
+	 *  Print or drop the current line when of type `LT_PLAIN`,
+	 *  depending on its reachability status and the operataive
+	 *  `--must|--may|--cant` option.
+	 */
+	static void despatch_plain() {
+	    int agg_tv = _pscope_info_[_depth_]._aggregate_truth_value;
+	    _despatcher_[agg_tv]();
+	}
+
 	/// Diagnose an input orphan `#elif` on `cerr`
 	static void orphan_elif();
 
@@ -297,6 +307,8 @@ private:
 	static scope_info * _pscope_info_;
 	/// Current depth of `#if`-nesting
 	static unsigned	_depth_;
+    /// Array of line despatching functions
+    static void (*_despatcher_[truth_value::n_values])();
 
 };
 

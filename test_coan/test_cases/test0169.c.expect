@@ -1,6 +1,3 @@
-/**ARGS: source --line -DFOO */
-/**SYSCODE: = 1 | 16 | 32 */
-#line 4
-KEEP ME
-#line 11
+/**ARGS: source -DFOO=1 */
+/**SYSCODE: = 1 | 16 */
 KEEP ME

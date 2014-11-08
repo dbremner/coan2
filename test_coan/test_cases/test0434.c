@@ -1,9 +1,8 @@
-/**ARGS: source -DX */
-/**SYSCODE: = 32 | 2 | 1  */
-#define A 1
-#if (A,B)
+/**ARGS: source  -DFOO */
+/**SYSCODE: = 4 */
+/**NO-OUTPUT */
+#if FOO
 KEEP ME
 #else
 KEEP ME
 #endif
-

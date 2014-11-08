@@ -1,4 +1,6 @@
-/**ARGS: source -DFOO1=1 -UFOO2 -DBAR1=1 -UBAR2 */
-/**SYSCODE: = 1 | 16 */
-KEEP ME
-
+FOO1: unconfigured
+FOO2: unconfigured
+FOO2: unconfigured
+FOO3: unconfigured
+FOO4: unconfigured
+FOO5: unconfigured

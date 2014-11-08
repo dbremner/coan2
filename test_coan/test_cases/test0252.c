@@ -1,7 +1,6 @@
-/**ARGS: symbols --expand --locate "-DFOO=(1+1)" -DBAR=3  */
-/**SYSCODE: = 2 */
-#define SYM (FOO And (FOO SYM BAR) And BAR)
-#if SYM
+/**ARGS: source -DBIG=9223372036854775807 */
+/**SYSCODE: = 1 | 16 */
+#if ( BIG == 9223372036854775807 )
 KEEP ME
 #endif
 

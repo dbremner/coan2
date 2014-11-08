@@ -1,18 +1,17 @@
-/**ARGS: symbols -DFOO --no-transients --locate --expand --must */
-/**SYSCODE: = 2 */
+/**ARGS: source -DFOO */
+/**SYSCODE: = 16 | 2 | 1 */
+/* Test case for sourceforge bug 3531311 */
 
-#define A 1
-#undef B
-
-#ifdef A
-#define C
+#define TOKEN/*comment*/1//Comment
+#if TOKEN == 1
+KEEP ME
+#else
+DELETE ME
 #endif
-
-#ifndef B
-#define D
-#endif
-
-#ifdef FOO
-#define E
+#define MAC(x)/*comment*/((x)+(x))/**///
+#if MAC(1) == 2
+KEEP ME
+#else
+DELETE ME
 #endif
 

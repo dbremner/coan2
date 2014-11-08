@@ -1,22 +1,18 @@
-/**ARGS: source --no-transients -DFOO */
-/**SYSCODE: = 32 | 2 | 1 */
+/**ARGS: symbols -UFOO --no-transients --locate --expand --cant */
+/**SYSCODE: = 2 */
 
 #define A 1
 #undef B
 
 #ifdef A
-KEEP THIS AND IFDEF
+#define C
 #endif
 
 #ifndef B
-KEEP THIS AND IFNDEF
+#define D
 #endif
 
-#if (A && 1)
-KEEP THIS AND IF
-#endif
-
-#if (!A && 1)
-KEEP THIS AND IF
+#ifdef FOO
+#define E
 #endif
 

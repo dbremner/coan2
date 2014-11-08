@@ -1,13 +1,8 @@
-/**ARGS: source --implicit */
-/**SYSCODE: = 4 */
-/**NO-OUTPUT */
-#if FOO(1)
-KEEP ME 1
+/**ARGS: symbols --explain */
+/**SYSCODE: = 2 */
+#define FOO(x,y) FOO(x+1,y+1)
+#if FOO(0,0)
+KEEP ME
 #else
-KEEP ME 2
-#endif
-#if FOO
-KEEP ME 3
-#else
-KEEP ME 4
+KEEP ME
 #endif

@@ -1,15 +1,7 @@
-/**ARGS: source -DFOO=1  -DBAR */
-/**SYSCODE: = 1 | 16 */
-#if /* "comment" */ FOO /* 'comment'
-more comments */ == 1
-KEEP ME
-#else /* coments
-more comments
-and "more
-comments " */
-DELETE ME
-#endif
-#if /* Comments "
-more comments */ defined(BAR)
-KEEP ME
+/**ARGS: defs --once-only --cant -DFOO */
+/**SYSCODE: = 2 */
+#ifdef FOO
+#define /* comment */ B /* comment */ " Definition  1 " // Comment
+#else
+#define /* comment */ B /* comment */ " Definition 2 " // Comment
 #endif

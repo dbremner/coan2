@@ -1,3 +1,4 @@
-/**ARGS: source -DA=1 -DB=0 "-DC=(1 && 0)" */
-/**SYSCODE: = 1 | 16 */
-KEEP ME
+FOO: global: {CWD}/test_cases/test0225.c(3)
+FOO: transient: {CWD}/test_cases/test0225.c(6)
+BAR: global: {CWD}/test_cases/test0225.c(8)
+BAR: transient: {CWD}/test_cases/test0225.c(9)

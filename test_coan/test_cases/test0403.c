@@ -1,7 +1,6 @@
-/**ARGS: source -DFOO -UBAR */
-/**SYSCODE: = 4 */
-/**NO-OUTPUT */
-#if defined(FOO) ? FOO : BAR
+/**ARGS: source -DFOO=1 -DBAR=1*/
+/**SYSCODE: = 16 | 1 */
+#if defined(FOO) ? (defined(BAR) ? FOO : BAR) : 0
 KEEP ME
 #else
 DELETE ME

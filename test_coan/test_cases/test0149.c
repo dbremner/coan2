@@ -1,13 +1,17 @@
-/**ARGS: source -DFOO1 */
+/**ARGS: source -DFOO=1 -DBAR=2 */
 /**SYSCODE: = 1 | 16 */
-#ifdef FOO1
-/* To be parsed as comment
-#ifdef FOO1
-" To be parsed as quote
-#ifndef FOO1
+#if 1 + BAR
 KEEP ME
 #endif
-End quote "
+#if 1 - FOO
+KEEP ME
 #endif
-End comment */
+#if 1 * FOO
+KEEP ME
+#endif
+#if 1 / FOO
+KEEP ME
+#endif
+#if 3 % BAR
+KEEP ME
 #endif

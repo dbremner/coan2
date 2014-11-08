@@ -1,9 +1,8 @@
-/**ARGS: source -DX */
-/**SYSCODE: = 3 */
-#define FOO BARX
-#define BARX FOO
-#if FOO == BARX
-KEEP_ME
-#else
+/**ARGS: source -DFOO=1 */
+/**SYSCODE: = 32 | 1 */
+#if defined(FOO) ? BAR : FOO
 KEEP ME
+#else
+DELETE ME
 #endif
+

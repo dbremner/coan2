@@ -1,7 +1,4 @@
-/**ARGS: source -DFOO=1 -DBAR=0 */
-/**SYSCODE: = 1 | 16 */
+/**ARGS: source -DFOO */
+/**SYSCODE: = 2 */
 
-KEEP_ME
-
-KEEP_ME
-
+//EOF n C++ commen

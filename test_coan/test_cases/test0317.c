@@ -1,8 +1,6 @@
-/**ARGS: includes --locate --once-only */
-/**SYSCODE: = 2 */
-#define HDR <foo.h>
-#include HDR
-#undef HDR
-#define HDR "bar.h"
-#include HDR
-
+/**ARGS: source -UFOO -DFOO*/
+/**SYSCODE: = 4 */
+/**NO-OUTPUT */
+#ifdef FOO
+DELETE ME
+#endif

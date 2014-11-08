@@ -1,12 +1,8 @@
-/**ARGS: source */
+/**ARGS: source -DB */
 /**SYSCODE: = 1 | 2 | 16 */
 
-#define A (1 - 0)
-#define B (A + A)
-#if B
-KEEP ME
-#endif
-#if !B
-DELETE ME
+#ifdef B
+#undef B
+#define B 1
 #endif
 

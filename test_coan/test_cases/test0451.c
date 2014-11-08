@@ -1,12 +1,15 @@
-/**ARGS: symbols  --explain --locate */
-/**SYSCODE: = 6 */
+/**ARGS: directives --must --locate -DFOO -UBAR */
+/**SYSCODE: = 0 */
 /**NO-OUTPUT */
-#define hash_hash # ## #
-#define mkstr(a) # a
-#define in_between(a) mkstr(a)
-#define join(c, d) in_between(c hash_hash d)
-#if join(x,y)
-KEEP ME
-#else
-DELETE ME
+#ifdef U1
+	#ifdef FOO
+	#define KEEP1
+	#else
+	#define DROP1 
+	#endif
+	#ifndef BAR
+	#define KEEP2
+	#else
+	#define DROP2 
+	#endif
 #endif

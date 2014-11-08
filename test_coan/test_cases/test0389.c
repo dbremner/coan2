@@ -1,8 +1,7 @@
 /**ARGS: source -DFOO */
 /**SYSCODE: = 16 | 1 */
-#if 65-2-21-21 == 21
-RIGHT
-#elif 65-2-21-21 == 63
-WRONG
+#if 1 + --2 == 3
+KEEP ME
+#else
+DELETE ME
 #endif
-

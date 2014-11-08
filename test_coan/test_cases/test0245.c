@@ -1,14 +1,33 @@
-/**ARGS: defs --must --once-only -DFOO */
-/**SYSCODE: = 2 */
+/**ARGS: directives  --must --once-only --locate -DFOO -UBAR "-DHDR=<time.h>" */
+/**SYSCODE: = 2 | 128 */
 #ifdef FOO
-#define FOO /* comment */ 1
-#define FOO 2
-#define FOO 1
-#undef BAR
-#undef BAR //
-#undef /*
-*/ BAR
-#else
-#define SYM
+	#include HDR
+	#ifndef BAR
+		#pragma This /* comment
+		comment */\
+		is a   pragma
+		#error Whoops /* An */ error //
+		#define SYM 12345
+		#define STR "1\\
+2345"
+	#endif
+	#define FOO 12345
+	#undef /*
+	*/ HDR
 #endif
+#ifndef BAR
+	#pragma This is   a pragma 
+	#if defined(FOO)
+		#include <time.h>
+		#undef HDR
+	#endif
+	#define FOO 123\
+45		/* comment
+		*/
+	#error Whoops  error
+	#define SYM 123\\
+45
+	#define STR "1\2345"
+#endif
+#line 99
 

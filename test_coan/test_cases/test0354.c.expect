@@ -1,22 +1,2 @@
-/**ARGS: source --no-transients -DFOO */
-/**SYSCODE: = 32 | 2 | 1  */
-
-#define A 1
-#undef B
-
-#ifdef A
-KEEP THIS AND IFDEF
-#endif
-
-#ifndef B
-KEEP THIS AND IFNDEF
-#endif
-
-#if A
-KEEP THIS AND IF
-#endif
-
-#if !A
-KEEP THIS AND IF
-#endif
-
+FOO: global: expands afresh as >>0<<: evaluates to 0: in options
+E: unconfigured: insoluble: {CWD}/test_cases/test0354.c(16)

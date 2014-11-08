@@ -1,6 +1,7 @@
-FOO1: unconfigured: {CWD}/test_cases/test0166.c(3)
-FOO2: unconfigured: {CWD}/test_cases/test0166.c(6)
-FOO2: unconfigured: {CWD}/test_cases/test0166.c(6)
-FOO3: unconfigured: {CWD}/test_cases/test0166.c(8)
-FOO4: unconfigured: {CWD}/test_cases/test0166.c(8)
-FOO5: unconfigured: {CWD}/test_cases/test0166.c(10)
+/**ARGS: source --pod -DFOO -DBAR */
+/**SYSCODE: = 16 | 2 | 1 */
+/* Not to be parsed as comment
+KEEP ME
+end */
+" Not to be parsed as quotation
+end "

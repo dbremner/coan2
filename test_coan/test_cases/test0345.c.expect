@@ -1,1 +1,3 @@
-XXXX(ftbl,rval,func,...): transient: insoluble, because variadic macro parameters are unsupported: {CWD}/test_cases/test0345.c(3)
+/**ARGS: source -DFOO=1 -DBAR=0 */
+/**SYSCODE: = 4 */
+

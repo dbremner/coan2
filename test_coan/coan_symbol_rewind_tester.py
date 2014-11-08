@@ -132,16 +132,16 @@ def do_test(testfiles,monkey_args,expected_rc):
 		finis(failures)
 
 set_prog('coan_symbol_rewind_tester')	
-testfiles = ['test_cases\\test0286.c','test_cases\\test0287.c'] \
-	if windows() else ['test_cases/test0286.c','test_cases/test0287.c']
+testfiles = ['test_cases\\test0282.c','test_cases\\test0283.c'] \
+	if windows() else ['test_cases/test0282.c','test_cases/test0283.c']
 #monkey_args = 'source --no-inc -DFOO --replace --backup .coan.test.bak'
 monkey_args = 'source -DFOO --replace --backup .coan.test.bak'
 expected_rc = 19
 
 do_test(testfiles,monkey_args,expected_rc)
 
-testfiles = ['test_cases\\test0393.c','test_cases\\test0394.c'] \
-	if windows() else ['test_cases/test0393.c','test_cases/test0394.c']
+testfiles = ['test_cases\\test0389.c','test_cases\\test0390.c'] \
+	if windows() else ['test_cases/test0389.c','test_cases/test0390.c']
 monkey_args = 'source -DFOO --replace --backup .coan.test.bak'
 expected_rc = 5
 

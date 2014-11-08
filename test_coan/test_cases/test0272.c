@@ -1,6 +1,6 @@
-/**ARGS: symbols --expand --locate --once-only -DX=A "-DA=(((1UL * -2) + -2U) / 3LLU)"  */
-/**SYSCODE: = 2 */
-#if X
+/**ARGS: source -DFOO */
+/**SYSCODE: = 1 | 2 | 16 */
+#define BAR(param) (param < 5)
+#if BAR(4)
+KEEP ME
 #endif
-
-

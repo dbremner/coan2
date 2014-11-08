@@ -1,7 +1,12 @@
-/**ARGS: source -DFOO=1 -DBAR=2 */
-/**SYSCODE: = 1 | 16 */
-#if 1 == (FOO | BAR == 3)
+/**ARGS: symbols */
+/**SYSCODE: = 0 */
+#ifdef FOO1
 KEEP ME
-#else
-DELETE ME
+#endif
+#if defined(FOO2) && defined(FOO2)
+KEEP ME
+#elif defined FOO3 || defined FOO4
+KEEP ME
+#elif FOO5
+KEEP ME
 #endif

@@ -1,7 +1,12 @@
-/**ARGS: source -USYS2 */
-/**SYSCODE: = 1 | 32 */
+/**ARGS: source */
+/**SYSCODE: = 1 | 2 | 16 */
 
-#if (defined(SYS1) && defined(ATTR1)) || (defined(ATTR1) || defined(SYS3)) || defined(SYS2) 
+#define A (1 - 0)
+#define B (A + A)
+#if B
 KEEP ME
+#endif
+#if !B
+DELETE ME
 #endif
 

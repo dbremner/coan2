@@ -1,9 +1,14 @@
-/**ARGS: includes --locate -DFOO */
+/**ARGS: includes --locate --must -DFOO -UBAR */
 /**SYSCODE: = 0 */
 #ifdef FOO
-#include <foo*&bar.h>
-#elif 1
-//KEEP ME
+#include <foo.h>
+#else
+#include "foo.h"
+#endif
+#ifndef BAR
+#include "bar.h"
+#else
+#include <bar.h>
 #endif
 
 

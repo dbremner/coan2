@@ -1,10 +1,12 @@
-/**ARGS: source  -DX */
+/**ARGS: symbols  --explain --locate */
 /**SYSCODE: = 6 */
 /**NO-OUTPUT */
-#define STR(x) # x
-#define STRING(y) STR(y)
-#if STRING(aa) 
+#define hash_hash # ## #
+#define mkstr(a) # a
+#define in_between(a) mkstr(a)
+#define join(c, d) in_between(c hash_hash d)
+#if join(x,y)
 KEEP ME
 #else
-KEEP ME
+DELETE ME
 #endif

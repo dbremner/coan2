@@ -1,3 +1,8 @@
-/**ARGS: includes --locate -DBAR -DFOO=BAR */
+/**ARGS: includes --locate -DFOO*/
 /**SYSCODE: = 2 */
-#include FOO
+#ifdef FOO
+#include bar(x,y,z)
+#elif 1
+//KEEP ME
+#endif
+

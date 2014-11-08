@@ -1,7 +1,9 @@
-/**ARGS: source -DFOO */
-/**SYSCODE: = 0 */
-#if UNKNOWN
-KEEP ME
+/**ARGS: source -DFOO=1 */
+/**SYSCODE: = 4 */
+#if FOO)
+ABORT
 #else
-KEEP ME
+ABORT
 #endif
+
+

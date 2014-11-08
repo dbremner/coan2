@@ -1,12 +1,10 @@
-/**ARGS: symbols --locate -i -d -DFOO -UBAR */
-/**SYSCODE: = 2 */
+/**ARGS: errors  -DFOO --must --locate */
+/**SYSCODE: = 2 | 128 */
 #ifdef FOO
-#undef FOO
+#error An  /* comment */\
+ error  /* a \
+comment */   message
 #else
-#define FOO 1
+#error An/* Comment */error/**/message
 #endif
-#ifndef BAR
-#define BAR 1
-#else
-#undef BAR 
-#endif
+

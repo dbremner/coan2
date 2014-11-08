@@ -1,10 +1,6 @@
-/**ARGS: source -DX=1 -DY=32 */
-/**SYSCODE: = 16 | 2 | 1 */
+/**ARGS: source -DX=A "-DA=(((-1L * 2) + -2U) / 3LLU)"  */
+/**WORDSIZE=64 */
+/**SYSCODE: = 1 | 16 */
 KEEP ME
-KEEP ME
-KEEP ME
-#if 1 << -2
-KEEP ME
-#endif
-KEEP ME
+
 

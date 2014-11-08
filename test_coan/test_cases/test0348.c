@@ -1,7 +1,4 @@
-/**ARGS: source -DFOO=1 -DBAR=0 */
-/**SYSCODE: = 4 */
-
-#if (FOO ? 1)
-KEEP_ME
-#endif
-
+/**ARGS: source -DFOO */
+/**SYSCODE: = 2 */
+//EOF in #define
+#define BAR definition

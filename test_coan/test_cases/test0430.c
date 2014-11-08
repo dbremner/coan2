@@ -1,3 +1,9 @@
-/**ARGS: symbols --once-per-file -L "-DY(A,B)=(A+B)" */
-/**ALTFILES: ./test_cases/altfiles/test0430-1.c ./test_cases/altfiles/test0430-2.c */
-/**SYSCODE: = 2 */
+/**ARGS: source -DX */
+/**SYSCODE: = 32 | 2 | 1  */
+#define A 1
+#if (A,B)
+KEEP ME
+#else
+KEEP ME
+#endif
+

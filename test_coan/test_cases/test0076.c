@@ -1,8 +1,5 @@
-/**ARGS: source -DFOO1 -UFOO2 */
-/**SYSCODE: = 0 */
-// Error directive should not cause an unbalanced quote error
-#ifdef TESTVAR
-#error With a ' and a " a /* Comment */ and a // Comment
-#else
-DELETE ME
+/**ARGS: source -DFOO1=1 -UFOO2 -DBAR1 -UBAR2 */
+/**SYSCODE: = 1 | 16  */
+#if FOO1
+KEEP ME
 #endif

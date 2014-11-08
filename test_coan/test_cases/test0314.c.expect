@@ -1,3 +1,1 @@
-#include <foo.h>
-#include <foo.h>
-
+#include HDR: symbolic argument, expands as >><foo.h><<: {CWD}/test_cases/test0314.c(7)

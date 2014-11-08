@@ -1,11 +1,5 @@
-/**ARGS: symbols --must  */
+/**ARGS: includes --local */
 /**SYSCODE: = 0 */
-
-#ifdef UNDEF1
-#define FOO
-#endif
-
-#ifndef UNDEF2
-#define BAR
-#endif
-
+#include <foo.h>
+#include "bar.h"
+ 

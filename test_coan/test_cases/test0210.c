@@ -1,16 +1,16 @@
-/**ARGS: symbols --locate -DFOO -UBAR*/
+/**ARGS: includes -L -o -DFOO -UBAR */
 /**SYSCODE: = 0 */
 #ifdef FOO
-#if FOO1 == 1
-#endif
+#include <foo.h>
+#include <foo.h>
 #else
-#if FOO2 == 1
-#endif
+#include <foo.h>
+#include <foo.h>
 #endif
 #ifndef BAR
-#if BAR1 == 1
-#endif
+#include "bar.h"
+#include "bar.h"
 #else
-#if BAR2 == 1
-#endif
+#include "bar.h"
+#include "bar.h"
 #endif

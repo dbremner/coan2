@@ -1,1 +1,1 @@
-#include */qwerty: {CWD}/test_cases/test0204.c(3)
+#include FOO: symbolic argument, expands as >>bar(x,y,z<<: /home/imk/develop/coan-5.2.1/test_coa{CWD}/test_cases/test0204.c(5)

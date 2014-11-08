@@ -1,9 +1,11 @@
-/**ARGS: source -UPYGMALION -UABELONE */
-/**SYSCODE: = 1 | 32 */
+/**ARGS: symbols --must  */
+/**SYSCODE: = 0 */
 
-#if (defined UNIX && defined PYGMALION) || (defined LINUX && defined ABELONE) || (defined MACOSX && defined ABYSSINIA)
-extern int i;
+#ifdef UNDEF1
+#define FOO
 #endif
-#if (defined UNIX && defined PYGMALION) || (defined MACOSX && defined ABYSSINIA)
-extern int j;
+
+#ifndef UNDEF2
+#define BAR
 #endif
+

@@ -1,9 +1,14 @@
-/**ARGS: source -kc -UBAR */
-/**SYSCODE: = 1 | 32 */
+/**ARGS: source -DFOO */
+/**SYSCODE: = 1 | 2 | 16 */
 
-#ifdef BAR
-/* A
-multiline
-comment */
+#define B 1
+#ifdef A
+KEEP ME
+#endif
+#ifdef B
+KEEP ME
+#endif
+#ifdef C
+KEEP ME
 #endif
 

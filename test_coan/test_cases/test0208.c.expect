@@ -1,1 +1,6 @@
-#include FOO: symbolic argument, expands as >>bar(x,y,z<<: /home/imk/develop/coan-5.2.1/test_coa{CWD}/test_cases/test0208.c(5)
+FOO: global: {CWD}/test_cases/test0208.c(3)
+FOO: global: {CWD}/test_cases/test0208.c(4)
+FOO: global: {CWD}/test_cases/test0208.c(6)
+BAR: global: {CWD}/test_cases/test0208.c(14)
+BAR: global: {CWD}/test_cases/test0208.c(15)
+BAR: global: {CWD}/test_cases/test0208.c(17)

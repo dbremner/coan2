@@ -1,8 +1,5 @@
-/**ARGS: source -DFOO  -DBAR  */
-/**SYSCODE: = 1 | 2 | 16 */
-#define A " /* comment within quotation \
-is not comment. And escaped \" does not close quotation */ "
-#define B '\
-"\
-\
-' /* B is defined as '"'. Quotation is not opened */
+FOO: global: expands afresh as >><<: in options
+STR: global: expands afresh as >>string<<: in options
+FOO: transient: expands afresh as >>1<<: evaluates to 1: {CWD}/test_cases/test0240.c(4)
+STR: transient: expands afresh as >><<: {CWD}/test_cases/test0240.c(5)
+BAR: transient: expands afresh as >>0<<: evaluates to 0: {CWD}/test_cases/test0240.c(6)

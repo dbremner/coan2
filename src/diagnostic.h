@@ -611,7 +611,7 @@ using  warning_undefing_defined = warning_msg<6>;
  * encapsulates a diagnostic for an `#error` directive input unconditionally,
  *   i.e. not in the scope of `#if`
  */
-struct warning_unconditional_error_input : warning_msg<7> {
+struct warning_unconditional_error_directive : warning_msg<7> {
 private:
 	/// Increment global counts appropriately.
 	void count() const override {
@@ -634,84 +634,70 @@ private:
 		++_error_directives_generated_;
 	}
 };
-/** \brief Encapsulates a diagnostic for `#error` directive output
- *       unconditionally.
- *
- *  Class \c warning_unconditional_error_output encapsulates a
- *  diagnostic to report that an `#error` directive was output
- *  unconditionally, i.e. not in the scope of any `#if`
- */
-struct warning_unconditional_error_output : warning_msg<9> {
-private:
-	//! Increment global counts appropriately.
-	void count() const {
-		++_warnings_;
-		++_error_directives_operative_;
-	}
-};
+
 /** \brief Report (as warning) a `#define` or `#undef` contradicting the global
  * configuration
  */
-using  warning_contradiction = warning_msg<10>;
+using  warning_contradiction = warning_msg<9>;
 
 /// Report garbage text was input following a directive
-using  warning_garbage_after_directive = warning_msg<11>;
+using  warning_garbage_after_directive = warning_msg<10>;
 /// Report a newline is missing at end of input
-using  warning_missing_eof_newline = warning_msg<12>;
+using  warning_missing_eof_newline = warning_msg<11>;
 /// Report a symbol has a circular definition
-using  warning_infinite_regress = warning_msg<13>;
+using  warning_infinite_regress = warning_msg<12>;
 /// Report the `--verbose` option is mixed with the `--gag` option
-using  warning_verbose_only = warning_msg<14>;
+using  warning_verbose_only = warning_msg<13>;
 /// Report a divide by zero was found in an expression
-using warning_zero_divide =  warning_msg<15>;
+using warning_zero_divide =  warning_msg<14>;
 /** \brief Report directory name ignored on input when `--recurse` not
  *	not specified
  */
-using  warning_dir_ignored = warning_msg<16>;
+using  warning_dir_ignored = warning_msg<15>;
 /// Report an unknown preprocessor directive
-using  warning_unknown_directive = warning_msg<17>;
+using  warning_unknown_directive = warning_msg<16>;
 /// Report a problematic argument to an \c \#include directive
-using  warning_invalid_include = warning_msg<18>;
+using  warning_invalid_include = warning_msg<17>;
 /// Report that an integer constant evaluates > \c INT_MAX
-using warning_int_overflow = warning_msg<19>;
+using warning_int_overflow = warning_msg<18>;
 /// Report missing terminator quotation
-using  warning_missing_terminator = warning_msg<20>;
+using  warning_missing_terminator = warning_msg<19>;
 /// Report negative shift count
-using warning_negative_shift = warning_msg<21>;
+using warning_negative_shift = warning_msg<20>;
 /// Report a huge integer constant forced to be unsigned
-using warning_forced_unsigned = warning_msg<22>;
+using warning_forced_unsigned = warning_msg<21>;
 /// Report integer sign changed by promotion
-using warning_sign_changed = warning_msg<23>;
+using warning_sign_changed = warning_msg<22>;
 /// Report a that shift count is >= the width of the shifted quantity
-using warning_shift_overflow = warning_msg<24>;
+using warning_shift_overflow = warning_msg<23>;
 /// Report a character constant too long for current locale
-using warning_char_constant_too_long = warning_msg<25>;
+using warning_char_constant_too_long = warning_msg<24>;
 /// Report that character constant goes multi-byte
-using  warning_mulitbyte_char_constant = warning_msg<26>;
+using  warning_mulitbyte_char_constant = warning_msg<25>;
 /// Apologize that variadic macro expansion is unsupported.
-using warning_variadic_macros_unsupported = warning_msg<27>;
+using warning_variadic_macros_unsupported = warning_msg<26>;
 /** Report that a symbol has been transiently defined or undefined for the
  *   duration of the current source file
  */
-using warning_transient_symbol_added = warning_msg<28>;
+using warning_transient_symbol_added = warning_msg<27>;
 /// Report that the commandline does not specify any `--define` or `--undef`
-using warning_no_syms = warning_msg<29>;
+using warning_no_syms = warning_msg<28>;
 /// Report that input file is a broken symbolic link
-using warning_broken_symlink = warning_msg<30>;
+using warning_broken_symlink = warning_msg<29>;
 /// Report that the unsafe `--no-transients` option is used.
-using warning_no_transients_used = warning_msg<31>;
+using warning_no_transients_used = warning_msg<30>;
 /// Report macro ref on unconfigured symbol
-using warning_calling_unconfigured = warning_msg<32>;
+using warning_calling_unconfigured = warning_msg<31>;
 /// Report a directive that lacks a required argument
-using warning_no_argument = warning_msg<33>;
+using warning_no_argument = warning_msg<32>;
 /// Report a `#line` directive with argument not a positive integer.
-using warning_not_a_line_number = warning_msg<34>;
+using warning_not_a_line_number = warning_msg<33>;
 /// Report inconsistent argument lists for unconfigured symbol references.
-using warning_inconsistent_calls = warning_msg<35>;
+using warning_inconsistent_calls = warning_msg<34>;
 /// Report a macro reference not fully expanded.
-using warning_incomplete_expansion = warning_msg<36>;
+using warning_incomplete_expansion = warning_msg<35>;
 /// Report a `#define` or `#undef` transiently overriding the global config.
-using warning_transient_override = warning_msg<37>;
+using warning_transient_override = warning_msg<36>;
 
 /// Report an orphan `#elif` was found in input
 using error_orphan_elif = error_msg<1>;

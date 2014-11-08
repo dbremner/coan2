@@ -1,50 +1,50 @@
-/**ARGS: source -DFOO */
-/**SYSCODE: = 16 | 2 | 1 */
+/**ARGS: source -UG0 -UG4 --no-idempotence */
+/**SYSCODE: = 1 | 2 | 16  */
 #ifndef G0
 #define G0
 
 	#ifndef G1
 	#define G1
-	KEEP ME
+	KEEP ME G1
 	#else
-	DELETE ME
+	KEEP ME G1
 	#endif
 	
 	#ifndef G1
 	#define G1
-	DELETE ME
+	KEEP ME G1
 	#else
-	KEEP ME
+	KEEP ME G1
 	#endif
 	
 	#ifndef G2
 	// A comment
 	#define G2
-	KEEP ME
+	KEEP ME G2
 	#else
-	DELETE ME
+	KEEP ME G2
 	#endif
 
 	#ifndef G3
 	#undef G3
 	#define G3
-	KEEP ME
+	KEEP ME G3
 	#else
-	KEEP ME
+	KEEP ME G3
 	#endif
 	
 	#if ! defined(G4)
 	#define G4
-	KEEP ME
+	KEEP ME G4
 	#else
-	DELETE ME
+	DELETE ME G4
 	#endif
 	
 	#if ! defined(G4)
 	#define G4
-	DELETE ME
+	DELETE ME G4
 	#else
-	KEEP ME
+	KEEP ME G4
 	#endif
 	
 	#if ! defined G5
@@ -57,13 +57,6 @@
 	#if ! defined G5
 	#define G5
 	DELETE ME
-	#else
-	KEEP ME
-	#endif
-	
-	#if ! defined G6 && defined UNK
-	#define G6
-	KEEP_ME
 	#else
 	KEEP ME
 	#endif

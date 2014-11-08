@@ -1,4 +1,1 @@
-/**ARGS: source -DX */
-/**SYSCODE: = 16 | 2 | 1 */
-#define FOO(x,y) (x) + (y)
-KEEP ME
+FOO(x): transient: expands afresh as >>(x + 1)<<: {CWD}/test_cases/test0423.c(3)
